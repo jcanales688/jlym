@@ -1,11 +1,23 @@
 {
   "version": 2,
-  "dgSpecHash": "gPIqNZ/DAyxPaFANlkqbk3XMe71OSjRr2CgGOOc+Dz1XFpRO0Aa/Brj4iKfgiX3virYISP3eH7A0/n2ez0UxEA==",
+  "dgSpecHash": "qCZJooAXSFkod8QOFaawDWx70keAA7ZXQst1l/vzhTWQiOGCWnMsF9BEXBGC+Pu5uQ+3oyCa2aqPfVYWjEylOA==",
   "success": true,
-  "projectFilePath": "C:\\PtoVtaMovil\\PtoVta.Infraestructura\\PtoVta.Infraestructura\\PtoVta.Infraestructura.csproj",
+  "projectFilePath": "C:\\PtoVtaMovil\\jlym\\PtoVta.Infraestructura\\PtoVta.Infraestructura.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\Gato 1\\.nuget\\packages\\automapper\\3.3.0\\automapper.3.3.0.nupkg.sha512",
     "C:\\Users\\Gato 1\\.nuget\\packages\\microsoft.netcore.platforms\\1.1.0\\microsoft.netcore.platforms.1.1.0.nupkg.sha512",
     "C:\\Users\\Gato 1\\.nuget\\packages\\netstandard.library\\2.0.3\\netstandard.library.2.0.3.nupkg.sha512"
   ],
-  "logs": []
+  "logs": [
+    {
+      "code": "NU1701",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "El paquete \"AutoMapper 3.3.0\" se restauró con \".NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8\" en lugar de la plataforma de destino del proyecto \".NETStandard,Version=v2.0\". Puede que el paquete no sea totalmente compatible con el proyecto.",
+      "libraryId": "AutoMapper",
+      "targetGraphs": [
+        ".NETStandard,Version=v2.0"
+      ]
+    }
+  ]
 }

@@ -1,4 +1,5 @@
 using System;
+using PtoVta.Aplicacion.BaseTrabajo;
 using PtoVta.Aplicacion.DTO.Modulo;
 using PtoVta.Dominio.Agregados.Colaborador;
 using PtoVta.Dominio.Agregados.Modulo;
@@ -100,10 +101,10 @@ namespace PtoVta.Aplicacion.GestionUsuario
             {
                 //Obtenemos privilegios del usuario
                 accesosModuloSistema = _IRepositorioModuloSistema
-                                                             .ObtenerDerechosAccesosUsuario(usuarioSistemaAcceso.Id, pModuloSistemaId);
+                                                .ObtenerDerechosAccesosUsuario(usuarioSistemaAcceso.Id, pModuloSistemaId);
 
                 esUsuarioSistemaAccesoValido = _IServicioDominioValidarUsuarioSistema
-                                                            .ValidarUsuarioSistema(usuarioSistemaAcceso, accesosModuloSistema, pClave);
+                                                .ValidarUsuarioSistema(usuarioSistemaAcceso, accesosModuloSistema, pClave);
 
                 if (!(esUsuarioSistemaAccesoValido))
                     LogFactory.CrearLog().LogError("Mensajes.excepcion_UsuarioSistemaDeVendedorInvalido");
