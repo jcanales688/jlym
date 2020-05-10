@@ -4,7 +4,7 @@ namespace PtoVta.Infraestructura.Transversales.Comun
 {
     public class CierresPuntoDeVenta
     {
-                public struct TipoResumenConsultado
+        public struct TipoResumenConsultado
         {
             public const string PorArticulo = "Articulo";
             public const string PorCategoria = "Categoria";

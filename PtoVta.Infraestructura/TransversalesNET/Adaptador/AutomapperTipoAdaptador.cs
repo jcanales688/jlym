@@ -1,4 +1,5 @@
 using System;
+using AutoMapper;
 using PtoVta.Infraestructura.Transversales.Adaptador;
 
 namespace PtoVta.Infraestructura.TransversalesNET.Adaptador
