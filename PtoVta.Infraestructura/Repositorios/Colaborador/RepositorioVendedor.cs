@@ -17,16 +17,16 @@ namespace PtoVta.Infraestructura.Repositorios.Colaborador
             {
                 string cadenaSQL = @"SELECT	SALESPERNAME		AS NombresVendedor
                                             ,IDENTITYDOC		AS DocumentoIdentidad
-                                            ,SALESPERID			AS UsuarioVendedor
+                                            ,SALESPERID			AS CodigoVendedor
                                             ,PASSWORD			AS Clave
-                                            ,SITEID				AS AlmacenId
-                                            ,''					AS EstadoVendedorId
-                                            ,USERID				AS UsuarioSistemaId
-                                            ,ACCESSUSERID		AS UsuarioSistemaAccesoId
+                                            ,SITEID				AS CodigoAlmacen
+                                            ,''					AS CodigoEstadoVendedor
+                                            ,USERID				AS CodigoUsuarioSistema
+                                            ,ACCESSUSERID		AS CodigoUsuarioSistemaAcceso
                                     FROM	PC_OP_SALESPERSON  (NOLOCK)
                                     WHERE	SALESPERID	= @SALESPERID;
 
-                                    SELECT	USERID		AS UsuarioDeSistema
+                                    SELECT	USERID		AS CodigoUsuarioDeSistema
                                             ,EXPIRED	AS FechaExpiracion
                                             ,USERNAME	AS DescripcionUsuario
                                             ,PASSWORD	AS Contraseña

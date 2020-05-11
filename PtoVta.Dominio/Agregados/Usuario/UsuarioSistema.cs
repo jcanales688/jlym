@@ -7,8 +7,9 @@ namespace PtoVta.Dominio.Agregados.Usuario
     {
         bool _EsHabilitado;
 
+        public string CodigoUsuarioDeSistema { get; set; }
 
-        public string UsuarioDeSistema { get; set; }
+        // public string UsuarioDeSistema { get; set; }
         public DateTime FechaExpiracion { get; set; }
      
         public string DescripcionUsuario { get; set; }

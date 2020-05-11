@@ -8,7 +8,6 @@ namespace PtoVta.Dominio.Agregados.Modulo
     public class ModuloSistema:Entidad
     {
         HashSet<VentanaUsuario> _lineasVentanaUsuario;
-        VentanaUsuario _VentanaUsuario = null;
 
         bool _EsHabilitado;
  
@@ -62,16 +61,13 @@ namespace PtoVta.Dominio.Agregados.Modulo
 
 
 
-        public void CrearNuevaVentanaUsuario(
-            string pIdVentanaUsuario, string pNombreVentana, string pTipoVentana
-            //, Guid pModuloSistemaId
+        public VentanaUsuario AgregarNuevaVentanaUsuario(
+            string pCodigoVentanaUsuario, string pNombreVentana, string pTipoVentana
+             ,string  pCodigoModuloSistema
             )
         {
 
-            // var resultadoValidacion = new List<ValidationResult>();
-
-
-            if (String.IsNullOrWhiteSpace(pIdVentanaUsuario))
+            if (String.IsNullOrWhiteSpace(pCodigoVentanaUsuario))
                 throw new ArgumentNullException("Mensajes.validacion_IdVentanaNoPuedeSerNulo");
 
 
@@ -82,10 +78,11 @@ namespace PtoVta.Dominio.Agregados.Modulo
                 throw new ArgumentNullException("Mensajes.validacion_TipoDeVentanaNoPuedeSerNulo");
 
 
-            _VentanaUsuario = new VentanaUsuario()
+            var _VentanaUsuario = new VentanaUsuario()
             {
                 ModuloSistemaId = this.Id,
-                CodigoVentanaUsuario = pIdVentanaUsuario,
+                CodigoModuloSistema = pCodigoModuloSistema,
+                CodigoVentanaUsuario = pCodigoVentanaUsuario,
                 NombreVentana = pNombreVentana,
                 TipoVentana = pTipoVentana
             };
@@ -94,23 +91,26 @@ namespace PtoVta.Dominio.Agregados.Modulo
             //Establecer la identidad
             _VentanaUsuario.GenerarNuevaIdentidad();
 
-        }
-
-        public DerechoAccesoUsuario AgregarDerechoAccesoUsuario(
-                    int pDerechoConsultar, int pDerechoInsertar, int pDerechoActualizar,
-                    int pDerechoEliminar, int pDerechoImprimir, int pDerechoAnular, int pDerechoEmitir,
-                    Guid pUsuarioSistemaId
-            )
-        {
-            return _VentanaUsuario.AgregarNuevoDerechoAccesoUsuario(pDerechoConsultar, pDerechoInsertar, pDerechoActualizar,
-                                    pDerechoEliminar, pDerechoImprimir,pDerechoAnular, pDerechoEmitir, pUsuarioSistemaId);
-        }
-
-        public VentanaUsuario AgregarNuevaVentanaUsuario()
-        {
             this.VentanasUsuario.Add(_VentanaUsuario);
 
             return _VentanaUsuario;
-        }        
+        }
+
+        // public DerechoAccesoUsuario AgregarDerechoAccesoUsuario(
+        //             int pDerechoConsultar, int pDerechoInsertar, int pDerechoActualizar,
+        //             int pDerechoEliminar, int pDerechoImprimir, int pDerechoAnular, int pDerechoEmitir,
+        //             Guid pUsuarioSistemaId
+        //     )
+        // {
+        //     return _VentanaUsuario.AgregarNuevoDerechoAccesoUsuario(pDerechoConsultar, pDerechoInsertar, pDerechoActualizar,
+        //                             pDerechoEliminar, pDerechoImprimir,pDerechoAnular, pDerechoEmitir, pUsuarioSistemaId);
+        // }
+
+        // public VentanaUsuario AgregarNuevaVentanaUsuario()
+        // {
+        //     this.VentanasUsuario.Add(_VentanaUsuario);
+
+        //     return _VentanaUsuario;
+        // }        
     }
 }

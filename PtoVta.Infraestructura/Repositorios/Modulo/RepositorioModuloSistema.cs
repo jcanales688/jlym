@@ -27,7 +27,7 @@ namespace PtoVta.Infraestructura.Repositorios.Modulo
                                     SELECT	V.SCREENID		AS CodigoVentanaUsuario
                                             ,V.SCREENNAME	AS NombreVentana
                                             ,V.SCREENTYPE	AS TipoVentana
-                                            ,V.MODULEID		AS ModuloSistemaId
+                                            ,V.MODULEID		AS CodigoModuloSistema
                                     FROM	PC_SE_SCREEN (NOLOCK)	V
                                             INNER JOIN PC_SE_ACCESSDETRIGHTS (NOLOCK) D	ON V.SCREENID = D.SCREENID
                                     WHERE	V.MODULEID		= @MODULEID
@@ -40,8 +40,8 @@ namespace PtoVta.Infraestructura.Repositorios.Modulo
                                             ,D.PRINTRIGHTS		AS DerechoImprimir	
                                             ,D.NULLRIGHTS		AS DerechoAnular
                                             ,D.CLOSERIGHTS		AS DerechoEmitir	
-                                            ,D.SCREENID			AS VentanaUsuarioId
-                                            ,D.USERID			AS UsuarioSistemaId
+                                            ,D.SCREENID			AS CodigoVentanaUsuario
+                                            ,D.USERID			AS CodigoUsuarioSistema
                                     FROM	PC_SE_ACCESSDETRIGHTS (NOLOCK) D
                                     WHERE	LTRIM(RTRIM(D.SCREENID)) + LTRIM(RTRIM(D.USERID)) IN(SELECT	LTRIM(RTRIM(V.SCREENID)) + LTRIM(RTRIM(D.USERID))
                                                                                                 FROM	PC_SE_SCREEN (NOLOCK)	V
@@ -65,14 +65,28 @@ namespace PtoVta.Infraestructura.Repositorios.Modulo
             }
         }
 
-        private ModuloSistema MapeoModuloSistema(ModuloSistema pModuloSistema, List<VentanaUsuario> pVentanaUsuario
-                                                                ,List<DerechoAccesoUsuario> pDerechoAccesoUsuario)
+        private ModuloSistema MapeoModuloSistema(ModuloSistema pModuloSistema, List<VentanaUsuario> pVentanasUsuario
+                                                                ,List<DerechoAccesoUsuario> pDerechosAccesoUsuario)
         {
-            var vendedorBuscado = new Vendedor();
-            vendedorBuscado = pVendedor;
-            vendedorBuscado.EstablecerUsuarioSistemaAccesoDeVendedor(pUsuarioSistema);
+            var moduloDelSistema = new ModuloSistema();
+            moduloDelSistema = pModuloSistema;
 
-            return vendedorBuscado;
+            foreach (var ventana in pVentanasUsuario)
+            {
+                var nuevaVentana = moduloDelSistema
+                            .AgregarNuevaVentanaUsuario(ventana.CodigoVentanaUsuario, ventana.NombreVentana, 
+                                                    ventana.TipoVentana, moduloDelSistema.CodigoModuloSistema);
+                
+                var derechoAcceso = pDerechosAccesoUsuario
+                        .SingleOrDefault(w => w.CodigoVentanaUsuario == ventana.CodigoVentanaUsuario);
+                
+                nuevaVentana.AgregarNuevoDerechoAccesoUsuario(derechoAcceso.DerechoConsultar, derechoAcceso.DerechoInsertar,
+                                derechoAcceso.DerechoActualizar, derechoAcceso.DerechoImprimir,
+                                derechoAcceso.DerechoImprimir, derechoAcceso.DerechoAnular,
+                                derechoAcceso.DerechoEmitir, derechoAcceso.CodigoUsuarioSistema);             
+            }
+
+            return moduloDelSistema;
         }         
         
     }

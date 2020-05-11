@@ -12,7 +12,7 @@ namespace PtoVta.Dominio.Agregados.Usuario
 
             usuarioSistema.GenerarNuevaIdentidad();
 
-            usuarioSistema.UsuarioDeSistema = pUsuarioDeSistema;
+            usuarioSistema.CodigoUsuarioDeSistema = pUsuarioDeSistema;
             usuarioSistema.FechaExpiracion = pFechaExpiracion;
             //usuarioSistema.EstadoUsuario = pEstadoUsuario;
             usuarioSistema.DescripcionUsuario = pDescripcionUsuario;

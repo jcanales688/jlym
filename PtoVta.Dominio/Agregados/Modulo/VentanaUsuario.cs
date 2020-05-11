@@ -11,6 +11,8 @@ namespace PtoVta.Dominio.Agregados.Modulo
         public string CodigoVentanaUsuario { get; set; }
         public string NombreVentana { get; set; }
         public string TipoVentana { get; set; }
+
+        public string CodigoModuloSistema{get; set;}
         public Guid ModuloSistemaId { get; set; }
 
 
@@ -31,13 +33,15 @@ namespace PtoVta.Dominio.Agregados.Modulo
 
         }
 
+
+
         public DerechoAccesoUsuario AgregarNuevoDerechoAccesoUsuario(
             int pDerechoConsultar, int pDerechoInsertar, int pDerechoActualizar,
             int pDerechoEliminar, int pDerechoImprimir, int pDerechoAnular, int pDerechoEmitir,
-            Guid pUsuarioSistemaId)
+            string pCodigoUsuarioSistema)
         {
 
-            if (pUsuarioSistemaId == Guid.Empty
+            if (!string.IsNullOrEmpty(pCodigoUsuarioSistema)
                
                     ||
 
@@ -63,8 +67,8 @@ namespace PtoVta.Dominio.Agregados.Modulo
 
             var nuevaLineaDerechoAccesoUsuario = new DerechoAccesoUsuario()
             {
-                VentanaUsuarioId = this.Id,
-                UsuarioSistemaId = pUsuarioSistemaId,
+                CodigoVentanaUsuario = this.CodigoVentanaUsuario,
+                CodigoUsuarioSistema = pCodigoUsuarioSistema,
                 DerechoConsultar = pDerechoConsultar,
                 DerechoInsertar = pDerechoInsertar,
                 DerechoActualizar = pDerechoActualizar,

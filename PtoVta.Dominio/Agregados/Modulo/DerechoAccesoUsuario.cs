@@ -15,9 +15,11 @@ namespace PtoVta.Dominio.Agregados.Modulo
         public int DerechoAnular { get; set; }
         public int DerechoEmitir { get; set; }
 
-        public Guid VentanaUsuarioId { get; set; }
+        public string CodigoVentanaUsuario { get;  set; }
+        // public Guid VentanaUsuarioId { get; set; }
 
-        public Guid UsuarioSistemaId { get; set; }
+        public string CodigoUsuarioSistema { get; set; }
+        // public Guid UsuarioSistemaId { get; set; }
 
 
         public UsuarioSistema UsuarioSistema { get; private set; }
@@ -34,16 +36,16 @@ namespace PtoVta.Dominio.Agregados.Modulo
             }
 
             //relacion
-            this.UsuarioSistemaId = pUsuarioSistema.Id;
+            this.CodigoUsuarioSistema = pUsuarioSistema.CodigoUsuarioDeSistema;
             this.UsuarioSistema = pUsuarioSistema;
         }
 
-        public void EstablecerReferenciaUsuarioSistemaDeDerechoAccesoUsuario(Guid pUsuarioSistemaId)
+        public void EstablecerReferenciaUsuarioSistemaDeDerechoAccesoUsuario(string pCodigoUsuarioSistema)
         {
-            if (pUsuarioSistemaId != Guid.Empty)
+            if (!string.IsNullOrEmpty(pCodigoUsuarioSistema))
             {
                 //relacion 
-                this.UsuarioSistemaId = pUsuarioSistemaId;
+                this.CodigoUsuarioSistema = pCodigoUsuarioSistema;
                 this.UsuarioSistema = null;
             }
         }

@@ -9,13 +9,11 @@ namespace PtoVta.Dominio.Agregados.Colaborador
         bool _EsHabilitado;
 
 
-
+        public string CodigoVendedor { get; set; }
 
         public string NombresVendedor { get; set; }
         public string DocumentoIdentidad { get; set; }
      
-
-        public string UsuarioVendedor { get; set; }
         public string Clave { get; set; }
 
 
@@ -35,11 +33,14 @@ namespace PtoVta.Dominio.Agregados.Colaborador
 
 
 
-
-        public Guid AlmacenId { get; private set; }
-        public Guid EstadoVendedorId { get;private set; }
-        public Guid UsuarioSistemaId { get;private set; }
-        public Guid UsuarioSistemaAccesoId { get; private set; }
+        public string CodigoAlmacen{ get; private set; }
+        // public Guid AlmacenId { get; private set; }
+        public string CodigoEstadoVendedor{ get; private set; }
+        // public Guid EstadoVendedorId { get;private set; }
+        public string CodigoUsuarioSistema { get;private set; }
+        // public Guid UsuarioSistemaId { get;private set; }
+        public string CodigoUsuarioSistemaAcceso { get; private set; }
+        // public Guid UsuarioSistemaAccesoId { get; private set; }
 
         //public virtual Almacen Almacen  { get; private set; }
         public virtual EstadoVendedor EstadoVendedor { get; private  set; }
@@ -78,16 +79,16 @@ namespace PtoVta.Dominio.Agregados.Colaborador
             }
 
             //relacion
-            this.EstadoVendedorId = pEstadoVendedor.Id;
+            this.CodigoEstadoVendedor = pEstadoVendedor.CodigoEstadoVendedor;
             this.EstadoVendedor = pEstadoVendedor;
         }
 
-        public void EstablecerReferenciaEstadoVendedorDeVendedor(Guid pEstadoVendedorId)
+        public void EstablecerReferenciaEstadoVendedorDeVendedor(string pCodigoEstadoVendedor)
         {
-            if (pEstadoVendedorId != Guid.Empty)
+            if (!string.IsNullOrEmpty(pCodigoEstadoVendedor))
             {
                 //relacion
-                this.EstadoVendedorId = pEstadoVendedorId;
+                this.CodigoEstadoVendedor = pCodigoEstadoVendedor;
                 this.EstadoVendedor = null;
             }
         }
@@ -105,16 +106,16 @@ namespace PtoVta.Dominio.Agregados.Colaborador
             }
 
             //relacion
-            this.UsuarioSistemaAccesoId = pUsuarioSistemaAcceso.Id;
+            this.CodigoUsuarioSistemaAcceso = pUsuarioSistemaAcceso.CodigoUsuarioDeSistema;
             this.UsuarioSistemaAcceso = pUsuarioSistemaAcceso;
         }
 
-        public void EstablecerReferenciaUsuarioSistemaAccesoDeVendedor(Guid pUsuarioSistemaAccesoId)
+        public void EstablecerReferenciaUsuarioSistemaAccesoDeVendedor(string pCodigoUsuarioSistemaAcceso)
         {
-            if (pUsuarioSistemaAccesoId != Guid.Empty)
+            if (!string.IsNullOrEmpty(pCodigoUsuarioSistemaAcceso))
             {
                 //relacion
-                this.UsuarioSistemaAccesoId = pUsuarioSistemaAccesoId;
+                this.CodigoUsuarioSistemaAcceso = pCodigoUsuarioSistemaAcceso;
                 this.UsuarioSistemaAcceso = null;
             }
         }        
