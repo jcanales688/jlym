@@ -4,7 +4,7 @@ using PtoVta.Aplicacion.DTO.Modulo;
 using PtoVta.Dominio.Agregados.Colaborador;
 using PtoVta.Dominio.Agregados.Modulo;
 using PtoVta.Dominio.Agregados.Usuario;
-using PtoVta.Dominio.BaseTrabajo.Validaciones;
+using PtoVta.Infraestructura.Transversales.Autenticacion;
 using PtoVta.Infraestructura.Transversales.Log;
 
 namespace PtoVta.Aplicacion.GestionUsuario
@@ -15,7 +15,7 @@ namespace PtoVta.Aplicacion.GestionUsuario
         private IRepositorioUsuarioSistema _IRepositorioUsuarioSistema;      
         private IRepositorioVendedor _IRepositorioVendedor;
 
-        private IValidadorInicioSesion _IValidadorInicioSesion;
+        private IAutenticacion _IAutenticacion;
         private IServicioDominioValidarUsuarioSistema _IServicioDominioValidarUsuarioSistema;
         private IServicioDominioValidarUsuarioVendedor _IServicioDominioValidarUsuarioVendedor;        
 
@@ -24,7 +24,7 @@ namespace PtoVta.Aplicacion.GestionUsuario
                                         IRepositorioUsuarioSistema pIRepositorioUsuarioSistema,
                                         IRepositorioVendedor pIRepositorioVendedor,
 
-                                        IValidadorInicioSesion pIValidadorInicioSesion,                                        
+                                        IAutenticacion pIAutenticacion,                                        
                                         IServicioDominioValidarUsuarioSistema pIServicioDominioValidarUsuarioSistema,
                                         IServicioDominioValidarUsuarioVendedor pIServicioDominioValidarUsuarioVendedor
 
@@ -40,7 +40,7 @@ namespace PtoVta.Aplicacion.GestionUsuario
             if (pIRepositorioVendedor == null)
                 throw new ArgumentNullException("Mensajes.excepcion_IRepositorioVendedorNuloEnServicioAplicacionInicioSession");
 
-            if (pIValidadorInicioSesion == null)
+            if (pIAutenticacion == null)
                 throw new ArgumentNullException("Mensajes.excepcion_IValidadorInicioSesionNuloEnServicioAplicacionInicioSession");
 
             if (pIServicioDominioValidarUsuarioSistema == null)
@@ -54,7 +54,7 @@ namespace PtoVta.Aplicacion.GestionUsuario
             _IRepositorioUsuarioSistema = pIRepositorioUsuarioSistema;
             _IRepositorioVendedor = pIRepositorioVendedor;
 
-            _IValidadorInicioSesion = pIValidadorInicioSesion;
+            _IAutenticacion = pIAutenticacion;
             _IServicioDominioValidarUsuarioSistema = pIServicioDominioValidarUsuarioSistema;
             _IServicioDominioValidarUsuarioVendedor = pIServicioDominioValidarUsuarioVendedor;
                 
@@ -116,7 +116,7 @@ namespace PtoVta.Aplicacion.GestionUsuario
 
             //Validamos usuario en el dominio (PENDIENTE de implementar de una manera orientada a objetos), ej. Active Directory
             if (esUsuarioSistemaAccesoValido)
-                esInicioSesionValido = _IValidadorInicioSesion.ValidarInicioSesion(string.Empty, string.Empty);
+                esInicioSesionValido = _IAutenticacion.ValidarInicioSesion(string.Empty, string.Empty);
 
 
             //Devolucion
@@ -141,7 +141,7 @@ namespace PtoVta.Aplicacion.GestionUsuario
             _IRepositorioUsuarioSistema.Dispose();
             _IRepositorioVendedor.Dispose();
 
-            _IValidadorInicioSesion.Dispose();
+            _IAutenticacion.Dispose();
             //_IServicioDominioValidarUsuarioSistema.Dispose();
             //_IServicioDominioValidarUsuarioVendedor.Dispose();
         }        

@@ -5,7 +5,7 @@ namespace PtoVta.Aplicacion.DTO.Modulo
 {
     public class ModuloSistemaDTO
     {
-        public Guid Id { get; set; }
+        // public Guid Id { get; set; }
 
         public string CodigoModuloSistema { get; set; }
         public string NombreModulo { get; set; }

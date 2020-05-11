@@ -4,7 +4,8 @@ namespace PtoVta.Aplicacion.DTO.Usuario
 {
     public class UsuarioSistemaDTO
     {
-        public Guid Id { get; set; }
+        // public Guid Id { get; set; }
+        public string CodigoUsuarioDeSistema { get; set; }
 
         public string UsuarioDeSistema { get; set; }
         public DateTime FechaExpiracion { get; set; }

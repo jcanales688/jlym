@@ -5,8 +5,9 @@ namespace PtoVta.Aplicacion.DTO.Modulo
 {
     public class VentanaUsuarioDTO
     {
-        public Guid Id { get; set; }
+        // public Guid Id { get; set; }
 
+        
         public string CodigoVentanaUsuario { get; set; }
         public string NombreVentana { get; set; }
         public string TipoVentana { get; set; }

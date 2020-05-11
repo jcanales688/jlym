@@ -4,7 +4,7 @@ namespace PtoVta.Aplicacion.DTO.Modulo
 {
     public class DerechoAccesoUsuarioDTO
     {
-        public Guid Id { get; set; }
+        // public Guid Id { get; set; }
 
         public int DerechoConsultar { get; set; }
         public int DerechoInsertar { get; set; }
@@ -14,8 +14,10 @@ namespace PtoVta.Aplicacion.DTO.Modulo
         public int DerechoAnular { get; set; }
         public int DerechoEmitir { get; set; }
 
-
-        public Guid UsuarioSistemaId { get; set; }
+        public string CodigoVentanaUsuario { get;  set; }
+        public string CodigoUsuarioSistema { get;  set; }
+        // public Guid UsuarioSistemaId { get; set; }
+        
         public string UsuarioSistemaUsuarioDeSistema { get; set; }        
     }
 }

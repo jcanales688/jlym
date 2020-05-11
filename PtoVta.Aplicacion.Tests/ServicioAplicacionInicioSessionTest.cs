@@ -1,4 +1,14 @@
 using System;
+using PtoVta.Aplicacion.DTO.Modulo;
+using PtoVta.Aplicacion.GestionUsuario;
+using PtoVta.Dominio.Agregados.Colaborador;
+using PtoVta.Dominio.Agregados.Modulo;
+using PtoVta.Dominio.Agregados.Usuario;
+using PtoVta.Infraestructura.Repositorios.Colaborador;
+using PtoVta.Infraestructura.Repositorios.Modulo;
+using PtoVta.Infraestructura.Repositorios.Usuario;
+using PtoVta.Infraestructura.Transversales.Autenticacion;
+using PtoVta.Infraestructura.TransversalesNET.Autenticacion;
 using Xunit;
 
 namespace PtoVta.Aplicacion.Tests
@@ -9,7 +19,7 @@ namespace PtoVta.Aplicacion.Tests
         private IRepositorioUsuarioSistema _IRepositorioUsuarioSistema;      
         private IRepositorioVendedor _IRepositorioVendedor;
 
-        private IValidadorInicioSesion _IValidadorInicioSesion;
+        private IAutenticacion _IAutenticacion;
         private IServicioDominioValidarUsuarioSistema _IServicioDominioValidarUsuarioSistema;
         private IServicioDominioValidarUsuarioVendedor _IServicioDominioValidarUsuarioVendedor; 
         private IServicioAplicacionInicioSession _IServicioAplicacionInicioSession; 
@@ -19,7 +29,7 @@ namespace PtoVta.Aplicacion.Tests
             _IRepositorioUsuarioSistema = new RepositorioUsuarioSistema();      
             _IRepositorioVendedor = new RepositorioVendedor();
 
-            _IValidadorInicioSesion = new ValidadorInicioSesion();
+            _IAutenticacion = new AutenticacionWindows();
             _IServicioDominioValidarUsuarioSistema = new ServicioDominioValidarUsuarioSistema();
             _IServicioDominioValidarUsuarioVendedor = new ServicioDominioValidarUsuarioVendedor();  
 
@@ -28,7 +38,7 @@ namespace PtoVta.Aplicacion.Tests
                                         _IRepositorioUsuarioSistema,
                                         _IRepositorioVendedor,
 
-                                        _IValidadorInicioSesion,                                        
+                                        _IAutenticacion,                                        
                                         _IServicioDominioValidarUsuarioSistema,
                                         _IServicioDominioValidarUsuarioVendedor
             );
@@ -37,7 +47,10 @@ namespace PtoVta.Aplicacion.Tests
         [Fact]
         public void GestionInicioSesion_Test() 
         {
+            ModuloSistemaDTO moduloSistema = _IServicioAplicacionInicioSession
+                            .GestionInicioSesion("71242616", "7('HI,,-", "OP");
 
+            Assert.False(moduloSistema == null);
         }
     }
 }
