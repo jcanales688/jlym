@@ -1944,7 +1944,6 @@
   },
   "projectFileDependencyGroups": {
     ".NETStandard,Version=v2.0": [
-      "Dapper >= 1.60.6",
       "NETStandard.Library >= 2.0.3",
       "PtoVta.Dominio >= 1.0.0",
       "PtoVta.Infraestructura >= 1.0.0"
@@ -1992,10 +1991,6 @@
     "frameworks": {
       "netstandard2.0": {
         "dependencies": {
-          "Dapper": {
-            "target": "Package",
-            "version": "[1.60.6, )"
-          },
           "NETStandard.Library": {
             "suppressParent": "All",
             "target": "Package",

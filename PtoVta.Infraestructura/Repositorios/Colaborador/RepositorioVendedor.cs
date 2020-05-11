@@ -23,6 +23,7 @@ namespace PtoVta.Infraestructura.Repositorios.Colaborador
                                             ,''					AS CodigoEstadoVendedor
                                             ,USERID				AS CodigoUsuarioSistema
                                             ,ACCESSUSERID		AS CodigoUsuarioSistemaAcceso
+                                            ,CASE STATUSPERSONID WHEN '01' THEN 1 ELSE 0 END AS EsHabilitado
                                     FROM	PC_OP_SALESPERSON  (NOLOCK)
                                     WHERE	SALESPERID	= @SALESPERID;
 
@@ -37,6 +38,7 @@ namespace PtoVta.Infraestructura.Repositorios.Colaborador
                                             ,EXPIRED	AS FechaExpiracion
                                             ,USERNAME	AS DescripcionUsuario
                                             ,PASSWORD	AS Contraseña
+                                            ,STATUS     AS EsHabilitado
                                     FROM	PC_SE_USERREC (NOLOCK)
                                     WHERE	USERID	IN ( SELECT	ACCESSUSERID		
                                                         FROM	PC_OP_SALESPERSON

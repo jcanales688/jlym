@@ -9,7 +9,6 @@
     ".NETStandard,Version=v2.0/": {
       "PtoVta.Aplicacion/1.0.0": {
         "dependencies": {
-          "Dapper": "1.60.6",
           "NETStandard.Library": "2.0.3",
           "PtoVta.Dominio": "1.0.0",
           "PtoVta.Infraestructura": "1.0.0"

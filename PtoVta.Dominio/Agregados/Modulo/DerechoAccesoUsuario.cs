@@ -29,9 +29,9 @@ namespace PtoVta.Dominio.Agregados.Modulo
         //Usuario
         public void EstablecerUsuarioSistemaDeDerechoAccesoUsuario(UsuarioSistema pUsuarioSistema)
         {
-            if (pUsuarioSistema == null || pUsuarioSistema.EsTransitorio())
+            if (pUsuarioSistema == null)
             {
-                throw new ArgumentException("Mensajes.excepcion_NoSePuedeAsociarUsuarioSistemaTransitorioONulo");
+                throw new ArgumentException("No Se Puede Asociar UsuarioSistema Transitorio O Nulo");
 
             }
 

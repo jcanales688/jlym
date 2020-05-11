@@ -59,7 +59,7 @@ namespace PtoVta.Dominio.Agregados.Modulo
                         pDerechoEmitir == 0
                     )
                 )
-                throw new ArgumentException("Mensajes.excepcion_DatosNoValidosParaLineaDerechoAccesoUsuario");
+                throw new ArgumentException("Datos No Validos Para Linea DerechoAccesoUsuario");
 
 
 

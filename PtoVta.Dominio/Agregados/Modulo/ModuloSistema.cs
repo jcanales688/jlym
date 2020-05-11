@@ -68,14 +68,14 @@ namespace PtoVta.Dominio.Agregados.Modulo
         {
 
             if (String.IsNullOrWhiteSpace(pCodigoVentanaUsuario))
-                throw new ArgumentNullException("Mensajes.validacion_IdVentanaNoPuedeSerNulo");
+                throw new ArgumentNullException("Codigo Ventana No Puede Ser Nulo");
 
 
             if (String.IsNullOrWhiteSpace(pNombreVentana))
-                throw new ArgumentNullException("Mensajes.validacion_NombreVentanaNoPuedeSerNulo");
+                throw new ArgumentNullException("Nombre Ventana No Puede Ser Nulo");
 
             if (String.IsNullOrWhiteSpace(pTipoVentana))
-                throw new ArgumentNullException("Mensajes.validacion_TipoDeVentanaNoPuedeSerNulo");
+                throw new ArgumentNullException("Tipo De Ventana No Puede Ser Nulo");
 
 
             var _VentanaUsuario = new VentanaUsuario()

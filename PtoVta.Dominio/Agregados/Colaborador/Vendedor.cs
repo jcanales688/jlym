@@ -72,9 +72,9 @@ namespace PtoVta.Dominio.Agregados.Colaborador
         //EstadoVendedor
         public void EstablecerEstadoVendedorDeVendedor(EstadoVendedor pEstadoVendedor)
         {
-            if (pEstadoVendedor == null || pEstadoVendedor.EsTransitorio())
+            if (pEstadoVendedor == null)
             {
-                throw new ArgumentException("Mensajes.excepcion_EstadoVendedorDeVendedorEnEstadoNuloOTransitorio");
+                throw new ArgumentException("Estado Vendedor De Vendedor En Estado Nulo O Transitorio");
 
             }
 
@@ -101,7 +101,7 @@ namespace PtoVta.Dominio.Agregados.Colaborador
         {
             if (pUsuarioSistemaAcceso == null)
             {
-                throw new ArgumentException("Mensajes.excepcion_UsuarioSistemaAccesoDeVendedorEnEstadoNuloOTransitorio");
+                throw new ArgumentException("Usuario Sistema Acceso De Vendedor En Estado Nulo O Transitorio");
 
             }
 
