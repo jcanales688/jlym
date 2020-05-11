@@ -5,6 +5,6 @@ namespace PtoVta.Aplicacion.GestionUsuario
 {
     public interface IServicioAplicacionInicioSession : IDisposable
     {
-        ModuloSistemaDTO GestionInicioSesion(string pUsuario, string pClave, Guid pModuloSistemaId);        
+        ModuloSistemaDTO GestionInicioSesion(string pUsuario, string pClave, string pCodigoModuloSistema);        
     }
 }

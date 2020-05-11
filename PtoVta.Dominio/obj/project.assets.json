@@ -185,11 +185,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\PtoVtaMovil\\PtoVta.Dominio\\PtoVta.Dominio\\PtoVta.Dominio.csproj",
+      "projectUniqueName": "C:\\PtoVtaMovil\\jlym\\PtoVta.Dominio\\PtoVta.Dominio.csproj",
       "projectName": "PtoVta.Dominio",
-      "projectPath": "C:\\PtoVtaMovil\\PtoVta.Dominio\\PtoVta.Dominio\\PtoVta.Dominio.csproj",
+      "projectPath": "C:\\PtoVtaMovil\\jlym\\PtoVta.Dominio\\PtoVta.Dominio.csproj",
       "packagesPath": "C:\\Users\\Gato 1\\.nuget\\packages\\",
-      "outputPath": "C:\\PtoVtaMovil\\PtoVta.Dominio\\PtoVta.Dominio\\obj\\",
+      "outputPath": "C:\\PtoVtaMovil\\jlym\\PtoVta.Dominio\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\Gato 1\\AppData\\Roaming\\NuGet\\NuGet.Config"

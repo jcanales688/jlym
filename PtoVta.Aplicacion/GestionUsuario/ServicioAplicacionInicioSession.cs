@@ -60,7 +60,7 @@ namespace PtoVta.Aplicacion.GestionUsuario
                 
         }
 
-        public ModuloSistemaDTO GestionInicioSesion(string pUsuario, string pClave, Guid pModuloSistemaId)
+        public ModuloSistemaDTO GestionInicioSesion(string pUsuario, string pClave, string pCodigoModuloSistema)
         {
             UsuarioSistema usuarioSistemaAcceso;
             ModuloSistema accesosModuloSistema = null;
@@ -101,7 +101,7 @@ namespace PtoVta.Aplicacion.GestionUsuario
             {
                 //Obtenemos privilegios del usuario
                 accesosModuloSistema = _IRepositorioModuloSistema
-                                                .ObtenerDerechosAccesosUsuario(usuarioSistemaAcceso.Id, pModuloSistemaId);
+                    .ObtenerDerechosAccesosUsuario(usuarioSistemaAcceso.CodigoUsuarioDeSistema, pCodigoModuloSistema);
 
                 esUsuarioSistemaAccesoValido = _IServicioDominioValidarUsuarioSistema
                                                 .ValidarUsuarioSistema(usuarioSistemaAcceso, accesosModuloSistema, pClave);

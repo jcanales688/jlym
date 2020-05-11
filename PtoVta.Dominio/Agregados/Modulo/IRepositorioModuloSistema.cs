@@ -5,6 +5,6 @@ namespace PtoVta.Dominio.Agregados.Modulo
 {
     public interface IRepositorioModuloSistema: IRepositorio<ModuloSistema>
     {
-        ModuloSistema ObtenerDerechosAccesosUsuario(Guid pUsuarioSistemaId, Guid pModuloSistemaId);        
+        ModuloSistema ObtenerDerechosAccesosUsuario(string pCodigoUsuarioSistema, string pCodigoModuloSistema);        
     }
 }

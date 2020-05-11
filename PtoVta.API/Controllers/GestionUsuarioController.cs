@@ -22,15 +22,16 @@ namespace PtoVta.API.Controllers
         }
 
 
-        [Route("autenticacionUsuario/{pUsuario}/{pClave}/{pModuloSistemaId}")]
+        [Route("autenticacionUsuario/{pUsuario}/{pClave}/{pCodigoModuloSistema}")]
         [HttpGet]        
         [ProducesResponseType(typeof(ModuloSistemaDTO), (int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
-        public IActionResult AutenticacionUsuario(string pUsuario, string pClave, Guid pModuloSistemaId)
+        public IActionResult AutenticacionUsuario(string pUsuario, string pClave, string pCodigoModuloSistema)
         {
             try
             {            
-                var autenticacionUsuario = _IServicioAplicacionInicioSession.GestionInicioSesion(pUsuario, pClave, pModuloSistemaId);
+                var autenticacionUsuario = _IServicioAplicacionInicioSession
+                            .GestionInicioSesion(pUsuario, pClave, pCodigoModuloSistema);
 
                 if (autenticacionUsuario == null)
                 {

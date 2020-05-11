@@ -1,0 +1,12 @@
+C:\PtoVtaMovil\jlym\PtoVta.Infraestructura\bin\Debug\netstandard2.0\PtoVta.Infraestructura.deps.json
+C:\PtoVtaMovil\jlym\PtoVta.Infraestructura\bin\Debug\netstandard2.0\PtoVta.Infraestructura.dll
+C:\PtoVtaMovil\jlym\PtoVta.Infraestructura\bin\Debug\netstandard2.0\PtoVta.Infraestructura.pdb
+C:\PtoVtaMovil\jlym\PtoVta.Infraestructura\bin\Debug\netstandard2.0\PtoVta.Dominio.dll
+C:\PtoVtaMovil\jlym\PtoVta.Infraestructura\bin\Debug\netstandard2.0\PtoVta.Dominio.pdb
+C:\PtoVtaMovil\jlym\PtoVta.Infraestructura\obj\Debug\netstandard2.0\PtoVta.Infraestructura.csprojAssemblyReference.cache
+C:\PtoVtaMovil\jlym\PtoVta.Infraestructura\obj\Debug\netstandard2.0\PtoVta.Infraestructura.csproj.CoreCompileInputs.cache
+C:\PtoVtaMovil\jlym\PtoVta.Infraestructura\obj\Debug\netstandard2.0\PtoVta.Infraestructura.AssemblyInfoInputs.cache
+C:\PtoVtaMovil\jlym\PtoVta.Infraestructura\obj\Debug\netstandard2.0\PtoVta.Infraestructura.AssemblyInfo.cs
+C:\PtoVtaMovil\jlym\PtoVta.Infraestructura\obj\Debug\netstandard2.0\PtoVta.Infraestructura.csproj.CopyComplete
+C:\PtoVtaMovil\jlym\PtoVta.Infraestructura\obj\Debug\netstandard2.0\PtoVta.Infraestructura.dll
+C:\PtoVtaMovil\jlym\PtoVta.Infraestructura\obj\Debug\netstandard2.0\PtoVta.Infraestructura.pdb

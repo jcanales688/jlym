@@ -15,7 +15,7 @@ namespace PtoVta.Infraestructura.Repositorios.Modulo
 
         } 
 
-        public ModuloSistema ObtenerDerechosAccesosUsuario(Guid pUsuarioSistemaId, Guid pModuloSistemaId)
+        public ModuloSistema ObtenerDerechosAccesosUsuario(string pCodigoUsuarioSistema, string pCodigoModuloSistema)
         {
           using (IDbConnection cn = new SqlConnection(this.CadenaConexion))
             {
@@ -31,7 +31,7 @@ namespace PtoVta.Infraestructura.Repositorios.Modulo
                                     FROM	PC_SE_SCREEN (NOLOCK)	V
                                             INNER JOIN PC_SE_ACCESSDETRIGHTS (NOLOCK) D	ON V.SCREENID = D.SCREENID
                                     WHERE	V.MODULEID		= @MODULEID
-                                            AND D.USERID	= @USERID;
+                                                AND D.USERID	        = @USERID;
                                                                                         
                                     SELECT	D.VIEWRIGHTS		AS DerechoConsultar
                                             ,D.INSERTRIGHTS		AS DerechoInsertar
@@ -47,10 +47,10 @@ namespace PtoVta.Infraestructura.Repositorios.Modulo
                                                                                                 FROM	PC_SE_SCREEN (NOLOCK)	V
                                                                                                         INNER JOIN PC_SE_ACCESSDETRIGHTS (NOLOCK) D	ON V.SCREENID = D.SCREENID
                                                                                                 WHERE	V.MODULEID		= @MODULEID
-                                                                                                        AND D.USERID	= @USERID)";
+                                                                                                        AND D.USERID            = @USERID)";
 
                 var resultado = cn.QueryMultiple(cadenaSQL,
-                                    new { MODULEID = pModuloSistemaId, USERID = pUsuarioSistemaId});
+                                    new { MODULEID = pCodigoModuloSistema, USERID = pCodigoUsuarioSistema});
 
                 var moduloSistema = resultado.Read<ModuloSistema>().FirstOrDefault();                                    
                 var ventanasAsociadas = resultado.Read<VentanaUsuario>().ToList();                                    

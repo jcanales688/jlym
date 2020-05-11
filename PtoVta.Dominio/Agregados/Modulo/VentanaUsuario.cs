@@ -30,9 +30,7 @@ namespace PtoVta.Dominio.Agregados.Modulo
             {
                 _lineasDerechoAccesoUsuario = new HashSet<DerechoAccesoUsuario>(value);
             }
-
         }
-
 
 
         public DerechoAccesoUsuario AgregarNuevoDerechoAccesoUsuario(
@@ -41,7 +39,7 @@ namespace PtoVta.Dominio.Agregados.Modulo
             string pCodigoUsuarioSistema)
         {
 
-            if (!string.IsNullOrEmpty(pCodigoUsuarioSistema)
+            if (string.IsNullOrEmpty(pCodigoUsuarioSistema)
                
                     ||
 

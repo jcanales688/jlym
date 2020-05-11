@@ -1,0 +1,9 @@
+C:\PtoVtaMovil\jlym\PtoVta.Dominio\bin\Debug\netstandard2.0\PtoVta.Dominio.deps.json
+C:\PtoVtaMovil\jlym\PtoVta.Dominio\bin\Debug\netstandard2.0\PtoVta.Dominio.dll
+C:\PtoVtaMovil\jlym\PtoVta.Dominio\bin\Debug\netstandard2.0\PtoVta.Dominio.pdb
+C:\PtoVtaMovil\jlym\PtoVta.Dominio\obj\Debug\netstandard2.0\PtoVta.Dominio.csprojAssemblyReference.cache
+C:\PtoVtaMovil\jlym\PtoVta.Dominio\obj\Debug\netstandard2.0\PtoVta.Dominio.csproj.CoreCompileInputs.cache
+C:\PtoVtaMovil\jlym\PtoVta.Dominio\obj\Debug\netstandard2.0\PtoVta.Dominio.AssemblyInfoInputs.cache
+C:\PtoVtaMovil\jlym\PtoVta.Dominio\obj\Debug\netstandard2.0\PtoVta.Dominio.AssemblyInfo.cs
+C:\PtoVtaMovil\jlym\PtoVta.Dominio\obj\Debug\netstandard2.0\PtoVta.Dominio.dll
+C:\PtoVtaMovil\jlym\PtoVta.Dominio\obj\Debug\netstandard2.0\PtoVta.Dominio.pdb
