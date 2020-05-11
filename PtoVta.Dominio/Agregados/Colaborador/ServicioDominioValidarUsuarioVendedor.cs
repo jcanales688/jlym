@@ -11,11 +11,11 @@ namespace PtoVta.Dominio.Agregados.Colaborador
             if (pVendedor == null)
             {
                 //Usuario No Existe 
-                throw new InvalidOperationException("Mensajes.validacion_VendedorNoExisteEnServicioDominioValidarUsuarioVendedor");
+                throw new InvalidOperationException("Vendedor No Existe En ServicioDominioValidarUsuarioVendedor");
 
             }
 
-            if (pVendedor.Clave != pClave)
+            if (pVendedor.Clave.Trim() != pClave.Trim())
             {
                 //Clave Incorrecta
                 throw new InvalidOperationException("Mensajes.validacion_ClaveIncorrectaEnServicioDominioValidarUsuarioVendedor");

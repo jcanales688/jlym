@@ -26,6 +26,13 @@ namespace PtoVta.Infraestructura.Repositorios.Colaborador
                                     FROM	PC_OP_SALESPERSON  (NOLOCK)
                                     WHERE	SALESPERID	= @SALESPERID;
 
+                                    SELECT	STATUSPERSONID		AS CodigoEstadoVendedor
+                                            ,DESCRSTATUSPERSON	AS DescripcionEstadoVendedor
+                                    FROM	PC_OP_STATUSPERSON (NOLOCK)
+                                    WHERE	STATUSPERSONID	IN (SELECT	STATUSPERSONID
+                                                                FROM	PC_OP_SALESPERSON (NOLOCK)
+                                                                WHERE	SALESPERID	= @SALESPERID);                                    
+
                                     SELECT	USERID		AS CodigoUsuarioDeSistema
                                             ,EXPIRED	AS FechaExpiracion
                                             ,USERNAME	AS DescripcionUsuario
@@ -38,11 +45,12 @@ namespace PtoVta.Infraestructura.Repositorios.Colaborador
                 var resultado = cn.QueryMultiple(cadenaSQL,
                                     new { SALESPERID = pUsuarioVendedor});
 
-                var vendedor = resultado.Read<Vendedor>().FirstOrDefault();                                    
+                var vendedor = resultado.Read<Vendedor>().FirstOrDefault();                        
+                var estadoVendedor = resultado.Read<EstadoVendedor>().FirstOrDefault();                        
                 var usuarioSistemaAsociado = resultado.Read<UsuarioSistema>().FirstOrDefault();                                    
                 if (vendedor != null)
                 {
-                    return MapeoVendedor(vendedor, usuarioSistemaAsociado);
+                    return MapeoVendedor(vendedor, estadoVendedor,usuarioSistemaAsociado);
                 }
                 else
                     return null;
@@ -50,10 +58,11 @@ namespace PtoVta.Infraestructura.Repositorios.Colaborador
             }
         }
 
-        private Vendedor MapeoVendedor(Vendedor pVendedor, UsuarioSistema pUsuarioSistema)
+        private Vendedor MapeoVendedor(Vendedor pVendedor, EstadoVendedor pEstadoVendedor, UsuarioSistema pUsuarioSistema)
         {
             var vendedorBuscado = new Vendedor();
             vendedorBuscado = pVendedor;
+            vendedorBuscado.EstablecerEstadoVendedorDeVendedor(pEstadoVendedor);
             vendedorBuscado.EstablecerUsuarioSistemaAccesoDeVendedor(pUsuarioSistema);
 
             return vendedorBuscado;

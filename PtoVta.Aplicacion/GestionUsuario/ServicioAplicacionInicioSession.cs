@@ -32,22 +32,22 @@ namespace PtoVta.Aplicacion.GestionUsuario
         {
 
             if (pIRepositorioModuloSistema == null)
-                throw new ArgumentNullException("Mensajes.excepcion_IRepositorioModuloSistemaNuloEnServicioAplicacionInicioSession");
+                throw new ArgumentNullException("IRepositorioModuloSistema Nulo En ServicioAplicacionInicioSession");
 
             if (pIRepositorioUsuarioSistema == null)
-                throw new ArgumentNullException("Mensajes.excepcion_IRepositorioUsuarioSistemaNuloEnServicioAplicacionInicioSession");
+                throw new ArgumentNullException("IRepositorioUsuarioSistema Nulo En ServicioAplicacionInicioSession");
 
             if (pIRepositorioVendedor == null)
-                throw new ArgumentNullException("Mensajes.excepcion_IRepositorioVendedorNuloEnServicioAplicacionInicioSession");
+                throw new ArgumentNullException("IRepositorioVendedor Nulo En ServicioAplicacionInicioSession");
 
             if (pIAutenticacion == null)
-                throw new ArgumentNullException("Mensajes.excepcion_IValidadorInicioSesionNuloEnServicioAplicacionInicioSession");
+                throw new ArgumentNullException("IValidadorInicioSesion Nulo En ServicioAplicacionInicioSession");
 
             if (pIServicioDominioValidarUsuarioSistema == null)
-                throw new ArgumentNullException("Mensajes.excepcion_IServicioDominioValidarUsuarioSistemaNuloEnServicioAplicacionInicioSession");
+                throw new ArgumentNullException("IServicioDominioValidarUsuarioSistema Nulo En ServicioAplicacionInicioSession");
 
             if (pIServicioDominioValidarUsuarioVendedor == null)
-                throw new ArgumentNullException("Mensajes.excepcion_IServicioDominioValidarUsuarioVendedorNuloEnServicioAplicacionInicioSession");
+                throw new ArgumentNullException("IServicioDominioValidarUsuarioVendedor Nulo En ServicioAplicacionInicioSession");
 
 
             _IRepositorioModuloSistema = pIRepositorioModuloSistema;
@@ -69,7 +69,7 @@ namespace PtoVta.Aplicacion.GestionUsuario
             bool esInicioSesionValido = false;
 
             if (string.IsNullOrEmpty(pUsuario) || string.IsNullOrEmpty(pClave))
-                throw new ArgumentException("Mensajes.advertencia_NoSePuedeValidarInicioSesionConUsuarioOClaveNula");
+                throw new ArgumentException("No Se Puede ValidarInicioSesionConUsuario O ClaveNula");
 
             //Validamos Usuario Vendedor 
             Vendedor vendedorLogueado = _IRepositorioVendedor.ObtenerVendedorPorUsuario(pUsuario);
@@ -85,7 +85,7 @@ namespace PtoVta.Aplicacion.GestionUsuario
                 else
                 {
                     usuarioSistemaAcceso = null;
-                    LogFactory.CrearLog().LogError("Mensajes.excepcion_UsuarioDeVendedorInvalido");
+                    LogFactory.CrearLog().LogError("UsuarioDeVendedor Invalido");
                 }
 
             }
@@ -107,11 +107,11 @@ namespace PtoVta.Aplicacion.GestionUsuario
                                                 .ValidarUsuarioSistema(usuarioSistemaAcceso, accesosModuloSistema, pClave);
 
                 if (!(esUsuarioSistemaAccesoValido))
-                    LogFactory.CrearLog().LogError("Mensajes.excepcion_UsuarioSistemaDeVendedorInvalido");
+                    LogFactory.CrearLog().LogError("UsuarioSistema De Vendedor Invalido");
 
             }
             else
-                LogFactory.CrearLog().LogError("Mensajes.excepcion_UsuarioSistemaInvalido");
+                LogFactory.CrearLog().LogError("UsuarioSistema Invalido");
 
 
             //Validamos usuario en el dominio (PENDIENTE de implementar de una manera orientada a objetos), ej. Active Directory
@@ -127,7 +127,7 @@ namespace PtoVta.Aplicacion.GestionUsuario
             }
             else
             {
-                LogFactory.CrearLog().LogWarning("Mensajes.advertencia_UsuarioSistemaInvalidoYSinDerechos");
+                LogFactory.CrearLog().LogWarning("UsuarioSistema Invalido Y Sin Derechos");
 
                 return null;
             }

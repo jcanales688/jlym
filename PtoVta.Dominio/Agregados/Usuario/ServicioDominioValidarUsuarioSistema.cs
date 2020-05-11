@@ -15,11 +15,11 @@ namespace PtoVta.Dominio.Agregados.Usuario
 
             //Clave Invalida
             if (String.IsNullOrEmpty(pClave))
-                throw new InvalidOperationException("Mensajes.validacion_ModuloSistemaNuloEnServicioDominioValidarUsuarioSistema");
+                throw new InvalidOperationException("ModuloSistema Nulo En ServicioDominioValidarUsuarioSistema");
 
             //Modulo sistema no existe
             if (pModuloSistema == null)
-                throw new InvalidOperationException("Mensajes.validacion_ModuloSistemaNuloEnServicioDominioValidarUsuarioSistema");                
+                throw new InvalidOperationException("ModuloSistemaNulo En ServicioDominioValidarUsuarioSistema");                
 
 
             var ventanaConDerechos = pModuloSistema.VentanasUsuario.FirstOrDefault(c => c.DerechosAccesoUsuario.Count > 0);
@@ -27,27 +27,27 @@ namespace PtoVta.Dominio.Agregados.Usuario
             if (pUsuarioSistema == null)
             {
                 //Usuario no existe
-                throw new InvalidOperationException("Mensajes.validacion_VendedorSinUsuarioSistemaEnServicioDominioValidarUsuarioSistema");
+                throw new InvalidOperationException("Vendedor Sin UsuarioSistema En ServicioDominioValidarUsuarioSistema");
             }
             else
             {
                 if (!(pUsuarioSistema.EsHabilitado))
                 {
                     //Usuario Inactivo
-                    throw new InvalidOperationException("Mensajes.validacion_UsuarioSistemaDeVendedorInactivoEnServicioDominioValidarUsuarioSistema");
+                    throw new InvalidOperationException("UsuarioSistema De Vendedor Inactivo En ServicioDominioValidarUsuarioSistema");
                 }
 
                 if (pModuloSistema.VentanasUsuario.Count == 0)
                 {
                     //Usuario de  sistema sin privilegios
-                    throw new InvalidOperationException("Mensajes.validacion_UsuarioSistemaDeVendedorSinPrivilegiosEnServicioDominioValidarUsuarioSistema");
+                    throw new InvalidOperationException("UsuarioSistema De Vendedor Sin Privilegios En ServicioDominioValidarUsuarioSistema");
                 }
 
 
                 if (ventanaConDerechos == null)
                 {
                     //Usuario de  sistema sin privilegios
-                    throw new InvalidOperationException("Mensajes.validacion_VentanaDeSistemaSinPrivilegiosEnServicioDominioValidarUsuarioSistema");
+                    throw new InvalidOperationException("Ventana De Sistema Sin Privilegios En ServicioDominioValidarUsuarioSistema");
                 }
             }
 

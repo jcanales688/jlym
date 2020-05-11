@@ -1,17 +1,81 @@
 {
   "format": 1,
   "restore": {
-    "C:\\PtoVtaMovil\\PtoVta.Aplicacion\\PtoVta.Aplicacion.csproj": {}
+    "C:\\PtoVtaMovil\\jlym\\PtoVta.Aplicacion\\PtoVta.Aplicacion.csproj": {}
   },
   "projects": {
-    "C:\\PtoVtaMovil\\PtoVta.Aplicacion\\PtoVta.Aplicacion.csproj": {
+    "C:\\PtoVtaMovil\\jlym\\PtoVta.Aplicacion\\PtoVta.Aplicacion.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\PtoVtaMovil\\PtoVta.Aplicacion\\PtoVta.Aplicacion.csproj",
+        "projectUniqueName": "C:\\PtoVtaMovil\\jlym\\PtoVta.Aplicacion\\PtoVta.Aplicacion.csproj",
         "projectName": "PtoVta.Aplicacion",
-        "projectPath": "C:\\PtoVtaMovil\\PtoVta.Aplicacion\\PtoVta.Aplicacion.csproj",
+        "projectPath": "C:\\PtoVtaMovil\\jlym\\PtoVta.Aplicacion\\PtoVta.Aplicacion.csproj",
         "packagesPath": "C:\\Users\\Gato 1\\.nuget\\packages\\",
-        "outputPath": "C:\\PtoVtaMovil\\PtoVta.Aplicacion\\obj\\",
+        "outputPath": "C:\\PtoVtaMovil\\jlym\\PtoVta.Aplicacion\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\Gato 1\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "netstandard2.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "netstandard2.0": {
+            "projectReferences": {
+              "C:\\PtoVtaMovil\\jlym\\PtoVta.Dominio\\PtoVta.Dominio.csproj": {
+                "projectPath": "C:\\PtoVtaMovil\\jlym\\PtoVta.Dominio\\PtoVta.Dominio.csproj"
+              },
+              "C:\\PtoVtaMovil\\jlym\\PtoVta.Infraestructura\\PtoVta.Infraestructura.csproj": {
+                "projectPath": "C:\\PtoVtaMovil\\jlym\\PtoVta.Infraestructura\\PtoVta.Infraestructura.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "netstandard2.0": {
+          "dependencies": {
+            "Dapper": {
+              "target": "Package",
+              "version": "[1.60.6, )"
+            },
+            "NETStandard.Library": {
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[2.0.3, )",
+              "autoReferenced": true
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.201\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\PtoVtaMovil\\jlym\\PtoVta.Dominio\\PtoVta.Dominio.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\PtoVtaMovil\\jlym\\PtoVta.Dominio\\PtoVta.Dominio.csproj",
+        "projectName": "PtoVta.Dominio",
+        "projectPath": "C:\\PtoVtaMovil\\jlym\\PtoVta.Dominio\\PtoVta.Dominio.csproj",
+        "packagesPath": "C:\\Users\\Gato 1\\.nuget\\packages\\",
+        "outputPath": "C:\\PtoVtaMovil\\jlym\\PtoVta.Dominio\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Gato 1\\AppData\\Roaming\\NuGet\\NuGet.Config"
@@ -36,6 +100,71 @@
       "frameworks": {
         "netstandard2.0": {
           "dependencies": {
+            "NETStandard.Library": {
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[2.0.3, )",
+              "autoReferenced": true
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.201\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\PtoVtaMovil\\jlym\\PtoVta.Infraestructura\\PtoVta.Infraestructura.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\PtoVtaMovil\\jlym\\PtoVta.Infraestructura\\PtoVta.Infraestructura.csproj",
+        "projectName": "PtoVta.Infraestructura",
+        "projectPath": "C:\\PtoVtaMovil\\jlym\\PtoVta.Infraestructura\\PtoVta.Infraestructura.csproj",
+        "packagesPath": "C:\\Users\\Gato 1\\.nuget\\packages\\",
+        "outputPath": "C:\\PtoVtaMovil\\jlym\\PtoVta.Infraestructura\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\Gato 1\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "netstandard2.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "netstandard2.0": {
+            "projectReferences": {
+              "C:\\PtoVtaMovil\\jlym\\PtoVta.Dominio\\PtoVta.Dominio.csproj": {
+                "projectPath": "C:\\PtoVtaMovil\\jlym\\PtoVta.Dominio\\PtoVta.Dominio.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "netstandard2.0": {
+          "dependencies": {
+            "AutoMapper": {
+              "target": "Package",
+              "version": "[3.3.0, )"
+            },
+            "Dapper": {
+              "target": "Package",
+              "version": "[1.60.6, )"
+            },
             "NETStandard.Library": {
               "suppressParent": "All",
               "target": "Package",
