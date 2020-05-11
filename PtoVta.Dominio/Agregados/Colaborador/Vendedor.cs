@@ -99,7 +99,7 @@ namespace PtoVta.Dominio.Agregados.Colaborador
         //UsuarioSistema Acceso
         public void EstablecerUsuarioSistemaAccesoDeVendedor(UsuarioSistema pUsuarioSistemaAcceso)
         {
-            if (pUsuarioSistemaAcceso == null || pUsuarioSistemaAcceso.EsTransitorio())
+            if (pUsuarioSistemaAcceso == null)
             {
                 throw new ArgumentException("Mensajes.excepcion_UsuarioSistemaAccesoDeVendedorEnEstadoNuloOTransitorio");
 
