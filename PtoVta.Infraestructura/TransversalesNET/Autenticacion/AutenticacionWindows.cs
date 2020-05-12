@@ -5,10 +5,10 @@ namespace PtoVta.Infraestructura.TransversalesNET.Autenticacion
 {
     public class AutenticacionWindows : IAutenticacion
     {
-        public void Dispose()
-        {
-            throw new NotImplementedException();
-        }
+        // public void Dispose()
+        // {
+        //     throw new NotImplementedException();
+        // }
 
         public bool ValidarInicioSesion(string pUsuario, string pClave)
         {

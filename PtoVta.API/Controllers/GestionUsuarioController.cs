@@ -11,8 +11,8 @@ using PtoVta.Aplicacion.GestionUsuario;
 
 namespace PtoVta.API.Controllers
 {
+    [Route("api/[controller]")]    
     [ApiController]
-    [Route("api/[controller]")]
     public class GestionUsuarioController : ControllerBase
     {
         readonly IServicioAplicacionInicioSession _IServicioAplicacionInicioSession;

@@ -4,7 +4,8 @@ using PtoVta.Aplicacion.DTO.Modulo;
 
 namespace PtoVta.Aplicacion.GestionUsuario
 {
-    public interface IServicioAplicacionInicioSession : IDisposable
+    public interface IServicioAplicacionInicioSession 
+    // : IDisposable
     {
         ResultadoServicio<ModuloSistemaDTO>  GestionInicioSesion(string pUsuario, string pClave, string pCodigoModuloSistema);        
     }

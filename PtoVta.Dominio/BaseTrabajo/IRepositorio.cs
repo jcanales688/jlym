@@ -3,8 +3,8 @@ using System.Collections.Generic;
 
 namespace PtoVta.Dominio.BaseTrabajo
 {
-    public interface IRepositorio<TEntidad> : IDisposable
-        where TEntidad : Entidad
+    // public interface IRepositorio<TEntidad> : IDisposable
+    public interface IRepositorio<TEntidad>  where TEntidad : Entidad
     {
         //Añadir elemento en el repositorio            
         void Agregar(TEntidad item);

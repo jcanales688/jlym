@@ -141,15 +141,15 @@ namespace PtoVta.Aplicacion.GestionUsuario
         }
 
 
-        public void Dispose()
-        {
-            _IRepositorioModuloSistema.Dispose();
-            _IRepositorioUsuarioSistema.Dispose();
-            _IRepositorioVendedor.Dispose();
+        // public void Dispose()
+        // {
+            // _IRepositorioModuloSistema.Dispose();
+            // _IRepositorioUsuarioSistema.Dispose();
+            // _IRepositorioVendedor.Dispose();
 
-            _IAutenticacion.Dispose();
+            // _IAutenticacion.Dispose();
             //_IServicioDominioValidarUsuarioSistema.Dispose();
             //_IServicioDominioValidarUsuarioVendedor.Dispose();
-        }        
+        // }        
     }
 }
