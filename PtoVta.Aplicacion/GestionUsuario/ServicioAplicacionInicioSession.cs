@@ -60,16 +60,16 @@ namespace PtoVta.Aplicacion.GestionUsuario
                 
         }
 
-        public ModuloSistemaDTO GestionInicioSesion(string pUsuario, string pClave, string pCodigoModuloSistema)
+        public ResultadoServicio<ModuloSistemaDTO> GestionInicioSesion(string pUsuario, string pClave, string pCodigoModuloSistema)
         {
             UsuarioSistema usuarioSistemaAcceso;
             ModuloSistema accesosModuloSistema = null;
             bool esUsuarioSistemaAccesoValido = false;
             bool esUsuarioDelVendedorValido = false;
-            bool esInicioSesionValido = false;
+            string mensajeValidacion = string.Empty;
 
             if (string.IsNullOrEmpty(pUsuario) || string.IsNullOrEmpty(pClave))
-                throw new ArgumentException("No Se Puede ValidarInicioSesionConUsuario O ClaveNula");
+                throw new ArgumentException("No Se Puede Validar Inicio Sesion Con Usuario O Clave Nula");
 
             //Validamos Usuario Vendedor 
             Vendedor vendedorLogueado = _IRepositorioVendedor.ObtenerVendedorPorUsuario(pUsuario);
@@ -85,7 +85,7 @@ namespace PtoVta.Aplicacion.GestionUsuario
                 else
                 {
                     usuarioSistemaAcceso = null;
-                    LogFactory.CrearLog().LogError("UsuarioDeVendedor Invalido");
+                    mensajeValidacion = "Usuario De Vendedor Invalido";
                 }
 
             }
@@ -101,35 +101,41 @@ namespace PtoVta.Aplicacion.GestionUsuario
             {
                 //Obtenemos privilegios del usuario
                 accesosModuloSistema = _IRepositorioModuloSistema
-                    .ObtenerDerechosAccesosUsuario(usuarioSistemaAcceso.CodigoUsuarioDeSistema, pCodigoModuloSistema);
+                    .ObtenerDerechosAccesosUsuario(usuarioSistemaAcceso.CodigoUsuarioDeSistema.Trim(), pCodigoModuloSistema.Trim());
 
                 esUsuarioSistemaAccesoValido = _IServicioDominioValidarUsuarioSistema
-                                                .ValidarUsuarioSistema(usuarioSistemaAcceso, accesosModuloSistema, pClave);
+                                                .ValidarUsuarioSistema(usuarioSistemaAcceso, accesosModuloSistema, pClave.Trim());
 
                 if (!(esUsuarioSistemaAccesoValido))
-                    LogFactory.CrearLog().LogError("UsuarioSistema De Vendedor Invalido");
+                    mensajeValidacion = "Usuario Sistema De Vendedor Invalido";
 
             }
             else
-                LogFactory.CrearLog().LogError("UsuarioSistema Invalido");
+                mensajeValidacion = "Usuario Sistema Invalido";
 
 
             //Validamos usuario en el dominio (PENDIENTE de implementar de una manera orientada a objetos), ej. Active Directory
-            if (esUsuarioSistemaAccesoValido)
-                esInicioSesionValido = _IAutenticacion.ValidarInicioSesion(string.Empty, string.Empty);
+            // if (esUsuarioSistemaAccesoValido)
+            //     esInicioSesionValido = _IAutenticacion.ValidarInicioSesion(string.Empty, string.Empty);
 
 
             //Devolucion
             if ((esUsuarioSistemaAccesoValido == true) && 
                 (accesosModuloSistema != null))
             {
-                return accesosModuloSistema.ProyectadoComo<ModuloSistemaDTO>();
+                mensajeValidacion = "Usuario Valido";
+                LogFactory.CrearLog().LogError(mensajeValidacion);
+                
+                return new ResultadoServicio<ModuloSistemaDTO>(7,mensajeValidacion,
+                        string.Empty, accesosModuloSistema.ProyectadoComo<ModuloSistemaDTO>());
             }
             else
             {
-                LogFactory.CrearLog().LogWarning("UsuarioSistema Invalido Y Sin Derechos");
+                mensajeValidacion = "Usuario Sistema Invalido Y Sin Derechos";
+                LogFactory.CrearLog().LogError(mensajeValidacion);
 
-                return null;
+                return new ResultadoServicio<ModuloSistemaDTO>(0,mensajeValidacion,
+                                                                    string.Empty, null);
             }
 
         }

@@ -34,3 +34,5 @@ C:\PtoVtaMovil\jlym\PtoVta.API\bin\Debug\netcoreapp3.1\PtoVta.Aplicacion.pdb
 C:\PtoVtaMovil\jlym\PtoVta.API\bin\Debug\netcoreapp3.1\PtoVta.Dominio.pdb
 C:\PtoVtaMovil\jlym\PtoVta.API\bin\Debug\netcoreapp3.1\PtoVta.Infraestructura.pdb
 C:\PtoVtaMovil\jlym\PtoVta.API\obj\Debug\netcoreapp3.1\PtoVta.API.csproj.CopyComplete
+C:\PtoVtaMovil\jlym\PtoVta.API\bin\Debug\netcoreapp3.1\Autofac.dll
+C:\PtoVtaMovil\jlym\PtoVta.API\bin\Debug\netcoreapp3.1\Autofac.Extensions.DependencyInjection.dll

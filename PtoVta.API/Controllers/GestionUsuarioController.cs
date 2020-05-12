@@ -5,6 +5,7 @@ using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using PtoVta.Aplicacion.BaseTrabajo;
 using PtoVta.Aplicacion.DTO.Modulo;
 using PtoVta.Aplicacion.GestionUsuario;
 
@@ -24,7 +25,7 @@ namespace PtoVta.API.Controllers
 
         [Route("autenticacionUsuario/{pUsuario}/{pClave}/{pCodigoModuloSistema}")]
         [HttpGet]        
-        [ProducesResponseType(typeof(ModuloSistemaDTO), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(ResultadoServicio<ModuloSistemaDTO>), (int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
         public IActionResult AutenticacionUsuario(string pUsuario, string pClave, string pCodigoModuloSistema)
         {
@@ -39,9 +40,12 @@ namespace PtoVta.API.Controllers
                 }
                 return Ok(autenticacionUsuario);
             }
-            catch (KeyNotFoundException)
+            catch (Exception ex)
             {
-                return NotFound();
+                return NotFound(
+                    new ResultadoServicio<ModuloSistemaDTO>(0,ex.Message, ex.InnerException.Message, null)
+                );                
+                // return NotFound();
             }
         }
     }

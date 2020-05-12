@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Autofac;
+using Autofac.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -10,6 +12,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using PtoVta.API.Infraestructura;
 
 namespace PtoVta.API
 {
@@ -23,9 +26,18 @@ namespace PtoVta.API
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services)
+
+        // public void ConfigureServices(IServiceCollection services)
+        public IServiceProvider ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+
+            //configure autofac
+            var container = new ContainerBuilder();
+            container.Populate(services);
+            container.RegisterModule(new ApplicationModule());
+
+            return new AutofacServiceProvider(container.Build());            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

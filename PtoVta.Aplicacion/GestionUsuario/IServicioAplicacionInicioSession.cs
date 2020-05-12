@@ -1,10 +1,11 @@
 using System;
+using PtoVta.Aplicacion.BaseTrabajo;
 using PtoVta.Aplicacion.DTO.Modulo;
 
 namespace PtoVta.Aplicacion.GestionUsuario
 {
     public interface IServicioAplicacionInicioSession : IDisposable
     {
-        ModuloSistemaDTO GestionInicioSesion(string pUsuario, string pClave, string pCodigoModuloSistema);        
+        ResultadoServicio<ModuloSistemaDTO>  GestionInicioSesion(string pUsuario, string pClave, string pCodigoModuloSistema);        
     }
 }
