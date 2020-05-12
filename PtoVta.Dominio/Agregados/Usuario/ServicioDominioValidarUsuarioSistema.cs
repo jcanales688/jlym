@@ -15,11 +15,11 @@ namespace PtoVta.Dominio.Agregados.Usuario
 
             //Clave Invalida
             if (String.IsNullOrEmpty(pClave))
-                throw new InvalidOperationException("ModuloSistema Nulo En ServicioDominioValidarUsuarioSistema");
+                throw new InvalidOperationException("Clave nula o vacia.");
 
             //Modulo sistema no existe
             if (pModuloSistema == null)
-                throw new InvalidOperationException("ModuloSistemaNulo En ServicioDominioValidarUsuarioSistema");                
+                throw new InvalidOperationException("No existen modulos de sistema asignados al usuario.");                
 
 
             var ventanaConDerechos = pModuloSistema.VentanasUsuario.FirstOrDefault(c => c.DerechosAccesoUsuario.Count > 0);
@@ -27,27 +27,27 @@ namespace PtoVta.Dominio.Agregados.Usuario
             if (pUsuarioSistema == null)
             {
                 //Usuario no existe
-                throw new InvalidOperationException("Vendedor Sin UsuarioSistema En ServicioDominioValidarUsuarioSistema");
+                throw new InvalidOperationException("Vendedor sin Usuario de Sistema asignado.");
             }
             else
             {
                 if (!(pUsuarioSistema.EsHabilitado))
                 {
                     //Usuario Inactivo
-                    throw new InvalidOperationException("UsuarioSistema De Vendedor Inactivo En ServicioDominioValidarUsuarioSistema");
+                    throw new InvalidOperationException("Usuario deSistema de vendedor inactivo.");
                 }
 
                 if (pModuloSistema.VentanasUsuario.Count == 0)
                 {
                     //Usuario de  sistema sin privilegios
-                    throw new InvalidOperationException("UsuarioSistema De Vendedor Sin Privilegios En ServicioDominioValidarUsuarioSistema");
+                    throw new InvalidOperationException("Usuario de Sistema de vendedor sin privilegios asignados.");
                 }
 
 
                 if (ventanaConDerechos == null)
                 {
                     //Usuario de  sistema sin privilegios
-                    throw new InvalidOperationException("Ventana De Sistema Sin Privilegios En ServicioDominioValidarUsuarioSistema");
+                    throw new InvalidOperationException("Usuario de Sistema de vendedor sin privilegios.");
                 }
             }
 

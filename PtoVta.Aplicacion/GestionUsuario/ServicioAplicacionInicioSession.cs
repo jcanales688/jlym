@@ -69,7 +69,7 @@ namespace PtoVta.Aplicacion.GestionUsuario
             string mensajeValidacion = string.Empty;
 
             if (string.IsNullOrEmpty(pUsuario) || string.IsNullOrEmpty(pClave))
-                throw new ArgumentException("No Se Puede Validar Inicio Sesion Con Usuario O Clave Nula");
+                throw new ArgumentException("No se puede validar Inicio de Sesion con Usuario o Clave nula.");
 
             //Validamos Usuario Vendedor 
             Vendedor vendedorLogueado = _IRepositorioVendedor.ObtenerVendedorPorUsuario(pUsuario);
@@ -85,7 +85,7 @@ namespace PtoVta.Aplicacion.GestionUsuario
                 else
                 {
                     usuarioSistemaAcceso = null;
-                    mensajeValidacion = "Usuario De Vendedor Invalido";
+                    mensajeValidacion = "Usuario de Vendedor invalido.";
                 }
 
             }
@@ -107,11 +107,11 @@ namespace PtoVta.Aplicacion.GestionUsuario
                                                 .ValidarUsuarioSistema(usuarioSistemaAcceso, accesosModuloSistema, pClave.Trim());
 
                 if (!(esUsuarioSistemaAccesoValido))
-                    mensajeValidacion = "Usuario Sistema De Vendedor Invalido";
+                    mensajeValidacion = "Usuario Sistema de vendedor invalido.";
 
             }
             else
-                mensajeValidacion = "Usuario Sistema Invalido";
+                mensajeValidacion = "Usuario Sistema invalido.";
 
 
             //Validamos usuario en el dominio (PENDIENTE de implementar de una manera orientada a objetos), ej. Active Directory
@@ -123,7 +123,7 @@ namespace PtoVta.Aplicacion.GestionUsuario
             if ((esUsuarioSistemaAccesoValido == true) && 
                 (accesosModuloSistema != null))
             {
-                mensajeValidacion = "Usuario Valido";
+                mensajeValidacion = "Usuario valido.";
                 LogFactory.CrearLog().LogError(mensajeValidacion);
                 
                 return new ResultadoServicio<ModuloSistemaDTO>(7,mensajeValidacion,
@@ -131,7 +131,7 @@ namespace PtoVta.Aplicacion.GestionUsuario
             }
             else
             {
-                mensajeValidacion = "Usuario Sistema Invalido Y Sin Derechos";
+                mensajeValidacion = "Usuario Sistema invalido y sin derechos.";
                 LogFactory.CrearLog().LogError(mensajeValidacion);
 
                 return new ResultadoServicio<ModuloSistemaDTO>(0,mensajeValidacion,

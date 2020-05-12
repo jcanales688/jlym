@@ -11,24 +11,24 @@ namespace PtoVta.Dominio.Agregados.Colaborador
             if (pVendedor == null)
             {
                 //Usuario No Existe 
-                throw new InvalidOperationException("Vendedor No Existe En ServicioDominio ValidarUsuarioVendedor");
+                throw new InvalidOperationException("Vendedor no existe.");
 
             }
 
             if (pVendedor.Clave.Trim() != pClave.Trim())
             {
                 //Clave Incorrecta
-                throw new InvalidOperationException("Clave Incorrecta En ServicioDominio ValidarUsuarioVendedor");
+                throw new InvalidOperationException("Clave incorrecta.");
             }
 
             if (pVendedor.EstadoVendedor.CodigoEstadoVendedor == "02")
             {
-                throw new InvalidOperationException("Vendedor Inactivo En ServicioDominio ValidarUsuarioVendedor");
+                throw new InvalidOperationException("Vendedor inactivo.");
             }
 
             if (pVendedor.EstadoVendedor.CodigoEstadoVendedor == "03")
             {
-                throw new InvalidOperationException("Vendedor Suspendido En ServicioDominio ValidarUsuarioVendedor");
+                throw new InvalidOperationException("Vendedor suspendido.");
 
             }
 
