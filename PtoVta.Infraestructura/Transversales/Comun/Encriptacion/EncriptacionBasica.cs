@@ -3,9 +3,9 @@ using System.Text;
 
 namespace PtoVta.Infraestructura.Transversales.Comun
 {
-    public static class EncriptacionBasica
+    public class EncriptacionBasica
     {
-        public static string EncriptarYDesencriptar(ref string X) 
+        public static string EncriptarYDesencriptar(string X) 
         {
             string Encrip = String.Empty;
             int i = 0;

@@ -59,7 +59,7 @@ namespace PtoVta.Aplicacion.Tests
         public void GestionInicioSesion_Test() 
         {
             ResultadoServicio<ModuloSistemaDTO> moduloSistema = _IServicioAplicacionInicioSession
-                            .GestionInicioSesion("18066232", "H.,(('&,)I-", "OP");
+                            .GestionInicioSesion("18066232", "$R18066232S", "OP");
 
             Assert.False(moduloSistema == null);
         }

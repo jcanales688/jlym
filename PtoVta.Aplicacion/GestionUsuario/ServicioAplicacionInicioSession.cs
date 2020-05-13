@@ -6,6 +6,7 @@ using PtoVta.Dominio.Agregados.Modulo;
 using PtoVta.Dominio.Agregados.Usuario;
 using PtoVta.Infraestructura.Transversales.Autenticacion;
 using PtoVta.Infraestructura.Transversales.Log;
+using PtoVta.Infraestructura.Transversales.Comun;
 
 namespace PtoVta.Aplicacion.GestionUsuario
 {
@@ -77,7 +78,7 @@ namespace PtoVta.Aplicacion.GestionUsuario
             if (vendedorLogueado != null)
             {
                 //Desecriptar clave
-                var claveDesencriptada = EncriptarYDesencriptar.EncriptarYDesencriptar(pClave.Trim().ToUpper());
+                var claveDesencriptada = EncriptacionBasica.EncriptarYDesencriptar(pClave.Trim().ToUpper());
                 esUsuarioDelVendedorValido = _IServicioDominioValidarUsuarioVendedor
                                                     .ValidarUsuarioVendedor(vendedorLogueado, claveDesencriptada.Trim());
 
