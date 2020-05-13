@@ -23,7 +23,7 @@ namespace PtoVta.Infraestructura.Repositorios.Usuario
                                             ,USERNAME	AS DescripcionUsuario
                                             ,PASSWORD	AS Contraseña
                                             ,STATUS AS EsHabilitado
-                                    FROM	PC_SE_USERREC (NOLOCK)
+                                    FROM	SE_USERREC (NOLOCK)
                                     WHERE	USERID			= @USERID
                                             AND	PASSWORD	= @PASSWORD";
 
