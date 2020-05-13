@@ -5,6 +5,7 @@ using PtoVta.Aplicacion.GestionUsuario;
 using PtoVta.Dominio.Agregados.Colaborador;
 using PtoVta.Dominio.Agregados.Modulo;
 using PtoVta.Dominio.Agregados.Usuario;
+using PtoVta.Infraestructura;
 using PtoVta.Infraestructura.Repositorios.Colaborador;
 using PtoVta.Infraestructura.Repositorios.Modulo;
 using PtoVta.Infraestructura.Repositorios.Usuario;
