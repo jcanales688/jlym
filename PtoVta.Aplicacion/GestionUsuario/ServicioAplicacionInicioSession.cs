@@ -76,7 +76,10 @@ namespace PtoVta.Aplicacion.GestionUsuario
 
             if (vendedorLogueado != null)
             {
-                esUsuarioDelVendedorValido = _IServicioDominioValidarUsuarioVendedor.ValidarUsuarioVendedor(vendedorLogueado, pClave);
+                //Desecriptar clave
+                var claveDesencriptada = EncriptarYDesencriptar.EncriptarYDesencriptar(pClave.Trim().ToUpper());
+                esUsuarioDelVendedorValido = _IServicioDominioValidarUsuarioVendedor
+                                                    .ValidarUsuarioVendedor(vendedorLogueado, claveDesencriptada.Trim());
 
                 if (esUsuarioDelVendedorValido)
                 {
@@ -104,7 +107,7 @@ namespace PtoVta.Aplicacion.GestionUsuario
                     .ObtenerDerechosAccesosUsuario(usuarioSistemaAcceso.CodigoUsuarioDeSistema.Trim(), pCodigoModuloSistema.Trim());
 
                 esUsuarioSistemaAccesoValido = _IServicioDominioValidarUsuarioSistema
-                                                .ValidarUsuarioSistema(usuarioSistemaAcceso, accesosModuloSistema, pClave.Trim());
+                                                    .ValidarUsuarioSistema(usuarioSistemaAcceso, accesosModuloSistema, pClave.Trim());
 
                 if (!(esUsuarioSistemaAccesoValido))
                     mensajeValidacion = "Usuario Sistema de vendedor invalido.";

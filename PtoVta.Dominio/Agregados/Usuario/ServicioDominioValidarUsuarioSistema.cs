@@ -34,7 +34,7 @@ namespace PtoVta.Dominio.Agregados.Usuario
                 if (!(pUsuarioSistema.EsHabilitado))
                 {
                     //Usuario Inactivo
-                    throw new InvalidOperationException("Usuario deSistema de vendedor inactivo.");
+                    throw new InvalidOperationException("Usuario de Sistema de vendedor inactivo.");
                 }
 
                 if (pModuloSistema.VentanasUsuario.Count == 0)
