@@ -36,3 +36,13 @@ C:\PtoVtaMovil\jlym\PtoVta.API\bin\Debug\netcoreapp3.1\PtoVta.Infraestructura.pd
 C:\PtoVtaMovil\jlym\PtoVta.API\obj\Debug\netcoreapp3.1\PtoVta.API.csproj.CopyComplete
 C:\PtoVtaMovil\jlym\PtoVta.API\bin\Debug\netcoreapp3.1\Autofac.dll
 C:\PtoVtaMovil\jlym\PtoVta.API\bin\Debug\netcoreapp3.1\Autofac.Extensions.DependencyInjection.dll
+C:\PtoVtaMovil\jlym\PtoVta.API\bin\Debug\netcoreapp3.1\publicado\publicado\web.config
+C:\PtoVtaMovil\jlym\PtoVta.API\bin\Debug\netcoreapp3.1\publicado\web.config
+C:\PtoVtaMovil\jlym\PtoVta.API\bin\Debug\netcoreapp3.1\publicado\appsettings.Development.json
+C:\PtoVtaMovil\jlym\PtoVta.API\bin\Debug\netcoreapp3.1\publicado\appsettings.json
+C:\PtoVtaMovil\jlym\PtoVta.API\bin\Debug\netcoreapp3.1\publicado\PtoVta.API.deps.json
+C:\PtoVtaMovil\jlym\PtoVta.API\bin\Debug\netcoreapp3.1\publicado\PtoVta.API.runtimeconfig.json
+C:\PtoVtaMovil\jlym\PtoVta.API\bin\Debug\netcoreapp3.1\publicado\publicado\appsettings.Development.json
+C:\PtoVtaMovil\jlym\PtoVta.API\bin\Debug\netcoreapp3.1\publicado\publicado\appsettings.json
+C:\PtoVtaMovil\jlym\PtoVta.API\bin\Debug\netcoreapp3.1\publicado\publicado\PtoVta.API.deps.json
+C:\PtoVtaMovil\jlym\PtoVta.API\bin\Debug\netcoreapp3.1\publicado\publicado\PtoVta.API.runtimeconfig.json
