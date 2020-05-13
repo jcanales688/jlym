@@ -11,6 +11,11 @@ namespace PtoVta.Infraestructura.Repositorios.Colaborador
 {
     public class RepositorioVendedor : Repositorio<Vendedor>, IRepositorioVendedor
     {
+        public RepositorioVendedor(string pCadenaConexion)
+        {
+            this.CadenaConexion = pCadenaConexion;
+        }
+        
         public Vendedor ObtenerVendedorPorUsuario(string pUsuarioVendedor)
         {
           using (IDbConnection cn = new SqlConnection(this.CadenaConexion))

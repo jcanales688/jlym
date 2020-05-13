@@ -10,7 +10,7 @@ namespace PtoVta.Infraestructura.Tests
         private readonly IRepositorioUsuarioSistema _IRepositorioUsuarioSistema;
         public RepositorioUsuarioSistemaTest()
         {
-            _IRepositorioUsuarioSistema = new RepositorioUsuarioSistema();
+            _IRepositorioUsuarioSistema = new RepositorioUsuarioSistema(ConfiguracionGlobal.CadenaConexionBd);
         }
 
         [Fact]

@@ -10,7 +10,7 @@ namespace PtoVta.Infraestructura.Tests
         private readonly IRepositorioVendedor _IRepositorioVendedor;
         public RepositorioVendedorTest()
         {
-            _IRepositorioVendedor = new RepositorioVendedor();
+            _IRepositorioVendedor = new RepositorioVendedor(ConfiguracionGlobal.CadenaConexionBd);
         }
 
         [Fact]

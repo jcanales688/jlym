@@ -7,7 +7,7 @@ namespace PtoVta.Infraestructura.BaseTrabajo
     public class Repositorio<TEntidad> : IRepositorio<TEntidad>
         where TEntidad : Entidad
     {
-        public string CadenaConexion => ConfiguracionGlobal.CadenaConexionBd;
+        internal string CadenaConexion = string.Empty;
 
         public virtual void Agregar(TEntidad item)
         {

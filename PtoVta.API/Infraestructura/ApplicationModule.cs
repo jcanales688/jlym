@@ -17,41 +17,56 @@ using PtoVta.Infraestructura.TransversalesNET.Log;
 namespace PtoVta.API.Infraestructura
 {
         public class ApplicationModule :Autofac.Module
-        {
-            public ApplicationModule()
             {
+            public string QueriesConnectionString { get; }
+
+            public ApplicationModule(string qconstr)
+            {
+                QueriesConnectionString = qconstr;
 
             }
 
             protected override void Load(ContainerBuilder builder)
             {
-                builder.RegisterType<RepositorioVendedor>()
+                builder.Register(c => new RepositorioVendedor(QueriesConnectionString))
                     .As<IRepositorioVendedor>()
                     .InstancePerLifetimeScope();
 
-                builder.RegisterType<RepositorioModuloSistema>()
+                builder.Register(c => new RepositorioModuloSistema(QueriesConnectionString))
                     .As<IRepositorioModuloSistema>()
                     .InstancePerLifetimeScope();
 
-                builder.RegisterType<RepositorioUsuarioSistema>()
-                .As<IRepositorioUsuarioSistema>()
-                .InstancePerLifetimeScope();
+                builder.Register(c => new RepositorioUsuarioSistema(QueriesConnectionString))
+                    .As<IRepositorioUsuarioSistema>()
+                    .InstancePerLifetimeScope();                                        
+
+                // builder.RegisterType<RepositorioVendedor>()
+                //     .As<IRepositorioVendedor>()
+                //     .InstancePerLifetimeScope();
+
+                // builder.RegisterType<RepositorioModuloSistema>()
+                //     .As<IRepositorioModuloSistema>()
+                //     .InstancePerLifetimeScope();
+
+                // builder.RegisterType<RepositorioUsuarioSistema>()
+                //     .As<IRepositorioUsuarioSistema>()
+                //     .InstancePerLifetimeScope();
 
                 builder.RegisterType<ServicioDominioValidarUsuarioVendedor>()
-                .As<IServicioDominioValidarUsuarioVendedor>()
-                .InstancePerLifetimeScope();
+                    .As<IServicioDominioValidarUsuarioVendedor>()
+                    .InstancePerLifetimeScope();
 
                 builder.RegisterType<ServicioDominioValidarUsuarioSistema>()
-                .As<IServicioDominioValidarUsuarioSistema>()
-                .InstancePerLifetimeScope();
+                    .As<IServicioDominioValidarUsuarioSistema>()
+                    .InstancePerLifetimeScope();
 
                builder.RegisterType<ServicioAplicacionInicioSession>()
-                .As<IServicioAplicacionInicioSession>()
-                .InstancePerLifetimeScope();    
+                    .As<IServicioAplicacionInicioSession>()
+                    .InstancePerLifetimeScope();    
 
                builder.RegisterType<AutenticacionWindows>()
-                .As<IAutenticacion>()
-                .InstancePerLifetimeScope();    
+                    .As<IAutenticacion>()
+                    .InstancePerLifetimeScope();    
                             
 
                 LogFactory.EstablecerActual(new LogTrazaOrigenFactory());

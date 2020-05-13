@@ -30,9 +30,9 @@ namespace PtoVta.Aplicacion.Tests
         private IServicioAplicacionInicioSession _IServicioAplicacionInicioSession; 
 
         public ServicioAplicacionInicioSessionTest(){
-            _IRepositorioModuloSistema = new RepositorioModuloSistema();
-            _IRepositorioUsuarioSistema = new RepositorioUsuarioSistema();      
-            _IRepositorioVendedor = new RepositorioVendedor();
+            _IRepositorioModuloSistema = new RepositorioModuloSistema(ConfiguracionGlobal.CadenaConexionBd);
+            _IRepositorioUsuarioSistema = new RepositorioUsuarioSistema(ConfiguracionGlobal.CadenaConexionBd);      
+            _IRepositorioVendedor = new RepositorioVendedor(ConfiguracionGlobal.CadenaConexionBd);
 
             _IAutenticacion = new AutenticacionWindows();
             _IServicioDominioValidarUsuarioSistema = new ServicioDominioValidarUsuarioSistema();

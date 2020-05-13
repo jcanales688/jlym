@@ -9,6 +9,11 @@ namespace PtoVta.Infraestructura.Repositorios.Usuario
 {
     public class RepositorioUsuarioSistema : Repositorio<UsuarioSistema>, IRepositorioUsuarioSistema
     {
+        public RepositorioUsuarioSistema(string pCadenaConexion)
+        {
+            this.CadenaConexion = pCadenaConexion;
+        }
+
         public UsuarioSistema ObtenerUsuarioSistemaPorUsuario(string pUsuarioDeSistema, string pContraseña)
         {
          using (IDbConnection cn = new SqlConnection(this.CadenaConexion))

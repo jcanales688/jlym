@@ -35,7 +35,7 @@ namespace PtoVta.API
             //configure autofac
             var container = new ContainerBuilder();
             container.Populate(services);
-            container.RegisterModule(new ApplicationModule());
+            container.RegisterModule(new ApplicationModule(Configuration["ConnectionString"]));
 
             return new AutofacServiceProvider(container.Build());            
         }

@@ -11,7 +11,7 @@ namespace PtoVta.Infraestructura.Tests
     {
         private readonly IRepositorioModuloSistema _IRepositorioModuloSistema;
         public RepositorioModuloSistemaTest(){      
-                _IRepositorioModuloSistema = new RepositorioModuloSistema();
+                _IRepositorioModuloSistema = new RepositorioModuloSistema(ConfiguracionGlobal.CadenaConexionBd);
         }
 
 

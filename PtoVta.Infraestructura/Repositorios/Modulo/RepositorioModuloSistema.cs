@@ -11,6 +11,10 @@ namespace PtoVta.Infraestructura.Repositorios.Modulo
 {
     public class RepositorioModuloSistema : Repositorio<ModuloSistema>, IRepositorioModuloSistema
     {
+        public RepositorioModuloSistema(string pCadenaConexion)
+        {
+            this.CadenaConexion = pCadenaConexion;
+        }
         public override void Unificar(ModuloSistema persistido, ModuloSistema actual){
 
         } 
