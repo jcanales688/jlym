@@ -128,7 +128,7 @@ namespace PtoVta.Aplicacion.GestionUsuario
                 (accesosModuloSistema != null))
             {
                 mensajeValidacion = "Usuario valido.";
-                LogFactory.CrearLog().LogError(mensajeValidacion);
+                // LogFactory.CrearLog().LogError(mensajeValidacion);
                 
                 return new ResultadoServicio<ModuloSistemaDTO>(7,mensajeValidacion,
                         string.Empty, accesosModuloSistema.ProyectadoComo<ModuloSistemaDTO>());
@@ -141,7 +141,6 @@ namespace PtoVta.Aplicacion.GestionUsuario
                 return new ResultadoServicio<ModuloSistemaDTO>(0,mensajeValidacion,
                                                                     string.Empty, null);
             }
-
         }
 
 

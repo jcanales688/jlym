@@ -13,10 +13,12 @@ namespace PtoVta.Aplicacion.GestionUsuario
         private readonly IRepositorioAlmacen _IRepositorioAlmacen;
         private readonly IRepositorioEstadoVendedor _IRepositorioEstadoVendedor;
         private readonly IRepositorioUsuarioSistema _IIRepositorioUsuarioSistema;
+        private readonly IRepositorioVendedor _IRepositorioVendedor;
 
         public ServicioAplicacionVendedor(IRepositorioAlmacen pIRepositorioAlmacen,
                              IRepositorioEstadoVendedor pIRepositorioEstadoVendedor,
-                             IRepositorioUsuarioSistema pIRepositorioUsuarioSistema)
+                             IRepositorioUsuarioSistema pIRepositorioUsuarioSistema,
+                             IRepositorioVendedor pIRepositorioVendedor)
         {
             if (pIRepositorioAlmacen == null)
                 throw new ArgumentNullException("IRepositorioAlmacen Nulo En ServicioAplicacionInicioSession");            
@@ -27,10 +29,14 @@ namespace PtoVta.Aplicacion.GestionUsuario
             if (pIRepositorioUsuarioSistema == null)
                 throw new ArgumentNullException("IRepositorioUsuarioSistema Nulo En ServicioAplicacionInicioSession");
 
+            if (pIRepositorioVendedor == null)
+                throw new ArgumentNullException("pIRepositorioVendedor Nulo En ServicioAplicacionInicioSession");                
+
 
             _IRepositorioAlmacen = pIRepositorioAlmacen;
             _IRepositorioEstadoVendedor = pIRepositorioEstadoVendedor;
             _IIRepositorioUsuarioSistema = pIRepositorioUsuarioSistema;
+            _IRepositorioVendedor = pIRepositorioVendedor;
         }
 
         public ResultadoServicio<VendedorDTO> AgregarNuevoUsuarioVendedor(VendedorDTO pVendedor)
@@ -82,10 +88,51 @@ namespace PtoVta.Aplicacion.GestionUsuario
                                                                         pVendedor.DireccionPrimeroDistrito,
                                                                         pVendedor.DireccionPrimeroUbicacion);                                          
 
-            var nuevoVendedor = 
+            var nuevoVendedor = CrearNuevoVendedor(pVendedor, almacen, estadoVendedor, usuarioSistemaRegistrador,
+                                                    usuarioSistemaDelAcceso, direccionVendedor);
+
+            GrabarNuevoVendedor(nuevoVendedor);
+
+            if (nuevoVendedor != null)
+            {
+                mensajeValidacion = "Vendedor creado satisfactoriamente.";
+                
+                return new ResultadoServicio<VendedorDTO>(7,mensajeValidacion,
+                        string.Empty, nuevoVendedor.ProyectadoComo<VendedorDTO>());
+            }
+            else
+            {
+                mensajeValidacion = "Creacion de nuevo vendedor fallo.";
+                LogFactory.CrearLog().LogWarning(mensajeValidacion);
+                
+                return new ResultadoServicio<VendedorDTO>(7,mensajeValidacion,
+                        string.Empty, nuevoVendedor.ProyectadoComo<VendedorDTO>());
+            }
 
 
+        }
 
+
+        Vendedor CrearNuevoVendedor(VendedorDTO pVendedorDTO, Almacen pAlmacen,
+                                    EstadoVendedor pEstadoVendedor,    
+                                    UsuarioSistema pUsuarioSistema,
+                                    UsuarioSistema pUsuarioSistemaAcceso,
+                                    VendedorDireccion pDireccionPrimero)
+        {
+            Vendedor nuevoVendedor = VendedorFactory.CrearVendedor(pVendedorDTO.NombresVendedor, 
+                                    pVendedorDTO.DocumentoIdentidad, pVendedorDTO.Telefono, 
+                                    pVendedorDTO.Sexo, pVendedorDTO.FechaInicio,
+                                    pVendedorDTO.CodigoVendedor,  pVendedorDTO.Clave,
+                                    pVendedorDTO.FechaNacimiento, pAlmacen, pEstadoVendedor,
+                                    pUsuarioSistema, pUsuarioSistemaAcceso,  pDireccionPrimero);
+            return nuevoVendedor;
+
+        }
+
+
+        void GrabarNuevoVendedor(Vendedor pVendedor)
+        {
+            _IRepositorioVendedor.Agregar(pVendedor);
         }
     }
 }

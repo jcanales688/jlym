@@ -12,7 +12,7 @@ namespace PtoVta.Dominio.Agregados.Colaborador
                                              string pTelefono,
                                              string pSexo,
                                              DateTime pFechaInicio,
-                                             string pUsuarioVendedor,
+                                             string pCodigoVendedor,
                                              string pClave,
                                              DateTime pFechaNacimiento,
                                              Almacen pAlmacen,
@@ -26,6 +26,7 @@ namespace PtoVta.Dominio.Agregados.Colaborador
 
             vendedor.GenerarNuevaIdentidad();
 
+            vendedor.CodigoVendedor  = pCodigoVendedor;
             vendedor.NombresVendedor = pNombresVendedor;
             vendedor.DocumentoIdentidad = pDocumentoIdentidad;
             vendedor.Telefono = pTelefono; 
@@ -34,18 +35,14 @@ namespace PtoVta.Dominio.Agregados.Colaborador
             vendedor.Clave = pClave;
             vendedor.FechaNacimiento = pFechaNacimiento;
 
-
             // Value Object
             vendedor.Direccion = pDireccionPrimero;
 
             vendedor.Habilitar();
-
             vendedor.EstablecerAlmacenDeVendedor(pAlmacen);
             vendedor.EstablecerEstadoVendedorDeVendedor(pEstadoVendedor);
             vendedor.EstablecerUsuarioSistemaDeVendedor(pUsuarioSistema);
             vendedor.EstablecerUsuarioSistemaAccesoDeVendedor(pUsuarioSistemaAcceso);
-
-
 
             return vendedor;
         }
