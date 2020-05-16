@@ -1,4 +1,5 @@
 using System;
+using PtoVta.Dominio.Agregados.Parametros;
 using PtoVta.Dominio.Agregados.Usuario;
 using PtoVta.Dominio.BaseTrabajo;
 
@@ -13,11 +14,12 @@ namespace PtoVta.Dominio.Agregados.Colaborador
 
         public string NombresVendedor { get; set; }
         public string DocumentoIdentidad { get; set; }
-     
+        public string Telefono { get; set; }
+        public string Sexo { get; set; }
+        public DateTime FechaInicio { get; set; }        
+        public DateTime FechaNacimiento { get; set; }    
         public string Clave { get; set; }
-
-
-
+ 
 
         public bool EsHabilitado
         {
@@ -42,11 +44,11 @@ namespace PtoVta.Dominio.Agregados.Colaborador
         public string CodigoUsuarioSistemaAcceso { get; private set; }
         // public Guid UsuarioSistemaAccesoId { get; private set; }
 
-        //public virtual Almacen Almacen  { get; private set; }
+        public virtual Almacen Almacen  { get; private set; }
         public virtual EstadoVendedor EstadoVendedor { get; private  set; }
-        //public virtual UsuarioSistema UsuarioSistema { get; private set; }
+        public virtual UsuarioSistema UsuarioSistema { get; private set; }
         public virtual UsuarioSistema UsuarioSistemaAcceso { get; private set; }
-
+        public virtual VendedorDireccion Direccion { get; set; }
 
 
         public void Habilitar()
@@ -67,7 +69,54 @@ namespace PtoVta.Dominio.Agregados.Colaborador
 
 
 
+        //Almacen
+        public void EstablecerAlmacenDeVendedor(Almacen pAlmacen)
+        {
+            if (pAlmacen == null || pAlmacen.EsTransitorio())
+            {
+                throw new ArgumentException("Mensajes.excepcion_AlmacenDeVendedorEnEstadoNuloOTransitorio");
 
+            }
+
+            //relacion
+            this.CodigoAlmacen = pAlmacen.CodigoAlmacen;
+            this.Almacen = pAlmacen;
+        }
+
+        public void EstablecerReferenciaAlmacenDeVendedor(string pCodigoAlmacenAlmacen)
+        {
+            if (!string.IsNullOrEmpty(pCodigoAlmacenAlmacen))
+            {
+                //relacion
+                this.CodigoAlmacen = pCodigoAlmacenAlmacen;
+                this.Almacen = null;
+            }
+        }
+
+
+        //UsuarioSistema el que registra el vendedor
+        public void EstablecerUsuarioSistemaDeVendedor(UsuarioSistema pUsuarioSistema)
+        {
+            if (pUsuarioSistema == null )
+            {
+                throw new ArgumentException("Mensajes.excepcion_UsuarioSistemaDeVendedorEnEstadoNuloOTransitorio");
+
+            }
+
+            //relacion
+            this.CodigoUsuarioSistema = pUsuarioSistema.CodigoUsuarioDeSistema;
+            this.UsuarioSistema = pUsuarioSistema;
+        }
+
+        public void EstablecerReferenciaUsuarioSistemaDeVendedor(string pCodigoUsuarioSistema)
+        {
+            if (! string.IsNullOrEmpty(pCodigoUsuarioSistema))
+            {
+                //relacion
+                this.CodigoUsuarioSistema = pCodigoUsuarioSistema;
+                this.UsuarioSistema = null;
+            }
+        }
 
         //EstadoVendedor
         public void EstablecerEstadoVendedorDeVendedor(EstadoVendedor pEstadoVendedor)

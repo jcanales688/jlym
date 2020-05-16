@@ -383,13 +383,3 @@ C:\PtoVtaMovil\jlym\PtoVta.API\obj\Debug\netcoreapp3.1\win-x64\staticwebassets\P
 C:\PtoVtaMovil\jlym\PtoVta.API\obj\Debug\netcoreapp3.1\win-x64\PtoVta.API.dll
 C:\PtoVtaMovil\jlym\PtoVta.API\obj\Debug\netcoreapp3.1\win-x64\PtoVta.API.pdb
 C:\PtoVtaMovil\jlym\PtoVta.API\obj\Debug\netcoreapp3.1\win-x64\PtoVta.API.genruntimeconfig.cache
-C:\PtoVtaMovil\jlym\PtoVta.API\bin\Debug\netcoreapp3.1\win-x64\publicado\web.config
-C:\PtoVtaMovil\jlym\PtoVta.API\bin\Debug\netcoreapp3.1\win-x64\publicado\appsettings.Development.json
-C:\PtoVtaMovil\jlym\PtoVta.API\bin\Debug\netcoreapp3.1\win-x64\publicado\appsettings.json
-C:\PtoVtaMovil\jlym\PtoVta.API\bin\Debug\netcoreapp3.1\win-x64\publicado\PtoVta.API.deps.json
-C:\PtoVtaMovil\jlym\PtoVta.API\bin\Debug\netcoreapp3.1\win-x64\publicado\PtoVta.API.runtimeconfig.json
-C:\PtoVtaMovil\jlym\PtoVta.API\bin\Debug\netcoreapp3.1\win-x64\publicado\publicado\web.config
-C:\PtoVtaMovil\jlym\PtoVta.API\bin\Debug\netcoreapp3.1\win-x64\publicado\publicado\appsettings.Development.json
-C:\PtoVtaMovil\jlym\PtoVta.API\bin\Debug\netcoreapp3.1\win-x64\publicado\publicado\appsettings.json
-C:\PtoVtaMovil\jlym\PtoVta.API\bin\Debug\netcoreapp3.1\win-x64\publicado\publicado\PtoVta.API.deps.json
-C:\PtoVtaMovil\jlym\PtoVta.API\bin\Debug\netcoreapp3.1\win-x64\publicado\publicado\PtoVta.API.runtimeconfig.json
