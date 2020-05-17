@@ -40,5 +40,10 @@ namespace PtoVta.Infraestructura.Repositorios.Usuario
 
             }
         }
+
+        public UsuarioSistema ObtenerUsuarioSistemaPorUsuario(string pUsuarioDeSistema)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

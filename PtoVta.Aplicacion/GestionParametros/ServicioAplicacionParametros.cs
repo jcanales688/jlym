@@ -18,7 +18,7 @@ namespace PtoVta.Aplicacion.GestionParametros
 
             _IRepositorioCategoriaArticulo = pIRepositorioCategoriaArticulo;
         }
-
+ 
         public List<CategoriaArticuloDTO> ObtenerCategorias()
         {
             var categorias = _IRepositorioCategoriaArticulo.ObtenerTodos();

@@ -59,58 +59,6 @@ namespace PtoVta.Dominio.Agregados.Parametros
             }
         }
 
-        public SubCategoriaArticulo AgregarNuevaSubCategoriaArticulo(
-                    string pDescripcionSubCategoriaArticulo, decimal pPorcentajeDiferencia, 
-                    string pCodigoTipoMovInvFisIngreso, string pCodigoTipoMovInvFisSalida)
-        {
-            if (string.IsNullOrEmpty(pCodigoTipoMovInvFisIngreso)
-                ||
-                string.IsNullOrEmpty(pCodigoTipoMovInvFisSalida)
-                ||
-                String.IsNullOrWhiteSpace(pDescripcionSubCategoriaArticulo)
-                )
-                throw new ArgumentException("Mensajes.excepcion_DatosNoValidosParaLineaSubCategoriaArticulo");
 
-
-
-            var nuevaLineaSubCategoriaArticulo = new SubCategoriaArticulo()
-            {
-                CodigoCategoriaArticulo = this.CodigoCategoriaArticulo,
-                CodigoTipoMovInvFisIngreso = pCodigoTipoMovInvFisIngreso,
-                CodigoTipoMovInvFisSalida = pCodigoTipoMovInvFisSalida,
-                //IdSubCategoriaArticulo = pIdSubCategoriaArticulo,
-                DescripcionSubCategoriaArticulo = pDescripcionSubCategoriaArticulo,
-                PorcentajeDiferencia = pPorcentajeDiferencia
-            };
-
-            //Establecer la identidad
-            nuevaLineaSubCategoriaArticulo.GenerarNuevaIdentidad();
-
-            this.SubCategoriasArticulo.Add(nuevaLineaSubCategoriaArticulo);
-
-            return nuevaLineaSubCategoriaArticulo;
-        }
-
-        public void EstablecerTipoNegocioDeCategoriaArticulo(TipoNegocio pTipoNegocio)
-        {
-            if (pTipoNegocio == null)
-            {
-                throw new ArgumentException("Mensajes.excepcion_TipoNegocioDeCategoriaArticuloEnEstadoNuloOTransitorio");
-            }
-
-            //relacion
-            this.CodigoTipoNegocio = pTipoNegocio.CodigoTipoNegocio;
-            this.TipoNegocio = pTipoNegocio;
-        }
-
-        public void EstablecerReferenciaTipoNegocioDeCategoriaArticulo(string pCodigoTipoNegocio)
-        {
-            if (!string.IsNullOrEmpty(pCodigoTipoNegocio))
-            {
-                //relacion
-                this.CodigoTipoNegocio = pCodigoTipoNegocio;
-                this.TipoNegocio = null;
-            }
-        }
     }
 }    
