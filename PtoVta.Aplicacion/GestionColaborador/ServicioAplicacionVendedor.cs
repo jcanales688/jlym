@@ -98,7 +98,7 @@ namespace PtoVta.Aplicacion.GestionUsuario
                 mensajeValidacion = "Vendedor creado satisfactoriamente.";
                 
                 return new ResultadoServicio<VendedorDTO>(7,mensajeValidacion,
-                        string.Empty, nuevoVendedor.ProyectadoComo<VendedorDTO>());
+                        string.Empty, nuevoVendedor.ProyectadoComo<VendedorDTO>(), null);
             }
             else
             {
@@ -106,7 +106,7 @@ namespace PtoVta.Aplicacion.GestionUsuario
                 LogFactory.CrearLog().LogWarning(mensajeValidacion);
                 
                 return new ResultadoServicio<VendedorDTO>(7,mensajeValidacion,
-                        string.Empty, nuevoVendedor.ProyectadoComo<VendedorDTO>());
+                        string.Empty, nuevoVendedor.ProyectadoComo<VendedorDTO>(), null);
             }
 
 

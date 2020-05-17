@@ -19,16 +19,23 @@ namespace PtoVta.Aplicacion.GestionParametros
             _IRepositorioCategoriaArticulo = pIRepositorioCategoriaArticulo;
         }
  
-        public List<CategoriaArticuloDTO> ObtenerCategorias()
+        public ResultadoServicio<CategoriaArticuloDTO> ObtenerCategorias()
         {
+            var mensajeValidacion = string.Empty;
             var categorias = _IRepositorioCategoriaArticulo.ObtenerTodos();
 
             if (categorias != null && categorias.Any())
             {
-                return categorias.ProyectadoComoColeccion<CategoriaArticuloDTO>();
+                mensajeValidacion = "Consulta de Categorias exitosa.";
+                return new ResultadoServicio<CategoriaArticuloDTO>(7,mensajeValidacion,
+                        string.Empty, null,  categorias.ProyectadoComoColeccion<CategoriaArticuloDTO>());
             }
             else
-                return null;
+            {
+                mensajeValidacion = "Consulta de Categorias fallida.";
+                return new ResultadoServicio<CategoriaArticuloDTO>(7,mensajeValidacion,
+                        string.Empty, null,  null);                
+            }
         }
     }
 }

@@ -11,15 +11,16 @@ namespace PtoVta.Aplicacion.BaseTrabajo
 
         public string Detalles { get; private set; }
 
-        public object Datos { get; private set; }
-        // public IEnumerable<TEntidad> Datos { get; private set; }
+        public TEntidad Dato { get; private set; }
+        public IEnumerable<TEntidad> Datos { get; private set; }
 
         public ResultadoServicio(int pResultadoId, string pDescripcionResultado, 
-                                            string pDetalles, object pDatos) //IEnumerable<TEntidad> pDatos
+                                            string pDetalles, TEntidad pDato, IEnumerable<TEntidad> pDatos) 
         {
             this.ResultadoId = pResultadoId;
             this.DescripcionResultado = pDescripcionResultado;
             this.Detalles = pDetalles;
+            this.Dato = pDato;
             this.Datos = pDatos;
         }
     }

@@ -7,6 +7,6 @@ namespace PtoVta.Aplicacion.GestionParametros
 {
     public interface IServicioAplicacionParametros
     {
-        List<CategoriaArticuloDTO> ObtenerCategorias();      
+        ResultadoServicio<CategoriaArticuloDTO> ObtenerCategorias();      
     }    
 }

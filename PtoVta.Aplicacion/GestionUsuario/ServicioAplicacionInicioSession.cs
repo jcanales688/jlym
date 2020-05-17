@@ -131,7 +131,7 @@ namespace PtoVta.Aplicacion.GestionUsuario
                 // LogFactory.CrearLog().LogError(mensajeValidacion);
                 
                 return new ResultadoServicio<ModuloSistemaDTO>(7,mensajeValidacion,
-                        string.Empty, accesosModuloSistema.ProyectadoComo<ModuloSistemaDTO>());
+                        string.Empty, accesosModuloSistema.ProyectadoComo<ModuloSistemaDTO>(), null);
             }
             else
             {
@@ -139,7 +139,7 @@ namespace PtoVta.Aplicacion.GestionUsuario
                 LogFactory.CrearLog().LogError(mensajeValidacion);
 
                 return new ResultadoServicio<ModuloSistemaDTO>(0,mensajeValidacion,
-                                                                    string.Empty, null);
+                                                                    string.Empty, null, null);
             }
         }
 

@@ -5,6 +5,7 @@ using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using PtoVta.Aplicacion.BaseTrabajo;
 using PtoVta.Aplicacion.DTO.Parametros;
 using PtoVta.Aplicacion.GestionParametros;
 
@@ -24,12 +25,28 @@ namespace PtoVta.API.Controllers
 
         [Route("todasCategorias")]
         [HttpGet]
-        [ProducesResponseType(typeof(IEnumerable<CategoriaArticuloDTO>), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(ResultadoServicio<CategoriaArticuloDTO>), (int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.NotFound)]
         public  IActionResult ConsultarCategorias()
+        {try
         {
             var categorias = _IServicioAplicacionParametros.ObtenerCategorias();
 
-            return Ok(categorias);
+            if (categorias == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(categorias);            
+        }
+        catch (Exception ex)
+        {
+            return NotFound(
+                new ResultadoServicio<CategoriaArticuloDTO>(0,"Problemas al recuperar las Categorias.", ex.Message, null, null)
+            );
+        }
+
+
         }
     }
 }

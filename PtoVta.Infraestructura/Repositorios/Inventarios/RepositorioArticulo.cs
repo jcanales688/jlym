@@ -1,5 +1,6 @@
 
 using System;
+using System.Collections.Generic;
 using PtoVta.Dominio.Agregados.Inventarios;
 using PtoVta.Infraestructura.BaseTrabajo;
 
@@ -12,7 +13,7 @@ namespace PtoVta.Infraestructura.Repositorios.Colaborador
             this.CadenaConexion = pCadenaConexion;
         }
 
-        public Articulo ObtenerPorCategoriaYSubcategoria(string pCodigoCategoria, string pCodigoSubCategoria)
+        public IEnumerable<Articulo> ObtenerPorCategoriaYSubcategoria(string pCodigoCategoria, string pCodigoSubCategoria)
         {
             throw new NotImplementedException();
         }
