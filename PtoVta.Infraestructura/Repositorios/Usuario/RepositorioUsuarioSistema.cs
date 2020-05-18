@@ -43,7 +43,28 @@ namespace PtoVta.Infraestructura.Repositorios.Usuario
 
         public UsuarioSistema ObtenerUsuarioSistemaPorUsuario(string pUsuarioDeSistema)
         {
-            throw new NotImplementedException();
+         using (IDbConnection cn = new SqlConnection(this.CadenaConexion))
+            {
+                string cadenaSQL = @"SELECT	USERID		AS CodigoUsuarioDeSistema
+                                            ,EXPIRED	AS FechaExpiracion
+                                            ,USERNAME	AS DescripcionUsuario
+                                            ,PASSWORD	AS Contraseña
+                                            ,STATUS AS EsHabilitado
+                                    FROM	SE_USERREC (NOLOCK)
+                                    WHERE	USERID			= @USERID";
+
+                var usuarioSistema = cn.QueryFirstOrDefault<UsuarioSistema>(cadenaSQL,
+                                    new { USERID = pUsuarioDeSistema});
+
+                                                                                    
+                if (usuarioSistema != null)
+                {
+                    return usuarioSistema;
+                }
+                else
+                    return null;
+
+            }
         }
     }
 }

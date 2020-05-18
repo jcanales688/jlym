@@ -19,10 +19,10 @@ namespace PtoVta.Aplicacion.GestionParametros
             _IRepositorioCategoriaArticulo = pIRepositorioCategoriaArticulo;
         }
  
-        public ResultadoServicio<CategoriaArticuloDTO> ObtenerCategorias()
+        public ResultadoServicio<CategoriaArticuloDTO> ObtenerCategorias(string pTipoNegocio)
         {
             var mensajeValidacion = string.Empty;
-            var categorias = _IRepositorioCategoriaArticulo.ObtenerTodos();
+            var categorias = _IRepositorioCategoriaArticulo.ObtenerTodos(pTipoNegocio);
 
             if (categorias != null && categorias.Any())
             {
