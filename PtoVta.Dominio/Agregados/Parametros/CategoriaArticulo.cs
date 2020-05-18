@@ -41,7 +41,7 @@ namespace PtoVta.Dominio.Agregados.Parametros
                 this._EsHabilitado = false;
         }
 
-        public string CodigoTipoNegocio { get; private set; }
+        public string CodigoTipoNegocio { get;  set; }
         public virtual TipoNegocio TipoNegocio { get; private set; }
 
         public virtual ICollection<SubCategoriaArticulo> SubCategoriasArticulo 

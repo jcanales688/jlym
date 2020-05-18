@@ -43,13 +43,13 @@ namespace PtoVta.Dominio.Agregados.Inventarios
             }
         }
 
-        public string CodigoMarcaArticulo { get; private set; }
-        public string CodigoImpuestoIsc { get; private set; }
-        public string CodigoImpuestoIgv { get; private set; }
-        public string CodigoCategoriaArticulo { get; private set; }
-        public string CodigoSubCategoriaArticulo { get; private set; }
-        public string CodigoTipoInventario { get; private set; }
-        public string CodigoUnidadDeMedida { get; private set; }
+        public string CodigoMarcaArticulo { get; set; }
+        public string CodigoImpuestoIsc { get; set; }
+        public string CodigoImpuestoIgv { get; set; }
+        public string CodigoCategoriaArticulo { get; set; }
+        public string CodigoSubCategoriaArticulo { get; set; }
+        public string CodigoTipoInventario { get; set; }
+        public string CodigoUnidadDeMedida { get; set; }
          
 
 

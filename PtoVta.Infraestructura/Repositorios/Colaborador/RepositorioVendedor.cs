@@ -16,6 +16,25 @@ namespace PtoVta.Infraestructura.Repositorios.Colaborador
             this.CadenaConexion = pCadenaConexion;
         }
         
+        public override void Agregar(Vendedor item)
+        {            
+          using (IDbConnection cn = new SqlConnection(this.CadenaConexion))
+            {
+                string sqlAgregaCliente = @"INSERT INTO PC_OP_SALESPERSON(SALESPERID, SALESPERNAME, IDENTITYDOC, PHONE, SEX, INITIALDATE, 
+                                                            BIRTHDATE, PASSWORD, SITEID, STATUSPERSONID, USERID, ACCESSUSERID) 
+                                                            VALUES
+                                                            (@SALESPERID, @SALESPERNAME, @IDENTITYDOC, @PHONE, @SEX, @INITIALDATE, 
+                                                            @BIRTHDATE, @PASSWORD, @SITEID, @STATUSPERSONID, @USERID, @ACCESSUSERID)";
+
+                var filasAfectadas = cn.Execute(sqlAgregaCliente, new {SALESPERID = String.Empty, SALESPERNAME = String.Empty,
+                                                                        IDENTITYDOC = String.Empty, PHONE = String.Empty,
+                                                                        SEX = String.Empty, INITIALDATE = string.Empty,
+                                                                        BIRTHDATE = string.Empty, PASSWORD = string.Empty,
+                                                                        SITEID = string.Empty, STATUSPERSONID = string.Empty,
+                                                                        USERID = string.Empty, ACCESSUSERID = string.Empty});
+            }                                
+        }
+
         public Vendedor ObtenerVendedorPorUsuario(string pUsuarioVendedor)
         {
           using (IDbConnection cn = new SqlConnection(this.CadenaConexion))
