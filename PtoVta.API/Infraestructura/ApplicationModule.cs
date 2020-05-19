@@ -1,8 +1,12 @@
 using System;
 using Autofac;
+using PtoVta.Aplicacion.GestionInventarios;
+using PtoVta.Aplicacion.GestionParametros;
 using PtoVta.Aplicacion.GestionUsuario;
 using PtoVta.Dominio.Agregados.Colaborador;
+using PtoVta.Dominio.Agregados.Inventarios;
 using PtoVta.Dominio.Agregados.Modulo;
+using PtoVta.Dominio.Agregados.Parametros;
 using PtoVta.Dominio.Agregados.Usuario;
 using PtoVta.Infraestructura.Repositorios.Colaborador;
 using PtoVta.Infraestructura.Repositorios.Modulo;
@@ -38,7 +42,23 @@ namespace PtoVta.API.Infraestructura
 
                 builder.Register(c => new RepositorioUsuarioSistema(QueriesConnectionString))
                     .As<IRepositorioUsuarioSistema>()
-                    .InstancePerLifetimeScope();                                        
+                    .InstancePerLifetimeScope();       
+
+                builder.Register(c => new RepositorioEstadoVendedor(QueriesConnectionString))
+                    .As<IRepositorioEstadoVendedor>()
+                    .InstancePerLifetimeScope();       
+
+                builder.Register(c => new RepositorioArticulo(QueriesConnectionString))
+                    .As<IRepositorioArticulo>()
+                    .InstancePerLifetimeScope();       
+
+                builder.Register(c => new RepositorioAlmacen(QueriesConnectionString))
+                    .As<IRepositorioAlmacen>()
+                    .InstancePerLifetimeScope();       
+
+                builder.Register(c => new RepositorioCategoriaArticulo(QueriesConnectionString))
+                    .As<IRepositorioCategoriaArticulo>()
+                    .InstancePerLifetimeScope();                                                                                                                        
 
                 // builder.RegisterType<RepositorioVendedor>()
                 //     .As<IRepositorioVendedor>()
@@ -64,6 +84,18 @@ namespace PtoVta.API.Infraestructura
                     .As<IServicioAplicacionInicioSession>()
                     .InstancePerLifetimeScope();    
 
+               builder.RegisterType<ServicioAplicacionVendedor>()
+                    .As<IServicioAplicacionVendedor>()
+                    .InstancePerLifetimeScope(); 
+
+               builder.RegisterType<ServicioAplicacionArticulo>()
+                    .As<IServicioAplicacionArticulo>()
+                    .InstancePerLifetimeScope(); 
+
+               builder.RegisterType<ServicioAplicacionParametros>()
+                    .As<IServicioAplicacionParametros>()
+                    .InstancePerLifetimeScope();                                         
+
                builder.RegisterType<AutenticacionWindows>()
                     .As<IAutenticacion>()
                     .InstancePerLifetimeScope();    
@@ -75,8 +107,7 @@ namespace PtoVta.API.Infraestructura
                 TipoAdaptadorFactory.EstablecerActual(adaptadorFactory);  
 
                 // builder.RegisterAssemblyTypes(typeof(CrearArticuloControladorComando).GetTypeInfo().Assembly)
-                    //.AsClosedTypesOf(typeof(IIntegrationEventHandler<>))
-                    ;
+                    //.AsClosedTypesOf(typeof(IIntegrationEventHandler<>));
 
             }            
         }    

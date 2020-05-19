@@ -23,7 +23,7 @@ namespace PtoVta.API.Controllers
         }
 
 
-        [Route("todosArticulosPorCategoriaYSubCategoria")]
+        [Route("todosArticulosPorCategoriaYSubCategoria/{pCodigoCategoria}/{pCodigoSubCategoria}")]
         [HttpGet]
         [ProducesResponseType(typeof(ResultadoServicio<ArticuloDTO>), (int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]

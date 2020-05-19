@@ -27,7 +27,7 @@ namespace PtoVta.API.Controllers
         [HttpPost]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        public IActionResult AgregarVendedor(VendedorDTO pVendedor)
+        public IActionResult AgregarVendedor([FromBody]VendedorDTO pVendedor)
         {
             try
             { 
