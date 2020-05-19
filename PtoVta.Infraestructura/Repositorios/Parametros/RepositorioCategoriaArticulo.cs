@@ -53,10 +53,10 @@ namespace PtoVta.Infraestructura.Repositorios.Modulo
             }
         }
 
-        public CategoriaArticulo ObtenerPorCodigo(string pCodigoCategoriaArticulo)
-        {
-            throw new NotImplementedException();
-        }
+        // public CategoriaArticulo ObtenerPorCodigo(string pCodigoCategoriaArticulo)
+        // {
+        //     throw new NotImplementedException();
+        // }
 
 
         private List<CategoriaArticulo> MapeoCategoriaListado(List<CategoriaArticulo> pCategorias, List<SubCategoriaArticulo> pSubCategorias)

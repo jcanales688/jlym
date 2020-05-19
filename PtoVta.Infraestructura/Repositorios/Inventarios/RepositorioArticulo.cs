@@ -53,8 +53,8 @@ namespace PtoVta.Infraestructura.Repositorios.Colaborador
                                             ,STOCKSTAR		AS StockInicial
                                             ,QTYAVAIL		AS StockActual
                                             ,GETDATE()		AS FechaCreacion
-                                            ,STARTDATEINV	AS FechaUltimoInv
-                                            ,ENDDATEINV		AS StockUltimoInv
+                                            ,ENDDATEINV		AS FechaUltimoInv
+                                            ,LASTINVFIS		AS StockUltimoInv
                                             ,AVGCOSTPEN		AS CostoPromedioNacional
                                             ,AVGCOSTUSD		AS CostoPromedioExtranjera
                                             ,STDCOSTPEN		AS CostoReposicionNacional

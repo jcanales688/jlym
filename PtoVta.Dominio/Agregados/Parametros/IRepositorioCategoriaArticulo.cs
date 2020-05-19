@@ -7,6 +7,6 @@ namespace PtoVta.Dominio.Agregados.Parametros
     public interface IRepositorioCategoriaArticulo : IRepositorio<CategoriaArticulo>
     {
         IEnumerable<CategoriaArticulo> ObtenerTodos(string pTipoNegocio);
-        CategoriaArticulo ObtenerPorCodigo(string pCodigoCategoriaArticulo);        
+        // CategoriaArticulo ObtenerPorCodigo(string pCodigoCategoriaArticulo);        
     }
 }

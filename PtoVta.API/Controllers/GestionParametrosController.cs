@@ -23,14 +23,14 @@ namespace PtoVta.API.Controllers
         }
 
 
-        [Route("todasCategorias")]
+        [Route("todasCategorias/{pTipoNegocio}")]
         [HttpGet]
         [ProducesResponseType(typeof(ResultadoServicio<CategoriaArticuloDTO>), (int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
-        public  IActionResult ConsultarCategorias()
+        public  IActionResult ConsultarCategorias(string pTipoNegocio)
         {try
         {
-            var categorias = _IServicioAplicacionParametros.ObtenerCategorias();
+            var categorias = _IServicioAplicacionParametros.ObtenerCategorias(pTipoNegocio);
 
             if (categorias == null)
             {
