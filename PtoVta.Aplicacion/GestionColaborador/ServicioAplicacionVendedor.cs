@@ -74,7 +74,7 @@ namespace PtoVta.Aplicacion.GestionUsuario
                 throw new ArgumentException(mensajeValidacion);
             }                
 
-            var usuarioSistemaDelAcceso =_IIRepositorioUsuarioSistema.ObtenerUsuarioSistemaPorUsuario(pVendedor.CodigoUsuarioSistema);
+            var usuarioSistemaDelAcceso =_IIRepositorioUsuarioSistema.ObtenerUsuarioSistemaPorUsuario("VENDPLAYA");
             if (estadoVendedor == null)
             {
                 mensajeValidacion = "Estado de vendedor asociado al vendedor no existe.";

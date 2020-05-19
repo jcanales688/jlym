@@ -36,11 +36,14 @@ namespace PtoVta.Infraestructura.Tests
                 Clave = "123"
             };
 
+
+
             vendedor.EstablecerReferenciaAlmacenDeVendedor("24");
             vendedor.EstablecerReferenciaEstadoVendedorDeVendedor("01");
             vendedor.EstablecerReferenciaUsuarioSistemaDeVendedor("SYSADMIN");
             vendedor.EstablecerReferenciaUsuarioSistemaAccesoDeVendedor("VENDPLAYA");
             
+            vendedor.Direccion = new VendedorDireccion("Peru", "Lima", "Lima", "Puente Piedra", "AV. 100");
 
             _IRepositorioVendedor.Agregar(vendedor);
             
