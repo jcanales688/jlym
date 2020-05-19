@@ -43,15 +43,88 @@ namespace PtoVta.Dominio.Agregados.Inventarios
             }
         }
 
-        public string CodigoMarcaArticulo { get; set; }
-        public string CodigoImpuestoIsc { get; set; }
-        public string CodigoImpuestoIgv { get; set; }
-        public string CodigoCategoriaArticulo { get; set; }
-        public string CodigoSubCategoriaArticulo { get; set; }
-        public string CodigoTipoInventario { get; set; }
-        public string CodigoUnidadDeMedida { get; set; }
-         
+        public string CodigoMarcaArticulo { get; private set; }
+        public string CodigoImpuestoIsc { get; private set; }
+        public string CodigoImpuestoIgv { get; private set; }
+        public string CodigoCategoriaArticulo { get; private set; }
+        public string CodigoSubCategoriaArticulo { get; private set; }
+        public string CodigoTipoInventario { get; private set; }
+        public string CodigoUnidadDeMedida { get; private set; }
 
+
+
+        public void EstablecerReferenciaMarcaArticuloDeArticulo(string pCodigoMarcaArticulo)
+        {
+            if (!string.IsNullOrEmpty(pCodigoMarcaArticulo))
+            {
+                //relacion
+                this.CodigoMarcaArticulo = pCodigoMarcaArticulo;
+                // this.MarcaArticulo = null;
+            }
+        }
+
+        public void EstablecerReferenciaImpuestoIscDeArticulo(string pCodigoImpuestoIsc)
+        {
+            if (!string.IsNullOrEmpty(pCodigoImpuestoIsc))
+            {
+                //relacion
+                this.CodigoImpuestoIsc = pCodigoImpuestoIsc;
+                // this.ImpuestoIsc = null;
+            }
+        }
+
+        public void EstablecerReferenciaImpuestoIgvDeArticulo(string pCodigoImpuestoIgv)
+        {
+            if (!string.IsNullOrEmpty(pCodigoImpuestoIgv))
+            {
+                //relacion
+                this.CodigoImpuestoIgv = pCodigoImpuestoIgv;
+                // this.ImpuestoIgv = null;
+            }
+        }
+
+
+
+        public void EstablecerReferenciaCategoriaArticuloDeArticulo(string pCodigoCategoriaArticulo)
+        {
+            if (!string.IsNullOrEmpty(pCodigoCategoriaArticulo))
+            {
+                //relacion
+                this.CodigoCategoriaArticulo = pCodigoCategoriaArticulo;
+                // this.CategoriaArticulo = null;
+            }
+        }
+
+        public void EstablecerReferenciaSubCategoriaArticuloDeArticulo(string pCodigoSubCategoriaArticulo)
+        {
+            if (!string.IsNullOrEmpty(pCodigoSubCategoriaArticulo))
+            {
+                //relacion
+                this.CodigoSubCategoriaArticulo = pCodigoSubCategoriaArticulo;
+                // this.SubCategoriaArticulo = null;
+            }
+        }
+
+        public void EstablecerReferenciaTipoInventarioDeArticulo(string pCodigoTipoInventario)
+        {
+            if (!string.IsNullOrEmpty(pCodigoTipoInventario))
+            {
+                //relacion
+                this.CodigoTipoInventario = pCodigoTipoInventario;
+                // this.TipoInventario = null;
+            }
+        }         
+
+
+        public void EstablecerReferenciaUnidadDeMedidaDeArticulo(string pCodigoUnidadDeMedida)
+        {
+            if (!string.IsNullOrEmpty(pCodigoUnidadDeMedida))
+            {
+                //relacion
+                this.CodigoUnidadDeMedida = pCodigoUnidadDeMedida;
+                // this.UnidadDeMedida = null;
+            }
+        }
 
 
 

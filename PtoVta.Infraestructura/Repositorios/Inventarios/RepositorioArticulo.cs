@@ -111,16 +111,17 @@ namespace PtoVta.Infraestructura.Repositorios.Colaborador
                     EsDesensamble = articulo.EsDesensamble,
                     UsuarioSistema = articulo.UsuarioSistema,
                     ParaVentaManualEnPlaya = articulo.ParaVentaManualEnPlaya,
-                    EditarPrecio = articulo.EditarPrecio,
-                    CodigoMarcaArticulo = articulo.CodigoMarcaArticulo,
-                    CodigoImpuestoIsc = articulo.CodigoImpuestoIsc,
-                    CodigoImpuestoIgv = articulo.CodigoImpuestoIgv,
-                    CodigoCategoriaArticulo = articulo.CodigoCategoriaArticulo,
-                    CodigoSubCategoriaArticulo =articulo.CodigoSubCategoriaArticulo,
-                    CodigoTipoInventario = articulo.CodigoTipoInventario,
-                    CodigoUnidadDeMedida = articulo.CodigoUnidadDeMedida
+                    EditarPrecio = articulo.EditarPrecio
                 };
             
+                articuloAAgregar.EstablecerReferenciaMarcaArticuloDeArticulo(articulo.CodigoMarcaArticulo);
+                articuloAAgregar.EstablecerReferenciaImpuestoIscDeArticulo(articulo.CodigoImpuestoIsc);
+                articuloAAgregar.EstablecerReferenciaImpuestoIgvDeArticulo(articulo.CodigoImpuestoIgv);                                
+                articuloAAgregar.EstablecerReferenciaCategoriaArticuloDeArticulo(articulo.CodigoCategoriaArticulo);
+                articuloAAgregar.EstablecerReferenciaSubCategoriaArticuloDeArticulo(articulo.CodigoSubCategoriaArticulo);
+                articuloAAgregar.EstablecerReferenciaTipoInventarioDeArticulo(articulo.CodigoTipoInventario);
+                articuloAAgregar.EstablecerReferenciaUnidadDeMedidaDeArticulo(articulo.CodigoUnidadDeMedida);
+
                 var articuloDetallesAsociadas = pArticuloDetalles
                                     .Where(w => w.CodigoArticulo == articulo.CodigoArticulo);
 

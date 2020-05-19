@@ -20,5 +20,13 @@ namespace PtoVta.Infraestructura.Tests
 
             Assert.False(usuarioSistema == null);
         }
+
+       [Fact]
+        public void ObtenerUsuarioSistemaPorSOLOUsuarioS_Test()
+        {
+            var usuarioSistema = _IRepositorioUsuarioSistema.ObtenerUsuarioSistemaPorUsuario("43668598");
+
+            Assert.False(usuarioSistema == null);
+        }        
     }
 }

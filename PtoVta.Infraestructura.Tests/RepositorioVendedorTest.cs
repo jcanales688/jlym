@@ -20,5 +20,31 @@ namespace PtoVta.Infraestructura.Tests
             
             Assert.False(vendedor == null);
         }
+
+
+        [Fact]
+        public void Agregar_Test()
+        {
+            var vendedor = new Vendedor(){
+                CodigoVendedor = "10412889",
+                NombresVendedor = "ALVARO ILLESCAS",
+                DocumentoIdentidad = "10412889",
+                Telefono = "5203124",
+                Sexo="M",
+                FechaInicio = DateTime.Now,
+                FechaNacimiento = DateTime.Now,
+                Clave = "123"
+            };
+
+            vendedor.EstablecerReferenciaAlmacenDeVendedor("24");
+            vendedor.EstablecerReferenciaEstadoVendedorDeVendedor("01");
+            vendedor.EstablecerReferenciaUsuarioSistemaDeVendedor("SYSADMIN");
+            vendedor.EstablecerReferenciaUsuarioSistemaAccesoDeVendedor("VENDPLAYA");
+            
+
+            _IRepositorioVendedor.Agregar(vendedor);
+            
+            Assert.False(vendedor == null);
+        }        
     }
 }
