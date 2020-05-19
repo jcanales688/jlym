@@ -18,10 +18,9 @@ namespace PtoVta.Infraestructura.Tests
         [Fact]
         public void ObtenerTodos_Test()
         {        
-            var almacen =  _IRepositorioCategoriaArticulo.ObtenerTodos("1");
+            var categorias =  _IRepositorioCategoriaArticulo.ObtenerTodos("1");
 
-
-            Assert.False(almacen == null);
+            Assert.False(categorias == null);
         }
     }
 }

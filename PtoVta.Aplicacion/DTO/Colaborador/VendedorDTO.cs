@@ -22,10 +22,10 @@ namespace PtoVta.Aplicacion.DTO.Colaborador
         public string DireccionPrimeroDistrito { get; set; }
         public string DireccionPrimeroUbicacion { get; set; }
 
-        public string CodigoAlmacen{ get; private set; }
-        public string CodigoEstadoVendedor{ get; private set; }
-        public string CodigoUsuarioSistema { get;private set; }
-        public string CodigoUsuarioSistemaAcceso { get; private set; }
+        public string CodigoAlmacen{ get; set; }
+        public string CodigoEstadoVendedor{ get; set; }
+        public string CodigoUsuarioSistema { get;set; }
+        public string CodigoUsuarioSistemaAcceso { get;  set; }
 
 
     }

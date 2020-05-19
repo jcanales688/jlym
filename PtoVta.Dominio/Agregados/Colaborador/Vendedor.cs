@@ -72,7 +72,7 @@ namespace PtoVta.Dominio.Agregados.Colaborador
         //Almacen
         public void EstablecerAlmacenDeVendedor(Almacen pAlmacen)
         {
-            if (pAlmacen == null || pAlmacen.EsTransitorio())
+            if (pAlmacen == null)
             {
                 throw new ArgumentException("Mensajes.excepcion_AlmacenDeVendedorEnEstadoNuloOTransitorio");
 
