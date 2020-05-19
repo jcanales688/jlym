@@ -25,7 +25,7 @@ namespace PtoVta.Infraestructura.Repositorios.Modulo
                                             ,INVTIDSOLOMON		AS CodigoContable
                                             ,DESCRSPANISH		AS Comentario
                                             ,BUSINESSTYPE		AS CodigoTipoNegocio
-                                    FROM	PC_IN_CATEGORY		(NOLOCK) 
+                                    FROM	IN_CATEGORY		(NOLOCK) 
                                     WHERE	BUSINESSTYPE		= @BUSINESSTYPE
                                         
                                     SELECT	CLASSUBID			AS CodigoSubCategoriaArticulo
@@ -34,9 +34,9 @@ namespace PtoVta.Infraestructura.Repositorios.Modulo
                                             ,CLASSID			AS CodigoCategoriaArticulo
                                             ,TYPEDOCFISIN		AS CodigoTipoMovInvFisIngreso
                                             ,TYPEDOCFISOUT		AS CodigoTipoMovInvFisSalida
-                                    FROM	PC_IN_SUBCATEGORY	(NOLOCK) 
+                                    FROM	IN_SUBCATEGORY	(NOLOCK) 
                                     WHERE	CLASSID				IN(SELECT	CLASSID				
-                                                                    FROM	PC_IN_CATEGORY		(NOLOCK) 
+                                                                    FROM	IN_CATEGORY		(NOLOCK) 
                                                                     WHERE	BUSINESSTYPE		= @BUSINESSTYPE)";
 
                 var resultado = cn.QueryMultiple(cadenaSQL,

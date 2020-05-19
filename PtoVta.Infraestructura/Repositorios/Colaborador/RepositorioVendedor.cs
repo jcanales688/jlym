@@ -20,7 +20,7 @@ namespace PtoVta.Infraestructura.Repositorios.Colaborador
         {            
           using (IDbConnection cn = new SqlConnection(this.CadenaConexion))
             {
-                string sqlAgregaCliente = @"INSERT INTO PC_OP_SALESPERSON(SALESPERID, SALESPERNAME, IDENTITYDOC, PHONE, SEX, INITIALDATE, 
+                string sqlAgregaCliente = @"INSERT INTO OP_SALESPERSON(SALESPERID, SALESPERNAME, IDENTITYDOC, PHONE, SEX, INITIALDATE, 
                                                             BIRTHDATE, PASSWORD, SITEID, STATUSPERSONID, USERID, ACCESSUSERID,  ADDRESS1, ADDRESS2) 
                                                             VALUES
                                                             (@SALESPERID, @SALESPERNAME, @IDENTITYDOC, @PHONE, @SEX, @INITIALDATE, 

@@ -44,7 +44,7 @@ namespace PtoVta.Infraestructura.Repositorios.Colaborador
                                             ,CLASSUBID		AS CodigoSubCategoriaArticulo
                                             ,INVTYPEID		AS CodigoTipoInventario
                                             ,STKUNITID		AS CodigoUnidadDeMedida
-                                    FROM	PC_IN_INVENTORY (NOLOCK)
+                                    FROM	IN_INVENTORY (NOLOCK)
                                     WHERE	CLASSID			= @CLASSID
                                             AND CLASSUBID	= @CLASSUBID;
 
@@ -67,9 +67,9 @@ namespace PtoVta.Infraestructura.Repositorios.Colaborador
                                             ,INVTIDSKU		AS CodigoArticulo
                                             ,PRECLVID		AS CodigoTipoPrecioInventario
                                             ,SITEID			AS CodigoAlmacen
-                                    FROM	PC_IN_INVENTORYDAT (NOLOCK)
+                                    FROM	IN_INVENTORYDAT (NOLOCK)
                                     WHERE	INVTIDSKU IN(SELECT	INVTIDSKU
-                                                        FROM	PC_IN_INVENTORY (NOLOCK)
+                                                        FROM	IN_INVENTORY (NOLOCK)
                                                         WHERE	CLASSID			= @CLASSID
                                                                 AND CLASSUBID	= @CLASSUBID)";
 

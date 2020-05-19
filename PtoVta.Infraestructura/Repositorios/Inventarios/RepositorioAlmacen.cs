@@ -31,7 +31,7 @@ namespace PtoVta.Infraestructura.Repositorios.Colaborador
                                             ,FAX	AS Fax
                                             ,ATTN	AS Responsable
                                             ,USERID	AS UsuarioSistemaCrea
-                                    FROM	PC_SITE (NOLOCK)
+                                    FROM	SITE (NOLOCK)
                                     WHERE	SITEID	= @SITEID";
 
                 var almacen = cn.QueryFirstOrDefault<Almacen>(cadenaSQL,
