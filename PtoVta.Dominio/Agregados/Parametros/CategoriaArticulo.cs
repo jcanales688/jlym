@@ -14,6 +14,7 @@ namespace PtoVta.Dominio.Agregados.Parametros
         public string DescripcionCategoriaArticulo { get; set; }
         public string CodigoContable { get; set; }
         public string Comentario { get; set; }
+        public byte[] Imagen{get; set; }
 
 
         public bool EsHabilitado

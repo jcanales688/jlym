@@ -14,7 +14,7 @@ namespace PtoVta.Dominio.Agregados.Parametros
 
         public string CodigoTipoMovInvFisIngreso { get; set; }
         public string CodigoTipoMovInvFisSalida { get; set; }
-
+        public byte[] Imagen{get; set; }
 
     }
 }    

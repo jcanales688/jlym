@@ -15,6 +15,8 @@ namespace PtoVta.Aplicacion.DTO.Parametros
 
         public bool EsHabilitado { get; set; }
 
+        public byte[] Imagen{get; set; }
+        
         public List<SubCategoriaArticuloDTO> SubCategoriasArticulo { get; set; }      
     }
 }

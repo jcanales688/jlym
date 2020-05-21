@@ -25,7 +25,8 @@ namespace PtoVta.Infraestructura.Repositorios.Modulo
                                             ,INVTIDSOLOMON		AS CodigoContable
                                             ,DESCRSPANISH		AS Comentario
                                             ,BUSINESSTYPE		AS CodigoTipoNegocio
-                                    FROM	IN_CATEGORY		(NOLOCK) 
+                                            ,IMAGEN             AS Imagen
+                                    FROM	PC_IN_CATEGORY		(NOLOCK) 
                                     WHERE	BUSINESSTYPE		= @BUSINESSTYPE
                                         
                                     SELECT	CLASSUBID			AS CodigoSubCategoriaArticulo
@@ -34,9 +35,10 @@ namespace PtoVta.Infraestructura.Repositorios.Modulo
                                             ,CLASSID			AS CodigoCategoriaArticulo
                                             ,TYPEDOCFISIN		AS CodigoTipoMovInvFisIngreso
                                             ,TYPEDOCFISOUT		AS CodigoTipoMovInvFisSalida
-                                    FROM	IN_SUBCATEGORY	(NOLOCK) 
+                                            ,IMAGEN             AS Imagen                                            
+                                    FROM	PC_IN_SUBCATEGORY	(NOLOCK) 
                                     WHERE	CLASSID				IN(SELECT	CLASSID				
-                                                                    FROM	IN_CATEGORY		(NOLOCK) 
+                                                                    FROM	PC_IN_CATEGORY		(NOLOCK) 
                                                                     WHERE	BUSINESSTYPE		= @BUSINESSTYPE)";
 
                 var resultado = cn.QueryMultiple(cadenaSQL,
@@ -70,7 +72,8 @@ namespace PtoVta.Infraestructura.Repositorios.Modulo
                     DescripcionCategoriaArticulo = categoria.DescripcionCategoriaArticulo,
                     CodigoContable = categoria.CodigoContable,
                     Comentario = categoria.Comentario,
-                    CodigoTipoNegocio = categoria.CodigoTipoNegocio
+                    CodigoTipoNegocio = categoria.CodigoTipoNegocio,
+                    Imagen = categoria.Imagen
                 };
             
                 var subCategoriasAsociadas = pSubCategorias

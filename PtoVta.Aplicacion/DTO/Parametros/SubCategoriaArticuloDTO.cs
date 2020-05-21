@@ -12,6 +12,7 @@ namespace PtoVta.Aplicacion.DTO.Parametros
         public decimal PorcentajeDiferencia { get; set; }
 
         public string CodigoCategoriaArticulo { get; set; }
+        public byte[] Imagen{get; set; }
     }
 
 }
