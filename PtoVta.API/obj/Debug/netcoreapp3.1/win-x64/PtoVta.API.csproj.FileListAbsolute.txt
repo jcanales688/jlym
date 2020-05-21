@@ -229,7 +229,6 @@ C:\PtoVtaMovil\jlym\PtoVta.API\bin\Debug\netcoreapp3.1\win-x64\dbgshim.dll
 C:\PtoVtaMovil\jlym\PtoVta.API\bin\Debug\netcoreapp3.1\win-x64\hostfxr.dll
 C:\PtoVtaMovil\jlym\PtoVta.API\bin\Debug\netcoreapp3.1\win-x64\hostpolicy.dll
 C:\PtoVtaMovil\jlym\PtoVta.API\bin\Debug\netcoreapp3.1\win-x64\mscordaccore.dll
-C:\PtoVtaMovil\jlym\PtoVta.API\bin\Debug\netcoreapp3.1\win-x64\mscordaccore_amd64_amd64_4.700.20.11803.dll
 C:\PtoVtaMovil\jlym\PtoVta.API\bin\Debug\netcoreapp3.1\win-x64\mscordbi.dll
 C:\PtoVtaMovil\jlym\PtoVta.API\bin\Debug\netcoreapp3.1\win-x64\mscorrc.debug.dll
 C:\PtoVtaMovil\jlym\PtoVta.API\bin\Debug\netcoreapp3.1\win-x64\mscorrc.dll
@@ -383,3 +382,4 @@ C:\PtoVtaMovil\jlym\PtoVta.API\obj\Debug\netcoreapp3.1\win-x64\staticwebassets\P
 C:\PtoVtaMovil\jlym\PtoVta.API\obj\Debug\netcoreapp3.1\win-x64\PtoVta.API.dll
 C:\PtoVtaMovil\jlym\PtoVta.API\obj\Debug\netcoreapp3.1\win-x64\PtoVta.API.pdb
 C:\PtoVtaMovil\jlym\PtoVta.API\obj\Debug\netcoreapp3.1\win-x64\PtoVta.API.genruntimeconfig.cache
+C:\PtoVtaMovil\jlym\PtoVta.API\bin\Debug\netcoreapp3.1\win-x64\mscordaccore_amd64_amd64_4.700.20.20201.dll
