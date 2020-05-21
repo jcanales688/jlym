@@ -20,7 +20,7 @@ namespace PtoVta.Infraestructura.Repositorios.Colaborador
         {            
           using (IDbConnection cn = new SqlConnection(this.CadenaConexion))
             {
-                string sqlAgregaCliente = @"INSERT INTO PC_OP_SALESPERSON(SALESPERID, SALESPERNAME, IDENTITYDOC, PHONE, SEX, INITIALDATE, 
+                string sqlAgregaCliente = @"INSERT INTO OP_SALESPERSON(SALESPERID, SALESPERNAME, IDENTITYDOC, PHONE, SEX, INITIALDATE, 
                                                             BIRTHDATE, PASSWORD, SITEID, STATUSPERSONID, USERID, ACCESSUSERID,  ADDRESS1, ADDRESS2) 
                                                             VALUES
                                                             (@SALESPERID, @SALESPERNAME, @IDENTITYDOC, @PHONE, @SEX, @INITIALDATE, 
@@ -50,14 +50,14 @@ namespace PtoVta.Infraestructura.Repositorios.Colaborador
                                             ,USERID				AS CodigoUsuarioSistema
                                             ,ACCESSUSERID		AS CodigoUsuarioSistemaAcceso
                                             ,CASE STATUSPERSONID WHEN '01' THEN 1 ELSE 0 END AS EsHabilitado
-                                    FROM	PC_OP_SALESPERSON  (NOLOCK)
+                                    FROM    OP_SALESPERSON  (NOLOCK)
                                     WHERE	SALESPERID	= @SALESPERID;
 
                                     SELECT	STATUSPERSONID		AS CodigoEstadoVendedor
                                             ,DESCRSTATUSPERSON	AS DescripcionEstadoVendedor
-                                    FROM	PC_OP_STATUSPERSON (NOLOCK)
+                                    FROM	OP_STATUSPERSON (NOLOCK)
                                     WHERE	STATUSPERSONID	IN (SELECT	STATUSPERSONID
-                                                                FROM	PC_OP_SALESPERSON (NOLOCK)
+                                                                FROM	OP_SALESPERSON (NOLOCK)
                                                                 WHERE	SALESPERID	= @SALESPERID);                                    
 
                                     SELECT	USERID		AS CodigoUsuarioDeSistema
@@ -65,9 +65,9 @@ namespace PtoVta.Infraestructura.Repositorios.Colaborador
                                             ,USERNAME	AS DescripcionUsuario
                                             ,PASSWORD	AS Contraseña
                                             ,STATUS     AS EsHabilitado
-                                    FROM	PC_SE_USERREC (NOLOCK)
+                                    FROM	SE_USERREC (NOLOCK)
                                     WHERE	USERID	IN ( SELECT	ACCESSUSERID		
-                                                        FROM	PC_OP_SALESPERSON
+                                                        FROM	OP_SALESPERSON
                                                         WHERE	SALESPERID	= @SALESPERID)";
 
                 var resultado = cn.QueryMultiple(cadenaSQL,

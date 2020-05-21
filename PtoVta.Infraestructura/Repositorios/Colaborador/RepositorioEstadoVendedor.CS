@@ -21,7 +21,7 @@ namespace PtoVta.Infraestructura.Repositorios.Colaborador
             {
                 string cadenaSQL = @"SELECT	STATUSPERSONID		AS CodigoEstadoVendedor
                                             ,DESCRSTATUSPERSON	AS DescripcionEstadoVendedor
-                                    FROM	PC_OP_STATUSPERSON (NOLOCK)
+                                    FROM	OP_STATUSPERSON (NOLOCK)
                                     WHERE	STATUSPERSONID = @STATUSPERSONID";
 
                 var estadoVendedor = cn.QueryFirstOrDefault<EstadoVendedor>(cadenaSQL,
