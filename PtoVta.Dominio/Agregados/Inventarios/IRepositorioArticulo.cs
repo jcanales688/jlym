@@ -6,7 +6,7 @@ namespace PtoVta.Dominio.Agregados.Inventarios
 {
     public interface IRepositorioArticulo: IRepositorio<Articulo>
     {
-        IEnumerable<Articulo> ObtenerPorCategoriaYSubcategoria(string pCodigoCategoria ,string pCodigoSubCategoria); 
+        IEnumerable<Articulo> ObtenerPorCategoriaYSubcategoria(string pCodigoCategoria ,string pCodigoSubCategoria, string pCodigoAlmacen); 
     }
 
 }

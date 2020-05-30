@@ -23,16 +23,16 @@ namespace PtoVta.API.Controllers
         }
 
 
-        [Route("todosArticulosPorCategoriaYSubCategoria/{pCodigoCategoria}/{pCodigoSubCategoria}")]
+        [Route("todosArticulosPorCategoriaYSubCategoria/{pCodigoCategoria}/{pCodigoSubCategoria}/{pCodigoAlmacen}")]
         [HttpGet]
         [ProducesResponseType(typeof(ResultadoServicio<ArticuloDTO>), (int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
-        public  IActionResult ConsultarArticulosPorCategoriaYSubcategoria(string pCodigoCategoria, string pCodigoSubCategoria)
+        public  IActionResult ConsultarArticulosPorCategoriaYSubcategoria(string pCodigoCategoria, string pCodigoSubCategoria, string pCodigoAlmacen)
         {
             try
             {
                 var articulos = _IServicioAplicacionArticulo
-                                        .ObtenerPorCategoriaYSubcategoria(pCodigoCategoria, pCodigoSubCategoria);
+                                        .ObtenerPorCategoriaYSubcategoria(pCodigoCategoria, pCodigoSubCategoria, pCodigoAlmacen);
 
                 if (articulos == null)
                 {

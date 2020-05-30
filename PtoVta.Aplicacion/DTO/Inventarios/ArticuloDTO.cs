@@ -23,7 +23,8 @@ namespace PtoVta.Aplicacion.DTO.Inventarios
         public string UsuarioSistema { get; set; }
         public bool ParaVentaManualEnPlaya { get; set; }               
         public bool EditarPrecio { get; set; }
-
+        public byte[] Imagen{get; set; }
+        
 
         public string CodigoMarcaArticulo { get;  set; }
         public string CodigoImpuestoIsc { get;  set; }
@@ -35,7 +36,7 @@ namespace PtoVta.Aplicacion.DTO.Inventarios
 
 
         public List<ArticuloAlternoDTO> ArticulosAlternos { get; set; }
-        public List<ArticuloDetalleDTO> ArticuloDetalles { get; set; }
+        public ArticuloDetalleDTO ArticuloDetalle { get; set; }
 
     }
 

@@ -18,7 +18,7 @@ namespace PtoVta.Infraestructura.Tests
         [Fact]
         public void ObtenerPorCategoriaYSubcategoria_Test()
         {        
-            var articulo =  _IRepositorioArticuloTest.ObtenerPorCategoriaYSubcategoria("2", "201");
+            var articulo =  _IRepositorioArticuloTest.ObtenerPorCategoriaYSubcategoria("2", "201", "24");
 
 
             Assert.False(articulo == null);

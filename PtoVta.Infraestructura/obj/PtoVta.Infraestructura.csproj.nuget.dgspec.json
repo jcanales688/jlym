@@ -61,11 +61,6 @@
           "warn": true,
           "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.300\\RuntimeIdentifierGraph.json"
         }
-      },
-      "runtimes": {
-        "win-x64": {
-          "#import": []
-        }
       }
     },
     "C:\\PtoVtaMovil\\jlym\\PtoVta.Infraestructura\\PtoVta.Infraestructura.csproj": {
@@ -136,11 +131,6 @@
           "assetTargetFallback": true,
           "warn": true,
           "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.300\\RuntimeIdentifierGraph.json"
-        }
-      },
-      "runtimes": {
-        "win-x64": {
-          "#import": []
         }
       }
     }

@@ -17,7 +17,7 @@ namespace PtoVta.Infraestructura.Repositorios.Colaborador
             this.CadenaConexion = pCadenaConexion;
         }
 
-        public IEnumerable<Articulo> ObtenerPorCategoriaYSubcategoria(string pCodigoCategoria, string pCodigoSubCategoria)
+        public IEnumerable<Articulo> ObtenerPorCategoriaYSubcategoria(string pCodigoCategoria, string pCodigoSubCategoria, string pCodigoAlmacen)
         {
           using (IDbConnection cn = new SqlConnection(this.CadenaConexion))
             {
@@ -44,6 +44,7 @@ namespace PtoVta.Infraestructura.Repositorios.Colaborador
                                             ,CLASSUBID		AS CodigoSubCategoriaArticulo
                                             ,INVTYPEID		AS CodigoTipoInventario
                                             ,STKUNITID		AS CodigoUnidadDeMedida
+                                            ,ICONO         AS Imagen
                                     FROM	IN_INVENTORY (NOLOCK)
                                     WHERE	CLASSID			= @CLASSID
                                             AND CLASSUBID	= @CLASSUBID;
@@ -68,13 +69,14 @@ namespace PtoVta.Infraestructura.Repositorios.Colaborador
                                             ,PRECLVID		AS CodigoTipoPrecioInventario
                                             ,SITEID			AS CodigoAlmacen
                                     FROM	IN_INVENTORYDAT (NOLOCK)
-                                    WHERE	INVTIDSKU IN(SELECT	INVTIDSKU
+                                    WHERE	SITEID      = @SITEID
+                                            AND INVTIDSKU IN(SELECT	INVTIDSKU
                                                         FROM	IN_INVENTORY (NOLOCK)
                                                         WHERE	CLASSID			= @CLASSID
                                                                 AND CLASSUBID	= @CLASSUBID)";
 
                 var resultado = cn.QueryMultiple(cadenaSQL,
-                                    new { CLASSID = pCodigoCategoria, CLASSUBID = pCodigoSubCategoria});
+                                    new { CLASSID = pCodigoCategoria, CLASSUBID = pCodigoSubCategoria, SITEID = pCodigoAlmacen});
 
                 var articulos = resultado.Read<Articulo>().ToList();                                                
                 var articuloDetalles = resultado.Read<ArticuloDetalle>().ToList();          
@@ -89,14 +91,14 @@ namespace PtoVta.Infraestructura.Repositorios.Colaborador
         }
 
 
-        private List<Articulo> MapeoArticuloListado(List<Articulo> pArticulos, List<ArticuloDetalle> pArticuloDetalles)
+        private List<Articulo> MapeoArticuloListado(List<Articulo> pArticulos, List<ArticuloDetalle> pArticuloDetalleAsociado)
         {
             var articulosSeleccionados = new List<Articulo>();
 
             foreach (var articulo in pArticulos)
             {
                 var articuloAAgregar = new Articulo(){
-                    CodigoArticulo = articulo.CodigoCategoriaArticulo,
+                    CodigoArticulo = articulo.CodigoArticulo,
                     DescripcionArticulo = articulo.DescripcionArticulo,
                     FactorGalon = articulo.FactorGalon,
                     ParaVentaPlaya = articulo.ParaVentaPlaya,
@@ -111,7 +113,8 @@ namespace PtoVta.Infraestructura.Repositorios.Colaborador
                     EsDesensamble = articulo.EsDesensamble,
                     UsuarioSistema = articulo.UsuarioSistema,
                     ParaVentaManualEnPlaya = articulo.ParaVentaManualEnPlaya,
-                    EditarPrecio = articulo.EditarPrecio
+                    EditarPrecio = articulo.EditarPrecio,
+                    Imagen = articulo.Imagen
                 };
             
                 articuloAAgregar.EstablecerReferenciaMarcaArticuloDeArticulo(articulo.CodigoMarcaArticulo);
@@ -122,15 +125,31 @@ namespace PtoVta.Infraestructura.Repositorios.Colaborador
                 articuloAAgregar.EstablecerReferenciaTipoInventarioDeArticulo(articulo.CodigoTipoInventario);
                 articuloAAgregar.EstablecerReferenciaUnidadDeMedidaDeArticulo(articulo.CodigoUnidadDeMedida);
 
-                var articuloDetallesAsociadas = pArticuloDetalles
-                                    .Where(w => w.CodigoArticulo == articulo.CodigoArticulo);
 
-                if(articuloDetallesAsociadas != null && articuloDetallesAsociadas.Any())
+                var articuloDetalleAsociado = pArticuloDetalleAsociado
+                                    .Where(w => w.CodigoArticulo == articulo.CodigoArticulo).FirstOrDefault();
+
+                if(articuloDetalleAsociado != null)
                 {
-                    foreach (var articuloDetalle in articuloDetallesAsociadas)
-                    {
-                        articuloAAgregar.ArticuloDetalles.Add(articuloDetalle);                    
-                    }   
+                    articuloAAgregar.AgregarArticuloDetalle(articuloDetalleAsociado.StockMinimo,
+                                                            articuloDetalleAsociado.StockMaximo,
+                                                            articuloDetalleAsociado.StockInicial,
+                                                            articuloDetalleAsociado.StockActual,
+                                                            articuloDetalleAsociado.FechaCreacion,
+                                                            articuloDetalleAsociado.FechaUltimoInv,
+                                                            articuloDetalleAsociado.StockUltimoInv,
+                                                            articuloDetalleAsociado.CostoPromedioNacional,
+                                                            articuloDetalleAsociado.CostoPromedioExtranjera,
+                                                            articuloDetalleAsociado.CostoReposicionNacional,
+                                                            articuloDetalleAsociado.CostoReposicionExtranjera,
+                                                            articuloDetalleAsociado.CostoRepoNacionalUltimoInv,
+                                                            articuloDetalleAsociado.CostoRepoExtranjeraUltimoInv,
+                                                            articuloDetalleAsociado.Precio,
+                                                            articuloDetalleAsociado.CodContableInventariable,
+                                                            articuloDetalleAsociado.CodContableNoInventariable,
+                                                            articuloDetalleAsociado.CodigoArticulo,
+                                                            articuloDetalleAsociado.CodigoTipoPrecioInventario,
+                                                            articuloDetalleAsociado.CodigoAlmacen); 
                 }
 
                 articulosSeleccionados.Add(articuloAAgregar);

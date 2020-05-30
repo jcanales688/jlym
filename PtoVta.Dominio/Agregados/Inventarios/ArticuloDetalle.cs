@@ -18,7 +18,7 @@ namespace PtoVta.Dominio.Agregados.Inventarios
         public decimal CostoReposicionNacional { get; set; }
         public decimal CostoReposicionExtranjera { get; set; }
         public decimal CostoRepoNacionalUltimoInv { get; set; }
-        public decimal CostoRepoExtranjeraUltimoInv { get; set; }
+        public decimal CostoRepoExtranjeraUltimoInv { get; set; }   
         public decimal Precio { get; set; }
         public string CodContableInventariable { get; set; }
         public string CodContableNoInventariable { get; set; }
@@ -29,6 +29,7 @@ namespace PtoVta.Dominio.Agregados.Inventarios
         // public Guid TipoPrecioInventarioId { get; set; }
         public string CodigoAlmacen  { get; set; }
         // public Guid AlmacenId { get; set; }
+
 
 
     }

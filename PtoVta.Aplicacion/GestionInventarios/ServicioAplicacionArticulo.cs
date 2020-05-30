@@ -18,10 +18,10 @@ namespace PtoVta.Aplicacion.GestionInventarios
         }
 
 
-        public ResultadoServicio<ArticuloDTO> ObtenerPorCategoriaYSubcategoria(string pCodigoCategoria, string pCodigoSubCategoria)
+        public ResultadoServicio<ArticuloDTO> ObtenerPorCategoriaYSubcategoria(string pCodigoCategoria, string pCodigoSubCategoria, string pCodigoAlmacen)
         {
             var mensajeValidacion = string.Empty;
-            var articulos = _IRepositorioArticulo.ObtenerPorCategoriaYSubcategoria(pCodigoCategoria, pCodigoSubCategoria);
+            var articulos = _IRepositorioArticulo.ObtenerPorCategoriaYSubcategoria(pCodigoCategoria, pCodigoSubCategoria, pCodigoAlmacen);
 
             if (articulos != null && articulos.Any())
             {

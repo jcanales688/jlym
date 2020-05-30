@@ -49,7 +49,7 @@ namespace PtoVta.Aplicacion.Tests
         public void ObtenerPorCategoriaYSubcategoria_Test() 
         {    
             ResultadoServicio<ArticuloDTO> articulos = _IServicioAplicacionArticulo
-                                        .ObtenerPorCategoriaYSubcategoria("2", "201");
+                                        .ObtenerPorCategoriaYSubcategoria("2", "201", "24");
 
             Assert.False(articulos == null);
         }        

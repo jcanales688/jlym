@@ -7,7 +7,7 @@ namespace PtoVta.Dominio.Agregados.Inventarios
     public class Articulo: Entidad
     {
         HashSet<ArticuloAlterno> _lineasArticuloAlterno;
-        HashSet<ArticuloDetalle> _lineasArticuloDetalle;
+        // HashSet<ArticuloDetalle> _lineasArticuloDetalle;
         
         bool _EsHabilitado;
 
@@ -30,6 +30,7 @@ namespace PtoVta.Dominio.Agregados.Inventarios
         public string UsuarioSistema { get; set; }
         public bool ParaVentaManualEnPlaya { get; set; }     
         public bool EditarPrecio { get; set; }
+        public byte[] Imagen{get; set; }
 
         public bool EsHabilitado
         {
@@ -51,7 +52,43 @@ namespace PtoVta.Dominio.Agregados.Inventarios
         public string CodigoTipoInventario { get; private set; }
         public string CodigoUnidadDeMedida { get; private set; }
 
+        public ArticuloDetalle ArticuloDetalle { get; private set; }
 
+
+
+        public void AgregarArticuloDetalle(decimal pStockMinimo,
+                    decimal pStockMaximo,decimal pStockInicial,decimal pStockActual,
+                    Nullable<DateTime> pFechaCreacion,Nullable<DateTime> pFechaUltimoInv,Nullable<decimal> pStockUltimoInv,
+                    decimal pCostoPromedioNacional,decimal pCostoPromedioExtranjera,decimal pCostoReposicionNacional,
+                    decimal pCostoReposicionExtranjera,decimal pCostoRepoNacionalUltimoInv,decimal pCostoRepoExtranjeraUltimoInv,
+                    decimal pPrecio,string pCodContableInventariable,string pCodContableNoInventariable,
+                    string pCodigoArticulo,string  pCodigoTipoPrecioInventario, string pCodigoAlmacen)
+        {
+            var articuloDetalle = new ArticuloDetalle(){
+                    StockMinimo = pStockMinimo,
+                    StockMaximo = pStockMaximo,
+                    StockInicial = pStockInicial,
+                    StockActual = pStockActual,
+                    FechaCreacion = pFechaCreacion,
+                    FechaUltimoInv = pFechaUltimoInv,
+                    StockUltimoInv = pStockUltimoInv,
+                    CostoPromedioNacional = pCostoPromedioNacional,
+                    CostoPromedioExtranjera = pCostoPromedioExtranjera,
+                    CostoReposicionNacional = pCostoReposicionNacional,
+                    CostoReposicionExtranjera = pCostoReposicionExtranjera,
+                    CostoRepoNacionalUltimoInv = pCostoRepoNacionalUltimoInv,
+                    CostoRepoExtranjeraUltimoInv = pCostoRepoExtranjeraUltimoInv,
+                    Precio = pPrecio,
+                    CodContableInventariable = pCodContableInventariable,
+                    CodContableNoInventariable = pCodContableNoInventariable,
+                    CodigoArticulo = pCodigoArticulo,
+                    CodigoTipoPrecioInventario = pCodigoTipoPrecioInventario,
+                    CodigoAlmacen = pCodigoAlmacen
+            };
+
+            this.ArticuloDetalle = articuloDetalle;
+
+        }
 
         public void EstablecerReferenciaMarcaArticuloDeArticulo(string pCodigoMarcaArticulo)
         {
@@ -157,20 +194,20 @@ namespace PtoVta.Dominio.Agregados.Inventarios
             }
         }
 
-        public virtual ICollection<ArticuloDetalle> ArticuloDetalles 
-        {
-            get
-            {
-                if (_lineasArticuloDetalle == null)
-                    _lineasArticuloDetalle = new HashSet<ArticuloDetalle>();
+        // public virtual ICollection<ArticuloDetalle> ArticuloDetalles 
+        // {
+        //     get
+        //     {
+        //         if (_lineasArticuloDetalle == null)
+        //             _lineasArticuloDetalle = new HashSet<ArticuloDetalle>();
 
-                return _lineasArticuloDetalle;
-            }
-            set
-            {
-                _lineasArticuloDetalle = new HashSet<ArticuloDetalle>(value);
-            }
-        }
+        //         return _lineasArticuloDetalle;
+        //     }
+        //     set
+        //     {
+        //         _lineasArticuloDetalle = new HashSet<ArticuloDetalle>(value);
+        //     }
+        // }
     }
 
 }
