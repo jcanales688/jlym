@@ -1,6 +1,7 @@
 using System;
 using PtoVta.Dominio.Agregados.Usuario;
 using PtoVta.Dominio.BaseTrabajo;
+using static PtoVta.Dominio.BaseTrabajo.Globales.MensajesDominio;
 // using PtoVta.Dominio.Agregados.
 
 namespace PtoVta.Dominio.Agregados.Modulo
@@ -31,7 +32,7 @@ namespace PtoVta.Dominio.Agregados.Modulo
         {
             if (pUsuarioSistema == null)
             {
-                throw new ArgumentException("No Se Puede Asociar UsuarioSistema Transitorio O Nulo");
+                throw new ArgumentException(Mensajes.excepcion_NoSePuedeAsociarUsuarioSistemaTransitorioONulo);
 
             }
 

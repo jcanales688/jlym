@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using PtoVta.Dominio.BaseTrabajo;
+using static PtoVta.Dominio.BaseTrabajo.Globales.MensajesDominio;
 
 namespace PtoVta.Dominio.Agregados.Modulo
 {
@@ -68,14 +69,14 @@ namespace PtoVta.Dominio.Agregados.Modulo
         {
 
             if (String.IsNullOrWhiteSpace(pCodigoVentanaUsuario))
-                throw new ArgumentNullException("Codigo Ventana No Puede Ser Nulo");
+                throw new ArgumentNullException(Mensajes.excepcion_CodigoVentanaNoPuedeSerNulo);
 
 
             if (String.IsNullOrWhiteSpace(pNombreVentana))
-                throw new ArgumentNullException("Nombre Ventana No Puede Ser Nulo");
+                throw new ArgumentNullException(Mensajes.excepcion_NombreVentanaNoPuedeSerNulo);
 
             if (String.IsNullOrWhiteSpace(pTipoVentana))
-                throw new ArgumentNullException("Tipo De Ventana No Puede Ser Nulo");
+                throw new ArgumentNullException(Mensajes.excepcion_TipoDeVentanaNoPuedeSerNulo);
 
 
             var _VentanaUsuario = new VentanaUsuario()

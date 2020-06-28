@@ -2,6 +2,7 @@ using System;
 using PtoVta.Dominio.Agregados.Parametros;
 using PtoVta.Dominio.Agregados.Usuario;
 using PtoVta.Dominio.BaseTrabajo;
+using static PtoVta.Dominio.BaseTrabajo.Globales.MensajesDominio;
 
 namespace PtoVta.Dominio.Agregados.Colaborador
 {
@@ -74,8 +75,7 @@ namespace PtoVta.Dominio.Agregados.Colaborador
         {
             if (pAlmacen == null)
             {
-                throw new ArgumentException("Mensajes.excepcion_AlmacenDeVendedorEnEstadoNuloOTransitorio");
-
+                throw new ArgumentException(Mensajes.excepcion_AlmacenDeVendedorEnEstadoNuloOTransitorio);
             }
 
             //relacion
@@ -99,7 +99,7 @@ namespace PtoVta.Dominio.Agregados.Colaborador
         {
             if (pUsuarioSistema == null )
             {
-                throw new ArgumentException("Mensajes.excepcion_UsuarioSistemaDeVendedorEnEstadoNuloOTransitorio");
+                throw new ArgumentException(Mensajes.excepcion_UsuarioSistemaDeVendedorEnEstadoNuloOTransitorio);
 
             }
 
@@ -123,7 +123,7 @@ namespace PtoVta.Dominio.Agregados.Colaborador
         {
             if (pEstadoVendedor == null)
             {
-                throw new ArgumentException("Estado Vendedor De Vendedor En Estado Nulo O Transitorio");
+                throw new ArgumentException(Mensajes.excepcion_EstadoVendedorDeVendedorEnEstadoNuloOTransitorio);
 
             }
 
@@ -150,7 +150,7 @@ namespace PtoVta.Dominio.Agregados.Colaborador
         {
             if (pUsuarioSistemaAcceso == null)
             {
-                throw new ArgumentException("Usuario Sistema Acceso De Vendedor En Estado Nulo O Transitorio");
+                throw new ArgumentException(Mensajes.excepcion_UsuarioSistemaAccesoDeVendedorEnEstadoNuloOTransitorio);
 
             }
 

@@ -1,5 +1,6 @@
 using System;
 using PtoVta.Dominio.BaseTrabajo;
+using static PtoVta.Dominio.BaseTrabajo.Globales.MensajesDominio;
 
 namespace PtoVta.Dominio.Agregados.Parametros
 {
@@ -58,35 +59,35 @@ namespace PtoVta.Dominio.Agregados.Parametros
 
 
             if (String.IsNullOrWhiteSpace(pCodigoTipoMovimientoAlmacen))
-                throw new ArgumentNullException("Mensajes.validacion_CodigoTipoMovimientoAlmacenDeTipoMovimientoAlmacenVacioONulo");
+                throw new ArgumentNullException(Mensajes.validacion_CodigoTipoMovimientoAlmacenDeTipoMovimientoAlmacenVacioONulo);
 
             if (String.IsNullOrWhiteSpace(pDescripcionTipoMovimientoAlmacen))
-                throw new ArgumentNullException("Mensajes.validacion_DescripcionTipoMovimientoAlmacenDeTipoMovimientoAlmacenVacioONulo");
+                throw new ArgumentNullException(Mensajes.validacion_DescripcionTipoMovimientoAlmacenDeTipoMovimientoAlmacenVacioONulo);
 
             if (pIngresoOSalida < 0)
-                throw new ArgumentNullException("Mensajes.validacion_IngresoOSalidaDeTipoMovimientoAlmacenMenorACero");
+                throw new ArgumentNullException(Mensajes.validacion_IngresoOSalidaDeTipoMovimientoAlmacenMenorACero);
 
             if (pEsValorizado < 0)
-                throw new ArgumentNullException("Mensajes.validacion_EsValorizadoDeTipoMovimientoAlmacenMenorACero");
+                throw new ArgumentNullException(Mensajes.validacion_EsValorizadoDeTipoMovimientoAlmacenMenorACero);
 
 
             if (pValorizadoPorPrecioVoCostoRep < 0)
-                throw new ArgumentNullException("Mensajes.validacion_ValorizadoPorPrecioVoCostoRepDeTipoMovimientoAlmacenMenorACero");
+                throw new ArgumentNullException(Mensajes.validacion_ValorizadoPorPrecioVoCostoRepDeTipoMovimientoAlmacenMenorACero);
 
             if (pCostoPromedio < 0)
-                throw new ArgumentNullException("Mensajes.validacion_CostoPromedioDeTipoMovimientoAlmacenMenorACero");
+                throw new ArgumentNullException(Mensajes.validacion_CostoPromedioDeTipoMovimientoAlmacenMenorACero);
 
             if (pEsTipoIngresoPorCompra < 0)
-                throw new ArgumentNullException("Mensajes.validacion_CostoPromedioDeTipoMovimientoAlmacenMenorACero");
+                throw new ArgumentNullException(Mensajes.validacion_EsTipoIngresoPorCompraDeTipoMovimientoAlmacenMenorACero);
 
             if (pRequiereProveedor < 0)
-                throw new ArgumentNullException("Mensajes.validacion_EsTipoIngresoPorCompraDeTipoMovimientoAlmacenMenorACero");
+                throw new ArgumentNullException(Mensajes.validacion_RequiereProveedorDeTipoMovimientoAlmacenMenorACero);
 
             if (pEnCalculoCostoPromedio < 0)
-                throw new ArgumentNullException("Mensajes.validacion_EnCalculoCostoPromedioDeTipoMovimientoAlmacenMenorACero");
+                throw new ArgumentNullException(Mensajes.validacion_EnCalculoCostoPromedioDeTipoMovimientoAlmacenMenorACero);
 
             if (String.IsNullOrWhiteSpace(pDescripcionAbreviada))
-                throw new ArgumentNullException("Mensajes.validacion_DescripcionAbreviadaDeTipoMovimientoAlmacenVacioONulo");
+                throw new ArgumentNullException(Mensajes.validacion_DescripcionAbreviadaDeTipoMovimientoAlmacenVacioONulo);
 
             //if (pEstado < 0)
             //    throw new ArgumentNullException("Estado");

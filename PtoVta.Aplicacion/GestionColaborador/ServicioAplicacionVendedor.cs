@@ -5,6 +5,7 @@ using PtoVta.Dominio.Agregados.Colaborador;
 using PtoVta.Dominio.Agregados.Parametros;
 using PtoVta.Dominio.Agregados.Usuario;
 using PtoVta.Infraestructura.Transversales.Log;
+using static PtoVta.Dominio.BaseTrabajo.Globales.MensajesDominio;
 
 namespace PtoVta.Aplicacion.GestionUsuario
 {
@@ -41,45 +42,38 @@ namespace PtoVta.Aplicacion.GestionUsuario
 
         public ResultadoServicio<VendedorDTO> AgregarNuevoUsuarioVendedor(VendedorDTO pVendedor)
         {
-            string mensajeValidacion = string.Empty;
-
             if (pVendedor == null || String.IsNullOrEmpty(pVendedor.CodigoVendedor))
             {
-                mensajeValidacion = "Datos de vendedor o Codigo de vendedor invalido";
-                throw new ArgumentException(mensajeValidacion);
+                throw new ArgumentException(Mensajes.advertencia_DatosDeVendedorOCodigoDeVendedorInvalido);
             }
                 
             //Validaciones
             var almacen =_IRepositorioAlmacen.ObtenerPorCodigo(pVendedor.CodigoAlmacen);
             if (almacen == null)
-            {
-                mensajeValidacion = "Almacen asociado al vendedor no existe.";
-                LogFactory.CrearLog().LogWarning(mensajeValidacion);
-                throw new ArgumentException(mensajeValidacion);
+            {                
+                LogFactory.CrearLog().LogWarning(Mensajes.advertencia_AlmacenAsociadoAlVendedorNoExiste);
+                throw new ArgumentException(Mensajes.advertencia_AlmacenAsociadoAlVendedorNoExiste);
             }                
 
             var estadoVendedor =_IRepositorioEstadoVendedor.ObtenerPorCodigo(pVendedor.CodigoEstadoVendedor);
             if (estadoVendedor == null)
             {
-                mensajeValidacion = "Estado de vendedor asociado al vendedor no existe.";
-                LogFactory.CrearLog().LogWarning(mensajeValidacion);
-                throw new ArgumentException(mensajeValidacion);
+                LogFactory.CrearLog().LogWarning(Mensajes.advertencia_EstadoDeVendedorAsociadoAlVendedorNoExiste);
+                throw new ArgumentException(Mensajes.advertencia_EstadoDeVendedorAsociadoAlVendedorNoExiste);
             }                
 
             var usuarioSistemaRegistrador =_IIRepositorioUsuarioSistema.ObtenerUsuarioSistemaPorUsuario(pVendedor.CodigoUsuarioSistema);
-            if (estadoVendedor == null)
+            if (usuarioSistemaRegistrador == null)
             {
-                mensajeValidacion = "Estado de vendedor asociado al vendedor no existe.";
-                LogFactory.CrearLog().LogWarning(mensajeValidacion);
-                throw new ArgumentException(mensajeValidacion);
+                LogFactory.CrearLog().LogWarning(Mensajes.advertencia_UsuarioSistemaCreadorNuevoVendedorNoExiste);
+                throw new ArgumentException(Mensajes.advertencia_UsuarioSistemaCreadorNuevoVendedorNoExiste);
             }                
 
             var usuarioSistemaDelAcceso =_IIRepositorioUsuarioSistema.ObtenerUsuarioSistemaPorUsuario("VENDPLAYA");
-            if (estadoVendedor == null)
+            if (usuarioSistemaDelAcceso == null)
             {
-                mensajeValidacion = "Estado de vendedor asociado al vendedor no existe.";
-                LogFactory.CrearLog().LogWarning(mensajeValidacion);
-                throw new ArgumentException(mensajeValidacion);
+                LogFactory.CrearLog().LogWarning(Mensajes.advertencia_UsuarioSistemaAccesoNuevoVendedorNoExiste);
+                throw new ArgumentException(Mensajes.advertencia_UsuarioSistemaAccesoNuevoVendedorNoExiste);
             }
 
             VendedorDireccion direccionVendedor = new VendedorDireccion(pVendedor.DireccionPrimeroPais,
@@ -95,21 +89,15 @@ namespace PtoVta.Aplicacion.GestionUsuario
 
             if (nuevoVendedor != null)
             {
-                mensajeValidacion = "Vendedor creado satisfactoriamente.";
-                
-                return new ResultadoServicio<VendedorDTO>(7,mensajeValidacion,
+                return new ResultadoServicio<VendedorDTO>(7,Mensajes.advertencia_VendedorCreadoSatisfactoriamente,
                         string.Empty, nuevoVendedor.ProyectadoComo<VendedorDTO>(), null);
             }
             else
             {
-                mensajeValidacion = "Creacion de nuevo vendedor fallo.";
-                LogFactory.CrearLog().LogWarning(mensajeValidacion);
-                
-                return new ResultadoServicio<VendedorDTO>(7,mensajeValidacion,
+                LogFactory.CrearLog().LogWarning(Mensajes.advertencia_CreacionNuevoVendedorFallo);                
+                return new ResultadoServicio<VendedorDTO>(7,Mensajes.advertencia_CreacionNuevoVendedorFallo,
                         string.Empty, nuevoVendedor.ProyectadoComo<VendedorDTO>(), null);
             }
-
-
         }
 
 

@@ -1,4 +1,5 @@
 using System;
+using static PtoVta.Dominio.BaseTrabajo.Globales.MensajesDominio;
 
 namespace PtoVta.Dominio.Agregados.Colaborador
 {
@@ -11,24 +12,24 @@ namespace PtoVta.Dominio.Agregados.Colaborador
             if (pVendedor == null)
             {
                 //Usuario No Existe 
-                throw new InvalidOperationException("Vendedor no existe.");
+                throw new InvalidOperationException(Mensajes.advertencia_VendedorNoExiste);
 
             }
 
             if (pVendedor.Clave.Trim() != pClave.Trim())
             {
                 //Clave Incorrecta
-                throw new InvalidOperationException("Clave incorrecta.");
+                throw new InvalidOperationException(Mensajes.advertencia_ClaveIncorrecta);
             }
 
             if (pVendedor.EstadoVendedor.CodigoEstadoVendedor == "02")
             {
-                throw new InvalidOperationException("Vendedor inactivo.");
+                throw new InvalidOperationException(Mensajes.advertencia_VendedorInactivo);
             }
 
             if (pVendedor.EstadoVendedor.CodigoEstadoVendedor == "03")
             {
-                throw new InvalidOperationException("Vendedor suspendido.");
+                throw new InvalidOperationException(Mensajes.advertencia_VendedorSuspendido);
 
             }
 

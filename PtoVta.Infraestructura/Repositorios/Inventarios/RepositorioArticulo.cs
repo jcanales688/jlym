@@ -8,7 +8,7 @@ using Dapper;
 using PtoVta.Dominio.Agregados.Inventarios;
 using PtoVta.Infraestructura.BaseTrabajo;
 
-namespace PtoVta.Infraestructura.Repositorios.Colaborador
+namespace PtoVta.Infraestructura.Repositorios.Inventarios
 {
     public class RepositorioArticulo : Repositorio<Articulo>, IRepositorioArticulo
     {
@@ -17,9 +17,26 @@ namespace PtoVta.Infraestructura.Repositorios.Colaborador
             this.CadenaConexion = pCadenaConexion;
         }
 
+        public override void Modificar(Articulo pArticulo)
+        {
+            using (IDbConnection cn = new SqlConnection(this.CadenaConexion))
+            {
+                string sqlActualizaArticulo = @"UPDATE IN_INVENTORY(SALESPERID, SALESPERNAME, IDENTITYDOC, PHONE, SEX, INITIALDATE, 
+                                                            BIRTHDATE, PASSWORD, SITEID, STATUSPERSONID, USERID, ACCESSUSERID,  ADDRESS1, ADDRESS2) 
+                                                            VALUES
+                                                            (@SALESPERID, @SALESPERNAME, @IDENTITYDOC, @PHONE, @SEX, @INITIALDATE, 
+                                                            @BIRTHDATE, @PASSWORD, @SITEID, @STATUSPERSONID, @USERID, @ACCESSUSERID, @ADDRESS1, @ADDRESS2)";
+
+                var filasAfectadas = cn.Execute(sqlActualizaArticulo, new
+                {
+                    SALESPERID = pArticulo.CodigoArticulo
+                });
+            }
+        }
+
         public IEnumerable<Articulo> ObtenerPorCategoriaYSubcategoria(string pCodigoCategoria, string pCodigoSubCategoria, string pCodigoAlmacen)
         {
-          using (IDbConnection cn = new SqlConnection(this.CadenaConexion))
+            using (IDbConnection cn = new SqlConnection(this.CadenaConexion))
             {
                 string cadenaSQL = @"SELECT	INVTIDSKU	AS CodigoArticulo
                                             ,DESCR		AS DescripcionArticulo
@@ -76,10 +93,10 @@ namespace PtoVta.Infraestructura.Repositorios.Colaborador
                                                                 AND CLASSUBID	= @CLASSUBID)";
 
                 var resultado = cn.QueryMultiple(cadenaSQL,
-                                    new { CLASSID = pCodigoCategoria, CLASSUBID = pCodigoSubCategoria, SITEID = pCodigoAlmacen});
+                                    new { CLASSID = pCodigoCategoria, CLASSUBID = pCodigoSubCategoria, SITEID = pCodigoAlmacen });
 
-                var articulos = resultado.Read<Articulo>().ToList();                                                
-                var articuloDetalles = resultado.Read<ArticuloDetalle>().ToList();          
+                var articulos = resultado.Read<Articulo>().ToList();
+                var articuloDetalles = resultado.Read<ArticuloDetalle>().ToList();
 
                 if (articulos != null && articuloDetalles != null)
                 {
@@ -90,6 +107,29 @@ namespace PtoVta.Infraestructura.Repositorios.Colaborador
             }
         }
 
+        public Articulo ObtenerPorCodigo(string pCodigoArticulo)
+        {
+            using (IDbConnection cn = new SqlConnection(this.CadenaConexion))
+            {
+                string cadenaSQL = @"SELECT	USERID		AS CodigoUsuarioDeSistema
+                                            ,EXPIRED	AS FechaExpiracion
+                                            ,USERNAME	AS DescripcionUsuario
+                                            ,PASSWORD	AS Contraseña
+                                            ,STATUS AS EsHabilitado
+                                    FROM    SE_USERREC (NOLOCK)
+                                    WHERE	USERID			= @USERID";
+
+                var articulo = cn.QueryFirstOrDefault<Articulo>(cadenaSQL,
+                                                new { USERID = pCodigoArticulo });
+
+                if (articulo != null)
+                {
+                    return articulo;
+                }
+                else
+                    return null;
+            }
+        }
 
         private List<Articulo> MapeoArticuloListado(List<Articulo> pArticulos, List<ArticuloDetalle> pArticuloDetalleAsociado)
         {
@@ -97,7 +137,8 @@ namespace PtoVta.Infraestructura.Repositorios.Colaborador
 
             foreach (var articulo in pArticulos)
             {
-                var articuloAAgregar = new Articulo(){
+                var articuloAAgregar = new Articulo()
+                {
                     CodigoArticulo = articulo.CodigoArticulo,
                     DescripcionArticulo = articulo.DescripcionArticulo,
                     FactorGalon = articulo.FactorGalon,
@@ -116,10 +157,10 @@ namespace PtoVta.Infraestructura.Repositorios.Colaborador
                     EditarPrecio = articulo.EditarPrecio,
                     Imagen = articulo.Imagen
                 };
-            
+
                 articuloAAgregar.EstablecerReferenciaMarcaArticuloDeArticulo(articulo.CodigoMarcaArticulo);
                 articuloAAgregar.EstablecerReferenciaImpuestoIscDeArticulo(articulo.CodigoImpuestoIsc);
-                articuloAAgregar.EstablecerReferenciaImpuestoIgvDeArticulo(articulo.CodigoImpuestoIgv);                                
+                articuloAAgregar.EstablecerReferenciaImpuestoIgvDeArticulo(articulo.CodigoImpuestoIgv);
                 articuloAAgregar.EstablecerReferenciaCategoriaArticuloDeArticulo(articulo.CodigoCategoriaArticulo);
                 articuloAAgregar.EstablecerReferenciaSubCategoriaArticuloDeArticulo(articulo.CodigoSubCategoriaArticulo);
                 articuloAAgregar.EstablecerReferenciaTipoInventarioDeArticulo(articulo.CodigoTipoInventario);
@@ -129,7 +170,7 @@ namespace PtoVta.Infraestructura.Repositorios.Colaborador
                 var articuloDetalleAsociado = pArticuloDetalleAsociado
                                     .Where(w => w.CodigoArticulo == articulo.CodigoArticulo).FirstOrDefault();
 
-                if(articuloDetalleAsociado != null)
+                if (articuloDetalleAsociado != null)
                 {
                     articuloAAgregar.AgregarArticuloDetalle(articuloDetalleAsociado.StockMinimo,
                                                             articuloDetalleAsociado.StockMaximo,
@@ -149,14 +190,14 @@ namespace PtoVta.Infraestructura.Repositorios.Colaborador
                                                             articuloDetalleAsociado.CodContableNoInventariable,
                                                             articuloDetalleAsociado.CodigoArticulo,
                                                             articuloDetalleAsociado.CodigoTipoPrecioInventario,
-                                                            articuloDetalleAsociado.CodigoAlmacen); 
+                                                            articuloDetalleAsociado.CodigoAlmacen);
                 }
 
                 articulosSeleccionados.Add(articuloAAgregar);
             }
 
             return articulosSeleccionados;
-        }                 
+        }
     }
 
 }

@@ -9,7 +9,7 @@ using PtoVta.Dominio.Agregados.Inventarios;
 using PtoVta.Dominio.Agregados.Parametros;
 using PtoVta.Infraestructura.BaseTrabajo;
 
-namespace PtoVta.Infraestructura.Repositorios.Colaborador
+namespace PtoVta.Infraestructura.Repositorios.Inventarios
 {
     public class RepositorioAlmacen : Repositorio<Almacen>, IRepositorioAlmacen
     {
@@ -46,5 +46,15 @@ namespace PtoVta.Infraestructura.Repositorios.Colaborador
 
             }
         }
+
+
+        public IEnumerable<Almacen> ObtenerHabilitados()
+        {
+            // return unidadDeTrabajoActual.Almacenes
+            //     .Where(a => a.EsHabilitado == true);
+
+
+            return new List<Almacen>();
+        }        
     }
 }

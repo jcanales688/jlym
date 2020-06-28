@@ -1,5 +1,6 @@
 using System;
 using PtoVta.Dominio.BaseTrabajo;
+using static PtoVta.Dominio.BaseTrabajo.Globales.MensajesDominio;
 
 namespace PtoVta.Dominio.Agregados.Parametros
 {
@@ -45,10 +46,10 @@ namespace PtoVta.Dominio.Agregados.Parametros
         public TipoNegocio(string pCodigoTipoNegocio, string pDescripcionTipoNegocio)
         {
             if (String.IsNullOrWhiteSpace(pCodigoTipoNegocio))
-                throw new ArgumentNullException("Mensajes.validacion_CodigoTipoNegocioDeTipoNegocioVacioONulo");
+                throw new ArgumentNullException(Mensajes.validacion_CodigoTipoNegocioDeTipoNegocioVacioONulo);
 
             if (String.IsNullOrWhiteSpace(pDescripcionTipoNegocio))
-                throw new ArgumentNullException("Mensajes.validacion_DescripcionTipoNegocioDeTipoNegocioVacioONulo");
+                throw new ArgumentNullException(Mensajes.validacion_DescripcionTipoNegocioDeTipoNegocioVacioONulo);
 
             this.CodigoTipoNegocio = pCodigoTipoNegocio;
             this.DescripcionTipoNegocio = pDescripcionTipoNegocio;

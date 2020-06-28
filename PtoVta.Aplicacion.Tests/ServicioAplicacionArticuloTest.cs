@@ -14,6 +14,7 @@ using PtoVta.Dominio.Agregados.Parametros;
 using PtoVta.Dominio.Agregados.Usuario;
 using PtoVta.Infraestructura;
 using PtoVta.Infraestructura.Repositorios.Colaborador;
+using PtoVta.Infraestructura.Repositorios.Inventarios;
 using PtoVta.Infraestructura.Repositorios.Modulo;
 using PtoVta.Infraestructura.Repositorios.Usuario;
 using PtoVta.Infraestructura.Transversales.Adaptador;

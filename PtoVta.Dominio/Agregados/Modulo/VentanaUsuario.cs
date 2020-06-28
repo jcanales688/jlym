@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using PtoVta.Dominio.BaseTrabajo;
+using static PtoVta.Dominio.BaseTrabajo.Globales.MensajesDominio;
 
 namespace PtoVta.Dominio.Agregados.Modulo
 {
@@ -59,7 +60,7 @@ namespace PtoVta.Dominio.Agregados.Modulo
                         pDerechoEmitir == 0
                     )
                 )
-                throw new ArgumentException("Datos No Validos Para Linea DerechoAccesoUsuario");
+                throw new ArgumentException(Mensajes.excepcion_DatosNoValidosParaLineaDerechoAccesoUsuario);
 
 
 

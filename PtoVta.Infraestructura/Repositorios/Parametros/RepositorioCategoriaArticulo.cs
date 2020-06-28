@@ -7,7 +7,7 @@ using Dapper;
 using PtoVta.Dominio.Agregados.Parametros;
 using PtoVta.Infraestructura.BaseTrabajo;
 
-namespace PtoVta.Infraestructura.Repositorios.Modulo
+namespace PtoVta.Infraestructura.Repositorios.Parametros
 {
     public class RepositorioCategoriaArticulo : Repositorio<CategoriaArticulo>, IRepositorioCategoriaArticulo
     {
