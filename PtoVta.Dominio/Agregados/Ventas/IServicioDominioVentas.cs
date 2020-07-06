@@ -18,7 +18,7 @@ namespace PtoVta.Dominio.Agregados.Ventas
                                             IEnumerable<Venta> pagoInicial, IEnumerable<Venta> consumos);
 
 
-        bool ExisteComprobanteDePagoDeVenta(decimal pNuevoCorrelativoDocumento, decimal correlEncontrado);
+        bool ExisteComprobanteDePagoDeVenta(string pNuevoCorrelativoDocumento, string correlEncontrado);
 
         void CalcularVueltoVentaSegunMoneda(Venta pVenta,bool pFlagCambioMonedaVuelto, int pCantidadDecimalPrecio,
                                             decimal pEfectivoVueltoExtranjera, decimal pTotalVueltoSegunMoneda,decimal pTotalFaltanteExtranjera, 

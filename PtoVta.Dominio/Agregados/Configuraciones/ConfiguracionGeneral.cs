@@ -2,7 +2,7 @@ using System;
 using PtoVta.Dominio.Agregados.Parametros;
 using PtoVta.Dominio.Agregados.Ventas;
 using PtoVta.Dominio.BaseTrabajo;
-using static PtoVta.Dominio.BaseTrabajo.Globales.MensajesDominio;
+using static PtoVta.Dominio.BaseTrabajo.Globales.GlobalDominio;
 
 namespace PtoVta.Dominio.Agregados.Configuraciones
 {
@@ -15,7 +15,7 @@ namespace PtoVta.Dominio.Agregados.Configuraciones
         public int TurnoActual { get; set; }
         public int CantidadCaras { get; set; }
         public string SimboloMonedaBase{ get; set; }
-        public string SimboloMonedaExt{ get; set; }
+        public string SimboloMonedaExtranjera{ get; set; }
         public int CantDecimalPrecio { get; set; }
         public int CantDecimalCosto { get; set; }
         public int CantDecimalStock { get; set; }
@@ -41,7 +41,7 @@ namespace PtoVta.Dominio.Agregados.Configuraciones
 
         public string CodigoAlmacenOrigen { get; private set; }
         public string CodigoMonedaBase { get; private set; }
-        public string CodigoMonedaExtranjeraDefecto { get; private set; }
+        public string CodigoMonedaExtranjeraPorDefecto { get; private set; }
         public string CodigoClaseTipoCambioVentas { get; private set; }
         public string CodigoClaseTipoCambioOrigen { get; private set; }
         public string CodigoImpuesto { get; private set; }
@@ -50,7 +50,7 @@ namespace PtoVta.Dominio.Agregados.Configuraciones
 
         public virtual Almacen AlmacenOrigen { get; private set; }
         public virtual Moneda MonedaBase { get; private set; }
-        public virtual Moneda MonedaExtranjeraDef { get; private set; }
+        public virtual Moneda MonedaExtranjera { get; private set; }
         public virtual ClaseTipoCambio ClaseTipoCambioVentas { get; private set; }
         public virtual ClaseTipoCambio ClaseTipoCambioOrigen { get; private set; }
         public virtual Impuesto Impuesto { get; private set; }
@@ -106,8 +106,8 @@ namespace PtoVta.Dominio.Agregados.Configuraciones
             }
 
             //relacion
-            this.CodigoMonedaExtranjeraDefecto = pMonedaExtranjeraDef.CodigoMoneda;
-            this.MonedaExtranjeraDef = pMonedaExtranjeraDef;
+            this.CodigoMonedaExtranjeraPorDefecto = pMonedaExtranjeraDef.CodigoMoneda;
+            this.MonedaExtranjera = pMonedaExtranjeraDef;
         }
 
         public void EstablecerClaseTipoCambioVentasDeConfiguracionGeneral(ClaseTipoCambio pClaseTipoCambioVentas)

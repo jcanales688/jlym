@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using PtoVta.Dominio.Agregados.Parametros;
 using PtoVta.Dominio.BaseTrabajo;
-using static PtoVta.Dominio.BaseTrabajo.Globales.MensajesDominio;
+using static PtoVta.Dominio.BaseTrabajo.Globales.GlobalDominio;
 
 namespace PtoVta.Dominio.Agregados.Inventarios
 {
@@ -10,7 +10,7 @@ namespace PtoVta.Dominio.Agregados.Inventarios
     {
           bool _EsHabilitado;
 
-        public decimal CorrelativoMovimiento { get; set; }
+        public string CorrelativoMovimiento { get; set; }
         public DateTime FechaDocumento { get; set; }
         public DateTime FechaProceso { get; set; }
         public decimal MontoTipoDeCambio { get; set; }
@@ -22,7 +22,7 @@ namespace PtoVta.Dominio.Agregados.Inventarios
         public Nullable<decimal> CostoReposicionNacional { get; set; }
         public bool EsArticuloFormula { get; set; }
         public decimal Precio { get; set; }
-        public Nullable<decimal> DocumentoReferencia { get; set; }
+        public string DocumentoReferencia { get; set; }
         public int EnInventarioFisico { get; set; }
 
         public bool EsHabilitado

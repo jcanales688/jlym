@@ -14,20 +14,18 @@ namespace PtoVta.Infraestructura.Repositorios.Parametros
             this.CadenaConexion = pCadenaConexion;
         }
 
-        public EstadoDocumento ObtenerPorCodigo(string CodigoEstadoDocumento)
+        public EstadoDocumento ObtenerPorCodigo(string pCodigoEstadoDocumento)
         {
             using (IDbConnection cn = new SqlConnection(this.CadenaConexion))
             {
-                string cadenaSQL = @"SELECT	USERID		AS CodigoUsuarioDeSistema
-                                            ,EXPIRED	AS FechaExpiracion
-                                            ,USERNAME	AS DescripcionUsuario
-                                            ,PASSWORD	AS Contraseña
-                                            ,STATUS AS EsHabilitado
-                                    FROM    SE_USERREC (NOLOCK)
-                                    WHERE	USERID			= @USERID";
+                string cadenaSQL = @"SELECT	DOCSTATUSID		AS CodigoEstadoDocumento
+                                            ,DESCR			AS DescripcionEstadoDocumento
+                                            ,DOCSTATUSID	AS AbreviaturaEstadoDocumento
+                                    FROM	PC_IN_DOCSTATUS (NOLOCK)
+                                    WHERE	DOCSTATUSID		= @DOCSTATUSID";
 
                 var estadoDocumento = cn.QueryFirstOrDefault<EstadoDocumento>(cadenaSQL,
-                                                new { USERID = CodigoEstadoDocumento });
+                                                new { DOCSTATUSID = pCodigoEstadoDocumento });
 
                 if (estadoDocumento != null)
                 {

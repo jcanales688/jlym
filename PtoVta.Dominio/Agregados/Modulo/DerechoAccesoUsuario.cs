@@ -1,7 +1,7 @@
 using System;
 using PtoVta.Dominio.Agregados.Usuario;
 using PtoVta.Dominio.BaseTrabajo;
-using static PtoVta.Dominio.BaseTrabajo.Globales.MensajesDominio;
+using static PtoVta.Dominio.BaseTrabajo.Globales.GlobalDominio;
 // using PtoVta.Dominio.Agregados.
 
 namespace PtoVta.Dominio.Agregados.Modulo

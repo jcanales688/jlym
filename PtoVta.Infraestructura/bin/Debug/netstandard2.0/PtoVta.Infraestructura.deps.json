@@ -11,6 +11,7 @@
         "dependencies": {
           "AutoMapper": "3.3.0",
           "Dapper": "1.60.6",
+          "Microsoft.CSharp": "4.6.0",
           "NETStandard.Library": "2.0.3",
           "PtoVta.Dominio": "1.0.0"
         },
@@ -40,6 +41,14 @@
           "lib/netstandard2.0/Dapper.dll": {
             "assemblyVersion": "1.60.0.0",
             "fileVersion": "1.60.6.27094"
+          }
+        }
+      },
+      "Microsoft.CSharp/4.6.0": {
+        "runtime": {
+          "lib/netstandard2.0/Microsoft.CSharp.dll": {
+            "assemblyVersion": "4.0.4.0",
+            "fileVersion": "4.700.19.46214"
           }
         }
       },
@@ -277,6 +286,13 @@
       "sha512": "sha512-mmnJNhKMeF2KhvVXDoVQlFxre8aJAo71YBJrKqFlvuqzYC2QiXUq94/GCDBJzU7paq4GqpkV2glw3308TcGibw==",
       "path": "dapper/1.60.6",
       "hashPath": "dapper.1.60.6.nupkg.sha512"
+    },
+    "Microsoft.CSharp/4.6.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-kxn3M2rnAGy5N5DgcIwcE8QTePWU/XiYcQVzn9HqTls2NKluVzVSmVWRjK7OUPWbljCXuZxHyhEz9kPRIQeXow==",
+      "path": "microsoft.csharp/4.6.0",
+      "hashPath": "microsoft.csharp.4.6.0.nupkg.sha512"
     },
     "Microsoft.NETCore.Platforms/1.1.0": {
       "type": "package",

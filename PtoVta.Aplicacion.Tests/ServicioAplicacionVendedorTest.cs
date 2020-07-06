@@ -2,6 +2,7 @@ using System;
 using PtoVta.Aplicacion.BaseTrabajo;
 using PtoVta.Aplicacion.DTO.Colaborador;
 using PtoVta.Aplicacion.DTO.Modulo;
+using PtoVta.Aplicacion.GestionColaborador;
 using PtoVta.Aplicacion.GestionUsuario;
 using PtoVta.Dominio.Agregados.Colaborador;
 using PtoVta.Dominio.Agregados.Modulo;

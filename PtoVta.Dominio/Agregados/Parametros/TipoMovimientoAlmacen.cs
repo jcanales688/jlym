@@ -1,6 +1,6 @@
 using System;
 using PtoVta.Dominio.BaseTrabajo;
-using static PtoVta.Dominio.BaseTrabajo.Globales.MensajesDominio;
+using static PtoVta.Dominio.BaseTrabajo.Globales.GlobalDominio;
 
 namespace PtoVta.Dominio.Agregados.Parametros
 {
@@ -12,8 +12,8 @@ namespace PtoVta.Dominio.Agregados.Parametros
         public string DescripcionTipoMovimientoAlmacen { get; set; }
         public int IngresoOSalida { get; set; }
         public int EsValorizado { get; set; }
-        public int ValorizadoPorPrecioVoCostoRep { get; set; }
-        public int CostoPromedio { get; set; }
+        public int ValorizadoPorPrecioVentaOCostoReposicion { get; set; }
+        public int ValorizadoPorCostoPromedio { get; set; }
         public int EsTipoIngresoPorCompra { get; set; }
         public int RequiereProveedor { get; set; }
         public int EnCalculoCostoPromedio { get; set; }
@@ -50,11 +50,9 @@ namespace PtoVta.Dominio.Agregados.Parametros
 
         public TipoMovimientoAlmacen() { }
 
-        public TipoMovimientoAlmacen(   string pCodigoTipoMovimientoAlmacen, string pDescripcionTipoMovimientoAlmacen, int pIngresoOSalida, int pEsValorizado, 
-                                        int pValorizadoPorPrecioVoCostoRep, int pCostoPromedio ,int pEsTipoIngresoPorCompra,int pRequiereProveedor ,
-                                        int pEnCalculoCostoPromedio ,string pDescripcionAbreviada 
-                                        //,int pEstado
-                                    )
+        public TipoMovimientoAlmacen(string pCodigoTipoMovimientoAlmacen, string pDescripcionTipoMovimientoAlmacen, int pIngresoOSalida, int pEsValorizado,
+                                        int pValorizadoPorPrecioVoCostoRep, int pCostoPromedio, int pEsTipoIngresoPorCompra, int pRequiereProveedor,
+                                        int pEnCalculoCostoPromedio, string pDescripcionAbreviada)
         {
 
 
@@ -93,16 +91,16 @@ namespace PtoVta.Dominio.Agregados.Parametros
             //    throw new ArgumentNullException("Estado");
 
             this.CodigoTipoMovimientoAlmacen = pCodigoTipoMovimientoAlmacen;
-            this.DescripcionTipoMovimientoAlmacen  = pDescripcionTipoMovimientoAlmacen;
+            this.DescripcionTipoMovimientoAlmacen = pDescripcionTipoMovimientoAlmacen;
             this.IngresoOSalida = pIngresoOSalida;
             this.EsValorizado = pEsValorizado;
-            this.ValorizadoPorPrecioVoCostoRep=pValorizadoPorPrecioVoCostoRep;
-            this.CostoPromedio = pCostoPromedio;
+            this.ValorizadoPorPrecioVentaOCostoReposicion = pValorizadoPorPrecioVoCostoRep;
+            this.ValorizadoPorCostoPromedio = pCostoPromedio;
             this.EsTipoIngresoPorCompra = pEsTipoIngresoPorCompra;
             this.RequiereProveedor = pRequiereProveedor;
             this.EnCalculoCostoPromedio = pEnCalculoCostoPromedio;
             this.DescripcionAbreviada = pDescripcionAbreviada;
 
+        }
     }
-    }    
 }

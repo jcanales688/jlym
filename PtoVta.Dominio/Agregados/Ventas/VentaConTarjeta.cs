@@ -1,13 +1,13 @@
 using System;
 using PtoVta.Dominio.Agregados.Parametros;
 using PtoVta.Dominio.BaseTrabajo;
-using static PtoVta.Dominio.BaseTrabajo.Globales.MensajesDominio;
+using static PtoVta.Dominio.BaseTrabajo.Globales.GlobalDominio;
 
 namespace PtoVta.Dominio.Agregados.Ventas
 {
     public class VentaConTarjeta : Entidad
     {
-        public decimal NumeroDocumento { get; set; }
+        public string NumeroDocumento { get; set; }
         public short Secuencia { get; set; }
         public string NumeroTarjeta { get; set; }
         public decimal TotalTarjetaNacional { get; set; }

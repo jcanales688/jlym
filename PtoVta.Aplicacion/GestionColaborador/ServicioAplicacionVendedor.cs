@@ -5,9 +5,9 @@ using PtoVta.Dominio.Agregados.Colaborador;
 using PtoVta.Dominio.Agregados.Parametros;
 using PtoVta.Dominio.Agregados.Usuario;
 using PtoVta.Infraestructura.Transversales.Log;
-using static PtoVta.Dominio.BaseTrabajo.Globales.MensajesDominio;
+using static PtoVta.Dominio.BaseTrabajo.Globales.GlobalDominio;
 
-namespace PtoVta.Aplicacion.GestionUsuario
+namespace PtoVta.Aplicacion.GestionColaborador
 {
     public class ServicioAplicacionVendedor : IServicioAplicacionVendedor
     {

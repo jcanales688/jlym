@@ -5,6 +5,6 @@ namespace PtoVta.Dominio.Agregados.Parametros
 {
     public interface IRepositorioEstadoDocumento : IRepositorio<EstadoDocumento>
     {
-        EstadoDocumento ObtenerPorCodigo(string CodigoEstadoDocumento);
+        EstadoDocumento ObtenerPorCodigo(string pCodigoEstadoDocumento);
     }
 }

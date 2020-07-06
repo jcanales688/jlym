@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using PtoVta.Dominio.Agregados.Parametros;
 using PtoVta.Dominio.Agregados.Ventas;
 using PtoVta.Dominio.BaseTrabajo;
-using static PtoVta.Dominio.BaseTrabajo.Globales.MensajesDominio;
+using static PtoVta.Dominio.BaseTrabajo.Globales.GlobalDominio;
 
 namespace PtoVta.Dominio.Agregados.Configuraciones
 {
@@ -21,12 +21,12 @@ namespace PtoVta.Dominio.Agregados.Configuraciones
         public bool PermiteTicketBoleta { get; set; }
         public string SimboloMonedaCaja { get; set; }
         public bool PermiteColaTransaccionesManual { get; set; }         //stkloadsale; Salvar Transacciones
-        public bool DispositivoTicketFactura { get; set; }
+        public string DispositivoTicketFactura { get; set; }
         public string TipoDispositivoSalidaTicketFactura { get; set; }
-        public bool DispositivoTicketBoleta { get; set; }
+        public string DispositivoTicketBoleta { get; set; }
         public string TipoDispositivoSalidaTicketBoleta { get; set; }
-        public long SerieCorrelativoTickFac { get; set; }
-        public long SerieCorrelativoTickBol { get; set; }
+        public string SerieCorrelativoTickFactura { get; set; }
+        public string SerieCorrelativoTickBoleta { get; set; }
         public bool RealizoCierreZeta { get; set; }
         public bool RealizoCierreTurno { get; set; }
         public bool PermiteSaltoAutomatico { get; set; }
@@ -228,7 +228,7 @@ namespace PtoVta.Dominio.Agregados.Configuraciones
         //..
         public void EstablecerEstadoDocumentoDefaultDeConfiguracionPuntoVenta(EstadoDocumento pEstadoDocumentoDefault)
         {
-            if (pEstadoDocumentoDefault == null || pEstadoDocumentoDefault.EsTransitorio())
+            if (pEstadoDocumentoDefault == null)
             {
                 throw new ArgumentException(Mensajes.excepcion_EstadoDeDocumentoDefaultDeConfiguracionPuntoDeVentaNuloOTransitorio);
             }

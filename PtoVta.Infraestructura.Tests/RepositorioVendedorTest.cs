@@ -21,6 +21,13 @@ namespace PtoVta.Infraestructura.Tests
             Assert.False(vendedor == null);
         }
 
+        [Fact]
+        public void ObtenerPorCodigo_Test()
+        {
+            var vendedor = _IRepositorioVendedor.ObtenerPorCodigo("03876573");
+            
+            Assert.False(vendedor == null);
+        }
 
         [Fact]
         public void Agregar_Test()

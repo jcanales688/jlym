@@ -7,7 +7,7 @@ using PtoVta.Dominio.Agregados.Usuario;
 using PtoVta.Infraestructura.Transversales.Autenticacion;
 using PtoVta.Infraestructura.Transversales.Log;
 using PtoVta.Infraestructura.Transversales.Comun;
-using static PtoVta.Dominio.BaseTrabajo.Globales.MensajesDominio;
+using static PtoVta.Dominio.BaseTrabajo.Globales.GlobalDominio;
 
 namespace PtoVta.Aplicacion.GestionUsuario
 {

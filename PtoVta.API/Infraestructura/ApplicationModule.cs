@@ -1,5 +1,6 @@
 using System;
 using Autofac;
+using PtoVta.Aplicacion.GestionColaborador;
 using PtoVta.Aplicacion.GestionInventarios;
 using PtoVta.Aplicacion.GestionParametros;
 using PtoVta.Aplicacion.GestionUsuario;

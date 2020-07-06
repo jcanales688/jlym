@@ -2,7 +2,7 @@ using System;
 using PtoVta.Dominio.Agregados.Parametros;
 using PtoVta.Dominio.Agregados.Usuario;
 using PtoVta.Dominio.BaseTrabajo;
-using static PtoVta.Dominio.BaseTrabajo.Globales.MensajesDominio;
+using static PtoVta.Dominio.BaseTrabajo.Globales.GlobalDominio;
 
 namespace PtoVta.Dominio.Agregados.Colaborador
 {

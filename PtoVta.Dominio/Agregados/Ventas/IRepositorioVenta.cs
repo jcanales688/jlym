@@ -6,7 +6,7 @@ namespace PtoVta.Dominio.Agregados.Ventas
 {
     public interface IRepositorioVenta: IRepositorio<Venta>
     {
-        Decimal ObtenerNumeroDocumentoVenta(string pCodigoTipoDocumento, decimal pCorrelativoDocumento,
+        string ObtenerNumeroDocumentoVenta(string pCodigoTipoDocumento, string pCorrelativoDocumento,
                                             string pCodigoAlmacen); 
 
         //esto es parte de GetFiltered de patro repositorio

@@ -18,16 +18,14 @@ namespace PtoVta.Infraestructura.Repositorios.Parametros
         {
             using (IDbConnection cn = new SqlConnection(this.CadenaConexion))
             {
-                string cadenaSQL = @"SELECT	USERID		AS CodigoUsuarioDeSistema
-                                            ,EXPIRED	AS FechaExpiracion
-                                            ,USERNAME	AS DescripcionUsuario
-                                            ,PASSWORD	AS Contraseña
-                                            ,STATUS AS EsHabilitado
-                                    FROM    SE_USERREC (NOLOCK)
-                                    WHERE	USERID			= @USERID";
+                string cadenaSQL = @"SELECT	CURYID		AS CodigoMoneda
+                                            ,DESCR		AS DescripcionMoneda
+                                            ,DESCRMONEY AS SimboloMoneda
+                                    FROM	PC_CURRENCY (NOLOCK)
+                                    WHERE	CURYID		= @CURYID";
 
                 var moneda = cn.QueryFirstOrDefault<Moneda>(cadenaSQL,
-                                    new { USERID = pCodigoMoneda });
+                                    new { CURYID = pCodigoMoneda });
 
                 if (moneda != null)
                 {

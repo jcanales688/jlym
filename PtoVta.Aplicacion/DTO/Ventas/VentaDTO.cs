@@ -7,7 +7,7 @@ namespace PtoVta.Aplicacion.DTO.Ventas
     public class VentaDTO
     {
         public Guid Id { get; set; }
-        public decimal NumeroDocumento { get; set; }
+        public string NumeroDocumento { get; set; }
         public DateTime FechaDocumento { get; set; }
         public DateTime FechaProceso { get; set; }
         public string Periodo { get; set; } 
@@ -36,9 +36,10 @@ namespace PtoVta.Aplicacion.DTO.Ventas
         public string Placa { get; set; }
         public decimal NumeroVale { get; set; }
         public decimal TipoCambio { get; set; }
-        public int ProcesadoCierreZ { get; set; }
-        public int ProcesadoCierreX { get; set; }
+        public bool ProcesadoCierreZ { get; set; }
+        public bool ProcesadoCierreX { get; set; }
         public int Kilometraje { get; set; }
+        public bool AfectaInventario { get; set; }
         public string TipoPagoCodigoTipoPago { get; set; }
 
 

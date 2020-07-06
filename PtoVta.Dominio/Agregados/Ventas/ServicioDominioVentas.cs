@@ -4,7 +4,7 @@ using System.Linq;
 using PtoVta.Dominio.Agregados.Configuraciones;
 using PtoVta.Dominio.Agregados.Parametros;
 using static PtoVta.Dominio.BaseTrabajo.Enumeradores.EstadosVenta;
-using static PtoVta.Dominio.BaseTrabajo.Globales.MensajesDominio;
+using static PtoVta.Dominio.BaseTrabajo.Globales.GlobalDominio;
 
 namespace PtoVta.Dominio.Agregados.Ventas
 {
@@ -127,7 +127,7 @@ namespace PtoVta.Dominio.Agregados.Ventas
                     break;
                 case VentaTipoPago.VentaContadoAdelantado:  //Adelantado
 
-                    if (pCliente.ControlarSaldoDispo == 1)
+                    if (pCliente.ControlarSaldoDisponible == 1)
                     {
 
 
@@ -180,21 +180,21 @@ namespace PtoVta.Dominio.Agregados.Ventas
             }
         }
 
-        public bool ExisteComprobanteDePagoDeVenta(decimal pNuevoCorrelativoDocumento, decimal pActualCorrelativoDocumento)
+        public bool ExisteComprobanteDePagoDeVenta(string pNuevoCorrelativoDocumento, string pActualCorrelativoDocumento)
         {
             bool existeDoc = false;
 
-            if (pNuevoCorrelativoDocumento <= 0)
+            if (!string.IsNullOrEmpty(pNuevoCorrelativoDocumento))
             {
                 throw new Exception(Mensajes.advertencia_NuevoCorrelativoDocumentoGeneradoIncorreactamente);
             }
 
-            if (pActualCorrelativoDocumento < 0)
+            if (!string.IsNullOrEmpty(pActualCorrelativoDocumento))
             {
                 throw new Exception(Mensajes.advertencia_CorrelativoDocumentoActualEncontradoIncorrecto);
             }
 
-            if (pNuevoCorrelativoDocumento == pActualCorrelativoDocumento)
+            if (pNuevoCorrelativoDocumento.Trim() == pActualCorrelativoDocumento.Trim())
             {
                 existeDoc = true;
             }

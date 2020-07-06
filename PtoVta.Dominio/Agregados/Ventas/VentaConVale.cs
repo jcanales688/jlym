@@ -1,13 +1,13 @@
 using System;
 using PtoVta.Dominio.Agregados.Parametros;
 using PtoVta.Dominio.BaseTrabajo;
-using static PtoVta.Dominio.BaseTrabajo.Globales.MensajesDominio;
+using static PtoVta.Dominio.BaseTrabajo.Globales.GlobalDominio;
 
 namespace PtoVta.Dominio.Agregados.Ventas
 {   
     public class VentaConVale : Entidad
     {
-        public decimal NumeroDocumento { get; set; }
+        public string NumeroDocumento { get; set; }
         public decimal NumeroVale { get; set; }
         public DateTime FechaProceso { get; set; }
         public Nullable<decimal> MontoVale { get; set; }

@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using PtoVta.Aplicacion.BaseTrabajo;
 using PtoVta.Aplicacion.DTO.Colaborador;
-using PtoVta.Aplicacion.GestionUsuario;
+using PtoVta.Aplicacion.GestionColaborador;
 
 namespace PtoVta.API.Controllers
 {

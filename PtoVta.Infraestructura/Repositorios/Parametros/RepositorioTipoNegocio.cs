@@ -18,16 +18,13 @@ namespace PtoVta.Infraestructura.Repositorios.Parametros
         {
             using (IDbConnection cn = new SqlConnection(this.CadenaConexion))
             {
-                string cadenaSQL = @"SELECT	USERID		AS CodigoUsuarioDeSistema
-                                            ,EXPIRED	AS FechaExpiracion
-                                            ,USERNAME	AS DescripcionUsuario
-                                            ,PASSWORD	AS Contraseña
-                                            ,STATUS AS EsHabilitado
-                                    FROM    SE_USERREC (NOLOCK)
-                                    WHERE	USERID			= @USERID";
+                string cadenaSQL = @"SELECT	BUSINESSTYPE	AS CodigoTipoNegocio
+                                            ,DESCRBUSINESS	AS DescripcionTipoNegocio
+                                    FROM	PC_OP_BUSINESSTYPE (NOLOCK)
+                                    WHERE	BUSINESSTYPE	= @BUSINESSTYPE";
 
                 var tipoDeNegocio = cn.QueryFirstOrDefault<TipoNegocio>(cadenaSQL,
-                                                new { USERID = pCodigoTipoNegocio });
+                                                new { BUSINESSTYPE = pCodigoTipoNegocio });
 
                 if (tipoDeNegocio != null)
                 {

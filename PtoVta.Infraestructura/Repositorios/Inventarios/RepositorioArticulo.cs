@@ -21,16 +21,35 @@ namespace PtoVta.Infraestructura.Repositorios.Inventarios
         {
             using (IDbConnection cn = new SqlConnection(this.CadenaConexion))
             {
-                string sqlActualizaArticulo = @"UPDATE IN_INVENTORY(SALESPERID, SALESPERNAME, IDENTITYDOC, PHONE, SEX, INITIALDATE, 
-                                                            BIRTHDATE, PASSWORD, SITEID, STATUSPERSONID, USERID, ACCESSUSERID,  ADDRESS1, ADDRESS2) 
-                                                            VALUES
-                                                            (@SALESPERID, @SALESPERNAME, @IDENTITYDOC, @PHONE, @SEX, @INITIALDATE, 
-                                                            @BIRTHDATE, @PASSWORD, @SITEID, @STATUSPERSONID, @USERID, @ACCESSUSERID, @ADDRESS1, @ADDRESS2)";
+                string sqlActualizaArticuloDetalle = @"UPDATE	PC_IN_INVENTORYDAT
+                                                        SET		QTYAVAIL		= @QTYAVAIL
+                                                        WHERE	SITEID			= @SITEID
+                                                                AND INVTIDSKU	= @INVTIDSKU";
 
-                var filasAfectadas = cn.Execute(sqlActualizaArticulo, new
+                var filasAfectadas = cn.Execute(sqlActualizaArticuloDetalle, new
                 {
-                    SALESPERID = pArticulo.CodigoArticulo
+                    INVTIDSKU = pArticulo.CodigoArticulo,
+                    SITEID = pArticulo.ArticuloDetalle.CodigoAlmacen,                        
+                    QTYAVAIL = pArticulo.ArticuloDetalle.StockActual
                 });
+                
+                // cn.Open();
+                // using (var transaccion = cn.BeginTransaction())
+                // {
+                //     string sqlActualizaArticuloDetalle = @"UPDATE	PC_IN_INVENTORYDAT
+                //                                             SET		QTYAVAIL		= @QTYAVAIL
+                //                                             WHERE	SITEID			= @SITEID
+                //                                                     AND INVTIDSKU	= @INVTIDSKU";
+
+                //     var filasAfectadasActualizaArticuloDetalle = cn.Execute(sqlActualizaArticuloDetalle, new
+                //     {
+                //         INVTIDSKU = pArticulo.CodigoArticulo,
+                //         SITEID = pArticulo.ArticuloDetalle.CodigoAlmacen,                        
+                //         QTYAVAIL = pArticulo.ArticuloDetalle.StockActual
+                //     }, transaction: transaccion);
+
+                //     transaccion.Commit();
+                // }
             }
         }
 
@@ -107,28 +126,124 @@ namespace PtoVta.Infraestructura.Repositorios.Inventarios
             }
         }
 
-        public Articulo ObtenerPorCodigo(string pCodigoArticulo)
+        public Articulo ObtenerPorCodigo(string pCodigoArticulo, string pCodigoAlmacen)
         {
             using (IDbConnection cn = new SqlConnection(this.CadenaConexion))
             {
-                string cadenaSQL = @"SELECT	USERID		AS CodigoUsuarioDeSistema
-                                            ,EXPIRED	AS FechaExpiracion
-                                            ,USERNAME	AS DescripcionUsuario
-                                            ,PASSWORD	AS Contraseña
-                                            ,STATUS AS EsHabilitado
-                                    FROM    SE_USERREC (NOLOCK)
-                                    WHERE	USERID			= @USERID";
+                string cadenaSQL = @"SELECT	INVTIDSKU	AS CodigoArticulo
+                                            ,DESCR		AS DescripcionArticulo
+                                            ,0			AS FactorGalon
+                                            ,STKFUELS	AS ParaVentaPlaya
+                                            ,STKSTORE	AS ParaVentaTienda
+                                            ,STKOTHER	AS ParaOtrasVentas
+                                            ,STKITEM	AS EsInventariable
+                                            ,KIT		AS EsFormula
+                                            ,DISCMARGIN	AS MargenUtilidad
+                                            ,STKRECEPT	AS BloqueadoParaCompra
+                                            ,STKSALES	AS BloqueadoParaVenta
+                                            ,CONSIGNMENT	AS EsConsignacion
+                                            ,DISASSEMBLE	AS EsDesensamble
+                                            ,USERID			AS UsuarioSistema
+                                            ,0				AS ParaVentaManualEnPlaya
+                                            ,0				AS EditarPrecio
+                                            ,''				AS CodigoMarcaArticulo
+                                            ,TAXIGV			AS CodigoImpuestoIsc
+                                            ,TAXISC			AS CodigoImpuestoIgv
+                                            ,CLASSID		AS CodigoCategoriaArticulo
+                                            ,CLASSUBID		AS CodigoSubCategoriaArticulo
+                                            ,INVTYPEID		AS CodigoTipoInventario
+                                            ,STKUNITID		AS CodigoUnidadDeMedida
+                                            ,IMAGEN         AS Imagen
+                                    FROM	PC_IN_INVENTORY (NOLOCK)
+                                    WHERE	INVTIDSKU		= @INVTIDSKU;
 
-                var articulo = cn.QueryFirstOrDefault<Articulo>(cadenaSQL,
-                                                new { USERID = pCodigoArticulo });
+                                    SELECT	STOCKMIN		AS StockMinimo
+                                            ,STOCKMAX		AS StockMaximo
+                                            ,STOCKSTAR		AS StockInicial
+                                            ,QTYAVAIL		AS StockActual
+                                            ,GETDATE()		AS FechaCreacion
+                                            ,ENDDATEINV		AS FechaUltimoInv
+                                            ,LASTINVFIS		AS StockUltimoInv
+                                            ,AVGCOSTPEN		AS CostoPromedioNacional
+                                            ,AVGCOSTUSD		AS CostoPromedioExtranjera
+                                            ,STDCOSTPEN		AS CostoReposicionNacional
+                                            ,STDCOSTUSD		AS CostoReposicionExtranjera
+                                            ,LASTSTDCOSTPEN	AS CostoRepoNacionalUltimoInv
+                                            ,LASTSTDCOSTUSD	AS CostoRepoExtranjeraUltimoInv
+                                            ,SLS_PRICE		AS Precio
+                                            ,INVTIDSTK		AS CodContableInventariable
+                                            ,INVTIDNOSTK	AS CodContableNoInventariable
+                                            ,INVTIDSKU		AS CodigoArticulo
+                                            ,PRECLVID		AS CodigoTipoPrecioInventario
+                                            ,SITEID			AS CodigoAlmacen
+                                    FROM	PC_IN_INVENTORYDAT (NOLOCK)
+                                    WHERE	INVTIDSKU           = @INVTIDSKU
+                                            AND SITEID          = @SITEID;
+                                            
+                                    SELECT	INVTIDSKU		AS CodigoArticulo
+                                            ,SITEID			AS CodigoAlmacen
+                                            ,CLASSID		AS CodigoCategoriaArticulo
+                                            ,CLASSUBID		AS CodigoSubCategoriaArticulo
+                                            ,STOCKPHISICAL	AS StockFisico
+                                    FROM	PC_IN_INVENTPHISICAL (NOLOCK)
+                                    WHERE	SITEID			= @SITEID
+                                            AND INVTIDSKU	= @INVTIDSKU";
 
-                if (articulo != null)
+                var resultado = cn.QueryMultiple(cadenaSQL,
+                                    new { INVTIDSKU = pCodigoArticulo, SITEID = pCodigoAlmacen });
+
+                var articulo = resultado.Read<Articulo>().FirstOrDefault();
+                var articuloDetalle = resultado.Read<ArticuloDetalle>().FirstOrDefault();
+                var inventarioFisicos = resultado.Read<InventarioFisico>().ToList();
+
+                if (articulo != null && articuloDetalle != null)
                 {
-                    return articulo;
+                    return MapeoArticulo(articulo, articuloDetalle, inventarioFisicos);
                 }
                 else
                     return null;
             }
+        }
+
+
+        private Articulo MapeoArticulo(Articulo pArticulo, ArticuloDetalle pArticuloDetalle,
+                                                    List<InventarioFisico> pInventarioFisicos)
+        {
+            var articuloBuscado = new Articulo();
+            articuloBuscado = pArticulo;
+
+            articuloBuscado.AgregarArticuloDetalle(pArticuloDetalle.StockMinimo,
+                                                    pArticuloDetalle.StockMaximo,
+                                                    pArticuloDetalle.StockInicial,
+                                                    pArticuloDetalle.StockActual,
+                                                    pArticuloDetalle.FechaCreacion,
+                                                    pArticuloDetalle.FechaUltimoInv,
+                                                    pArticuloDetalle.StockUltimoInv,
+                                                    pArticuloDetalle.CostoPromedioNacional,
+                                                    pArticuloDetalle.CostoPromedioExtranjera,
+                                                    pArticuloDetalle.CostoReposicionNacional,
+                                                    pArticuloDetalle.CostoReposicionExtranjera,
+                                                    pArticuloDetalle.CostoRepoNacionalUltimoInv,
+                                                    pArticuloDetalle.CostoRepoExtranjeraUltimoInv,
+                                                    pArticuloDetalle.Precio,
+                                                    pArticuloDetalle.CodContableInventariable,
+                                                    pArticuloDetalle.CodContableNoInventariable,
+                                                    pArticuloDetalle.CodigoArticulo,
+                                                    pArticuloDetalle.CodigoTipoPrecioInventario,
+                                                    pArticuloDetalle.CodigoAlmacen);
+
+            if (pInventarioFisicos != null)
+            {
+                foreach (var inventarioFisico in pInventarioFisicos)
+                {
+                    articuloBuscado.AgregarInventarioFisico(inventarioFisico.StockFisico, inventarioFisico.CodigoAlmacen,
+                                                            inventarioFisico.CodigoCategoriaArticulo, inventarioFisico.CodigoSubCategoriaArticulo);
+                }
+            }
+
+
+
+            return articuloBuscado;
         }
 
         private List<Articulo> MapeoArticuloListado(List<Articulo> pArticulos, List<ArticuloDetalle> pArticuloDetalleAsociado)

@@ -2,7 +2,7 @@ using System;
 using PtoVta.Aplicacion.BaseTrabajo;
 using PtoVta.Aplicacion.DTO.Colaborador;
 
-namespace PtoVta.Aplicacion.GestionUsuario
+namespace PtoVta.Aplicacion.GestionColaborador
 {
     public interface IServicioAplicacionVendedor
     {

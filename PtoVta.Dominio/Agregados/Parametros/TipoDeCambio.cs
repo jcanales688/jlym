@@ -10,18 +10,18 @@ namespace PtoVta.Dominio.Agregados.Parametros
         public string Operador { get; set; }
         public string UsuarioDeSistema { get; set; }
 
-
         public string CodigoClaseTipoCambio { get; private set; }
         public string CodigoMonedaOrigen { get; private set; }
         public string CodigoMonedaDestino { get; private set; }
-
 
         public Moneda MonedaOrigen { get; private set; }
         public Moneda MonedaDestino { get; private set; }
 
 
-        public TipoDeCambio(string pCodigoClaseTipoCambio, string pCodigoMonedaOrigen, string pCodigoMonedaDestino, 
-                    DateTime pFechaTipoDeCambio, decimal pMontoTipoDeCambio, string pOperador, string pUsuarioDeSistema)
+        public TipoDeCambio(){}
+        public TipoDeCambio(DateTime pFechaTipoDeCambio, decimal pMontoTipoDeCambio, string pOperador, 
+                            string pUsuarioDeSistema, string pCodigoClaseTipoCambio, string pCodigoMonedaOrigen, 
+                            string pCodigoMonedaDestino)
         {
             this.CodigoClaseTipoCambio = pCodigoClaseTipoCambio;
             this.CodigoMonedaOrigen = pCodigoMonedaOrigen;

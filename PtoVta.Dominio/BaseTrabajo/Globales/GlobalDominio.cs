@@ -2,8 +2,26 @@ using System;
 
 namespace PtoVta.Dominio.BaseTrabajo.Globales
 {
-    public class MensajesDominio
+    public class GlobalDominio
     {
+        public struct EnumMoneda
+        {
+            public const string CodigoMonedaBase = "PEN";
+            public const string CodigoMonedaExtranjera = "USD";
+        }
+
+        public struct EnumEstadoDocumento
+        {
+            public const string CodigoEstadoDocumentoPorDefecto = "OK";    
+            public const string CodigoEstadoDocumentoAnulado = "AN";    
+            public const string CodigoEstadoDocumentoPendiente = "PE";    
+        }
+
+        public struct EnumTipoPago
+        {
+            public const string TipoPagoPorDefecto = "01";    
+        }
+        
         public struct Mensajes
         {
             public const string advertencia_AdvertenciaVentaOTipoDocumentoInvalido = "Advertencia Venta O Tipo Documento Invalido";
@@ -156,6 +174,30 @@ namespace PtoVta.Dominio.BaseTrabajo.Globales
             public const string excepcion_DatosNoValidosParaLineaCierreZResumenPorCara = "Datos no validos para Linea Cierre Z Resumen por Cara";
             public const string excepcion_DatosNoValidosParaLineaCierreZResumenPorCategoria = "Datos no validos para Linea Cierre Z Resumen por Categoria";
             public const string excepcion_DatosNoValidosParaLineaCierreZResumenPorVendedor = "Datos no validos para Linea Cierre Z Resumen Por Vendedor";
+            public const string excepcion_CondicionPagoDocumentoGeneradoDeClienteEnEstadoNuloOTransitorio = "Condicion de Pago Documento Generado de Cliente en estado nulo o transitorio";
+            public const string excepcion_CondicionPagoTicketDeClienteEnEstadoNuloOTransitorio = "Condicion de Pago Ticket de Cliente en estado nulo o transitorio";
+            public const string excepcion_DiaDePagoDeClienteEnEstadoNuloOTransitorio = "Dia de Pago de Cliente en estado nulo o transitorio";
+
+            public const string validacion_CodigoPaisDePaisVacioONulo = "Codigo de Pais Vacio o Nulo";
+            public const string validacion_DescripcionPaisDePaisVacioONulo = "Descripcion de Pais Vacio O Nulo";
+            public const string excepcion_DatosNoValidosParaLineaDistrito = "Datos no Validos para linea distrito";
+            public const string validacion_CodigoDepartamentoDeDepartamentoONulo = "Codigo de Departamento o Nulo";
+            public const string validacion_DescripcionDepartamentoDeDepartamentoVacioONulo = "Descripcion de Departamento Vacio o Nulo";
+            public const string validacion_CodigoDistritoDeDistritoVacioONulo  = "Codigo de Distrito Vacio o Nulo";
+            public const string validacion_DescripcionDistritoDeDistritoVacioONulo = "Descripcion de Distrito Vacio o Nulo";
+
+            public const string excepcion_MonedaDeClienteEnEstadoNuloOTransitorio = "Moneda de Cliente en Estado Nulo o Transitorio";
+            public const string excepcion_ClaseTipoCambioDeClienteEnEstadoNuloOTransitorio = "Clase Tipo Cambio de Cliente en estado Nulo o Transitorio";
+            public const string excepcion_TipoClienteDeClienteEnEstadoNuloOTransitorio = "Tipo Cliente de Cliente en Estado Nulo o Transitorio";
+            public const string excepcion_ZonaClienteDeClienteEnEstadoNuloOTransitorio = "Zona Cliente de Cliente en estado Nulo o Transitorio";
+            public const string excepcion_VendedorDeClienteEnEstadoNuloOTransitorio = "Vendedor de Cliente en Estado Nulo o Transitorio";
+            public const string excepcion_ImpuestoIgvDeClienteEnEstadoNuloOTransitorio = "Impuesto Igv de Cliente en Estado Nulo o Transitorio";
+            public const string excepcion_ImpuestoIscDeClienteEnEstadoNuloOTransitorio = "Impuesto Isc de Cliente en Estado Nulo o Transitorio";
+            public const string excepcion_EstadoDeClienteDeClienteEnEstadoNuloOTransitorio = "Estado de Cliente de Cliente en Estado Nulo o Transitorio";
+            public const string excepcion_UsuarioSistemaDeClienteEnEstadoNuloOTransitorio = "Usuario Sistema de Cliente en Estado Nulo o Transitorio";
+            public const string excepcion_PaisDeClienteEnEstadoNuloOTransitorio = "Pais de Cliente en Estado Nulo o Transitorio";
+            public const string excepcion_DepartamentoDeClienteEnEstadoNuloOTransitorio = "Departamento de Cliente en Estado Nulo o Transitorio";
+            public const string excepcion_DistritoDeClienteEnEstadoNuloOTransitorio = "Distrito de Cliente en Estado Nulo o Transitorio";
 
         }
 

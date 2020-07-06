@@ -8,7 +8,7 @@ namespace PtoVta.Dominio.Agregados.Ventas
 {
     public static class VentaFactory
     {
-        public static Venta CrearVenta(decimal pNumeroDocumento,DateTime pFechaDocumento,DateTime pFechaProceso,
+        public static Venta CrearVenta(string pNumeroDocumento,DateTime pFechaDocumento,DateTime pFechaProceso,
                     string pPeriodo,decimal pTotalNacional,decimal pTotalExtranjera,
                     decimal pSubTotalNacional,decimal pSubTotalExtranjera,decimal pImpuestoIgvNacional,
                     decimal pImpuestoIGVExtranjera,decimal pImpuestoIscNacional,decimal pImpuestoIscExtranjera,
@@ -17,7 +17,7 @@ namespace PtoVta.Dominio.Agregados.Ventas
                     decimal pTotalDescuentoNacional,decimal pTotalDescuentoExtranjera,decimal pTotalVueltoNacional,
                     decimal pTotalVueltoExtranjera,decimal pTotalEfectivoNacional,decimal pTotalEfectivoExtranjera,
                     string pPlaca,decimal pNumeroVale,decimal pTipoCambio,
-                    int pProcesadoCierreZ,int pProcesadoCierreX,int pKilometraje,
+                    bool pProcesadoCierreZ,bool pProcesadoCierreX,int pKilometraje, bool pAfectaInventario,
                     Moneda pMoneda, ClaseTipoCambio pClaseTipoCambio, Cliente pCliente, 
                     TipoDocumento pTipoDocumento, EstadoDocumento pEstadoDocumento, Vendedor pVendedor, 
                     CondicionPago pCondicionPago,TipoPago pTipoPago, ConfiguracionPuntoVenta pConfiguracionPuntoVenta,
@@ -36,7 +36,7 @@ namespace PtoVta.Dominio.Agregados.Ventas
             venta.SubTotalNacional = pSubTotalNacional;
             venta.SubTotalExtranjera = pSubTotalExtranjera;
             venta.ImpuestoIgvNacional = pImpuestoIgvNacional;
-            venta.ImpuestoIGVExtranjera = pImpuestoIGVExtranjera;
+            venta.ImpuestoIgvExtranjera = pImpuestoIGVExtranjera;
             venta.ImpuestoIscNacional = pImpuestoIscNacional;
             venta.ImpuestoIscExtranjera = pImpuestoIscExtranjera;
             venta.TotalNoAfectoNacional = pTotalNoAfectoNacional;
@@ -59,6 +59,7 @@ namespace PtoVta.Dominio.Agregados.Ventas
             venta.ProcesadoCierreZ = pProcesadoCierreZ;
             venta.ProcesadoCierreX = pProcesadoCierreX;
             venta.Kilometraje = pKilometraje;
+            venta.AfectaInventario = pAfectaInventario;
 
             venta.Habilitar();
 

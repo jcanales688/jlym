@@ -9,7 +9,6 @@ namespace PtoVta.Dominio.Agregados.Inventarios
         public decimal StockFisico { get; set; }
 
         public string CodigoArticulo { get; set; }
-
         public string CodigoAlmacen { get; set; }
         public string CodigoCategoriaArticulo { get; set; }
         public string CodigoSubCategoriaArticulo { get; set; }

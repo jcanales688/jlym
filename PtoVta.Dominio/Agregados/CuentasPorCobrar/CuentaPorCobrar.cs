@@ -2,13 +2,13 @@ using System;
 using PtoVta.Dominio.Agregados.Parametros;
 using PtoVta.Dominio.Agregados.Usuario;
 using PtoVta.Dominio.BaseTrabajo;
-using static PtoVta.Dominio.BaseTrabajo.Globales.MensajesDominio;
+using static PtoVta.Dominio.BaseTrabajo.Globales.GlobalDominio;
 
 namespace PtoVta.Dominio.Agregados.CuentasPorCobrar 
 {
     public class CuentaPorCobrar: Entidad
     {
-        public decimal NumeroDocumento { get; set; }
+        public string NumeroDocumento { get; set; }
 
         public double Referencia { get; set; }
         public DateTime FechaDocumento { get; set; }
@@ -35,8 +35,8 @@ namespace PtoVta.Dominio.Agregados.CuentasPorCobrar
         public string CodigoAlmacen { get; private set; }
         public string CodigoUsuarioDeSistema { get; private set; }
         public string CodigoTipoDocumento { get; private set; }
-
-
+        public string CodigoCliente { get; private set; }
+        public string CodigoTipoDocumentoReferencia { get; private set; }
 
         public Moneda Moneda { get; private set; }
         public ClaseTipoCambio ClaseTipoCambio { get; private set; }
@@ -47,13 +47,14 @@ namespace PtoVta.Dominio.Agregados.CuentasPorCobrar
         public TipoDocumento TipoDocumento { get; private set; }
 
 
-        public CuentaPorCobrar(decimal pNumeroDocumento, string pCodigoMoneda,string pCodigoClaseTipoCambio,string pCodigoEstadoDocumento,
-                string pCodigoDiaDePago,string pCodigoAlmacen,string pCodigoUsuarioDeSistema,
-                string pCodigoTipoDocumento, double pReferencia,DateTime pFechaDocumento,
-                DateTime pFechaProceso,DateTime pFechaVencimiento,decimal pTotalNacionalCtaCobrar,
-                decimal pTotalExtranjeraCtaCobrar,decimal pPagoDocumentoNacional,decimal pPagoDocumentoExtranjera,
-                decimal pSaldoDocumentoNacional,decimal pSaldoDocumentoExtranjera,string pRuc,
-                decimal pTipoCambio,int pDiasDeGracia,decimal pNumeroVale)
+        public CuentaPorCobrar(string pNumeroDocumento, string pCodigoMoneda,string pCodigoClaseTipoCambio,
+                string pCodigoEstadoDocumento, string pCodigoDiaDePago, string pCodigoAlmacen,
+                string pCodigoUsuarioDeSistema, string pCodigoTipoDocumento, string pCodigoCliente,
+                string pCodigoTipoDocumentoReferencia, double pReferencia, DateTime pFechaDocumento, 
+                DateTime pFechaProceso, DateTime pFechaVencimiento, decimal pTotalNacionalCtaCobrar, 
+                decimal pTotalExtranjeraCtaCobrar, decimal pPagoDocumentoNacional, decimal pPagoDocumentoExtranjera, 
+                decimal pSaldoDocumentoNacional,decimal pSaldoDocumentoExtranjera, string pRuc, 
+                decimal pTipoCambio, int pDiasDeGracia, decimal pNumeroVale)
         {
                 NumeroDocumento = pNumeroDocumento;
 
@@ -64,6 +65,8 @@ namespace PtoVta.Dominio.Agregados.CuentasPorCobrar
                 CodigoAlmacen = pCodigoAlmacen;
                 CodigoUsuarioDeSistema = pCodigoUsuarioDeSistema;
                 CodigoTipoDocumento = pCodigoTipoDocumento;
+                CodigoCliente = pCodigoCliente;
+
                 Referencia = pReferencia;
                 FechaDocumento = pFechaDocumento;
                 FechaProceso = pFechaProceso;

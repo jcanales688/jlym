@@ -1,7 +1,7 @@
 using System;
 using System.Linq;
 using PtoVta.Dominio.Agregados.Modulo;
-using static PtoVta.Dominio.BaseTrabajo.Globales.MensajesDominio;
+using static PtoVta.Dominio.BaseTrabajo.Globales.GlobalDominio;
 
 namespace PtoVta.Dominio.Agregados.Usuario
 {

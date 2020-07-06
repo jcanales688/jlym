@@ -18,16 +18,16 @@ namespace PtoVta.Infraestructura.Repositorios.Parametros
         {
             using (IDbConnection cn = new SqlConnection(this.CadenaConexion))
             {
-                string cadenaSQL = @"SELECT	USERID		AS CodigoUsuarioDeSistema
-                                            ,EXPIRED	AS FechaExpiracion
-                                            ,USERNAME	AS DescripcionUsuario
-                                            ,PASSWORD	AS Contraseña
-                                            ,STATUS AS EsHabilitado
-                                    FROM    SE_USERREC (NOLOCK)
-                                    WHERE	USERID			= @USERID";
+                string cadenaSQL = @"SELECT	CARDID			AS CodigoTarjeta
+                                            ,ACCOUNT		AS Cuenta
+                                            ,DESCR			AS DescripcionTarjeta
+                                            ,NUMBERORDER	AS NumeroOrden
+                                            ,CARDADJUST		AS AjusteTarjeta
+                                    FROM	PC_OP_CARD (NOLOCK)
+                                    WHERE	CARDID			= @CARDID";
 
                 var tarjeta = cn.QueryFirstOrDefault<Tarjeta>(cadenaSQL,
-                                            new { USERID = pCodigoTarjeta });
+                                            new { CARDID = pCodigoTarjeta });
 
                 if (tarjeta != null)
                 {

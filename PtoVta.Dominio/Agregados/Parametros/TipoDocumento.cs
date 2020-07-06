@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using PtoVta.Dominio.BaseTrabajo;
-using static PtoVta.Dominio.BaseTrabajo.Globales.MensajesDominio;
+using static PtoVta.Dominio.BaseTrabajo.Globales.GlobalDominio;
 
 namespace PtoVta.Dominio.Agregados.Parametros
 {
@@ -59,15 +59,15 @@ namespace PtoVta.Dominio.Agregados.Parametros
             }
         }
 
-        public CorrelativoDocumento AgregarNuevoCorrelativoDocumento(int pSerie, long pCorrelativo, 
+        public CorrelativoDocumento AgregarNuevoCorrelativoDocumento(string pSerie, long pCorrelativo, 
                                         string pTipoDeVenta, int pEstado, string pCodigoAlmacen, string pCodigoConfiguracionPuntoVenta)
         {
 
             if (string.IsNullOrEmpty(pCodigoAlmacen)
                 ||
-                string.IsNullOrEmpty(pCodigoConfiguracionPuntoVenta)
-                ||
-                pSerie <= 0
+                // string.IsNullOrEmpty(pCodigoConfiguracionPuntoVenta)
+                // ||
+                string.IsNullOrEmpty(pSerie)
                 ||
                 pCorrelativo <= 0
                 ||

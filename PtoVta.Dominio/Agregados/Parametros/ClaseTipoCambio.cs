@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using PtoVta.Dominio.BaseTrabajo;
-using static PtoVta.Dominio.BaseTrabajo.Globales.MensajesDominio;
+using static PtoVta.Dominio.BaseTrabajo.Globales.GlobalDominio;
 
 namespace PtoVta.Dominio.Agregados.Parametros
 {
@@ -74,8 +74,8 @@ namespace PtoVta.Dominio.Agregados.Parametros
                 throw new ArgumentException(Mensajes.excepcion_DatosNoValidosParaLineaTipoDeCambio);
 
 
-            var nuevaLineaTipoDeCambio = new TipoDeCambio(this.CodigoClaseTipoCambio,pCodigoMonedaDesde,pCodigoMonedaHasta,
-                                                            pFechaTipoDeCambio,pMontoTipoDeCambio,pOperador,pUsuarioSistema);
+            var nuevaLineaTipoDeCambio = new TipoDeCambio(pFechaTipoDeCambio, pMontoTipoDeCambio, pOperador, pUsuarioSistema, 
+                                                        this.CodigoClaseTipoCambio, pCodigoMonedaDesde, pCodigoMonedaHasta);
 
             nuevaLineaTipoDeCambio.GenerarNuevaIdentidad();
 

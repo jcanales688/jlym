@@ -4,7 +4,7 @@ namespace PtoVta.Dominio.BaseTrabajo.Funciones
 {
     public static class FuncionesNegocio
     {
-        public static decimal CorrelativoDocumento(int pSerieDocumento, long pCorrelativoDocumento)
+        public static string CorrelativoDocumento(string pSerieDocumento, long pCorrelativoDocumento)
         {
            //Obtiene Correlativo de Documentos
         //    decimal correlativoDoc =
@@ -15,7 +15,7 @@ namespace PtoVta.Dominio.BaseTrabajo.Funciones
 
         //    return correlativoDoc;
 
-        return 0;
+            return string.Empty;
         }
 
         public static string FormatoTicket(decimal nroComprobanteDePago)

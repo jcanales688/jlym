@@ -6,8 +6,8 @@ namespace PtoVta.Dominio.Agregados.Parametros
 {
     public class CorrelativoDocumento : Entidad
     {
-        public int Serie { get; set; }
-        public Nullable<long> Correlativo { get; set; }
+        public string Serie { get; set; }
+        public long Correlativo { get; set; }
         public string TipoDeVenta { get; set; } //Automatico: A; Manual: M
         public int Estado { get; set; }
 
@@ -19,9 +19,9 @@ namespace PtoVta.Dominio.Agregados.Parametros
         public Almacen Almacen { get; private set; }
         public ConfiguracionPuntoVenta ConfiguracionPuntoVenta { get; private set; }
 
-
+        public CorrelativoDocumento(){}
         public CorrelativoDocumento(string pCodigoTipoDocumento, string pCodigoAlmacen, 
-                                    string pCodigoConfiguracionPuntoVenta, int pSerie,
+                                    string pCodigoConfiguracionPuntoVenta, string pSerie,
                                     long pCorrelativo, string pTipoDeVenta, int pEstado)
         {
             CodigoTipoDocumento = pCodigoTipoDocumento;

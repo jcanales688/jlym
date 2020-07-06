@@ -14,11 +14,11 @@ using PtoVta.Dominio.Agregados.Ventas;
 using PtoVta.Dominio.BaseTrabajo.Funciones;
 using PtoVta.Infraestructura.Transversales.Log;
 using static PtoVta.Dominio.BaseTrabajo.Enumeradores.EstadosVenta;
-using static PtoVta.Dominio.BaseTrabajo.Globales.MensajesDominio;
+using static PtoVta.Dominio.BaseTrabajo.Globales.GlobalDominio;
 
 namespace PtoVta.Aplicacion.GestionVentas
 {
-    public class ServicioAplicacionFacturacion: IServicioAplicacionFacturacion
+    public class ServicioAplicacionFacturacion : IServicioAplicacionFacturacion
     {
         private List<Articulo> _ListaArticulosStockActualizado = new List<Articulo>();
         private List<MovimientoAlmacen> _ListaNuevosMovimientoAlmacen = new List<MovimientoAlmacen>();
@@ -46,18 +46,18 @@ namespace PtoVta.Aplicacion.GestionVentas
         private IServicioDominioMovimientosAlmacen _IServicioDominioMovimientosAlmacen;
         private IServicioDominioCuentaPorCobrar _IServicioDominioCuentaPorCobrar;
 
-        public ServicioAplicacionFacturacion(IRepositorioVenta pIrepositorioVenta,IRepositorioEstadoDocumento pIrepositorioEstadoDocumento,
-                                IRepositorioTipoDocumento pIrepositorioTipoDocumento,IRepositorioCliente pIrepositorioCliente,
-                                IRepositorioClaseTipoCambio pIrepositorioClaseTipoCambio,IRepositorioVendedor pIrepositorioVendedor,
-                                IRepositorioMoneda pIrepositorioMoneda,IRepositorioConfiguracionPuntoVenta pIrepositorioConfiguracionPtoVta,
-                                IRepositorioConfiguracionGeneral pIRepositorioConfiguracionGeneral,IRepositorioTipoPago pIrepositorioTipoPago,
-                                IRepositorioTipoMovimientoAlmacen pIrepositorioTipoMovimientoAlmacen,IRepositorioCondicionPago pIrepositorioCondicionPago,
-                                IRepositorioArticulo pIrepositorioArticulo,IRepositorioTarjeta pIrepositorioTarjeta,  
-                                IRepositorioMovimientoAlmacen pIrepositorioMovimientoAlmacen,IRepositorioAlmacen pIRepositorioAlmacen,
-                                IRepositorioTipoNegocio pIRepositorioTipoNegocio,IRepositorioUsuarioSistema pIRepositorioUsuarioSistema,
+        public ServicioAplicacionFacturacion(IRepositorioVenta pIrepositorioVenta, IRepositorioEstadoDocumento pIrepositorioEstadoDocumento,
+                                IRepositorioTipoDocumento pIrepositorioTipoDocumento, IRepositorioCliente pIrepositorioCliente,
+                                IRepositorioClaseTipoCambio pIrepositorioClaseTipoCambio, IRepositorioVendedor pIrepositorioVendedor,
+                                IRepositorioMoneda pIrepositorioMoneda, IRepositorioConfiguracionPuntoVenta pIrepositorioConfiguracionPtoVta,
+                                IRepositorioConfiguracionGeneral pIRepositorioConfiguracionGeneral, IRepositorioTipoPago pIrepositorioTipoPago,
+                                IRepositorioTipoMovimientoAlmacen pIrepositorioTipoMovimientoAlmacen, IRepositorioCondicionPago pIrepositorioCondicionPago,
+                                IRepositorioArticulo pIrepositorioArticulo, IRepositorioTarjeta pIrepositorioTarjeta,
+                                IRepositorioMovimientoAlmacen pIrepositorioMovimientoAlmacen, IRepositorioAlmacen pIRepositorioAlmacen,
+                                IRepositorioTipoNegocio pIRepositorioTipoNegocio, IRepositorioUsuarioSistema pIRepositorioUsuarioSistema,
                                 IServicioDominioVentas pIServicioDominioVentas
-                                ,IServicioDominioMovimientosAlmacen pIServicioDominioMovimientosAlmacen
-                                ,IServicioDominioCuentaPorCobrar pIServicioDominioCuentaPorCobrar)
+                                , IServicioDominioMovimientosAlmacen pIServicioDominioMovimientosAlmacen
+                                , IServicioDominioCuentaPorCobrar pIServicioDominioCuentaPorCobrar)
         {
             if (pIrepositorioVenta == null)
                 throw new ArgumentNullException("pIrepositorioVenta Nulo en ServicioAplicacionFacturacion");
@@ -148,12 +148,12 @@ namespace PtoVta.Aplicacion.GestionVentas
 
 
 
-        public ResultadoServicio<ResultadoVentaGrabadaDTO>  AgregarNuevaVenta(VentaDTO pVentaDTO, string pCodigoTipoDocumentoNotaCredito,bool pEsVentaPagoAdelantado, 
-                                                    string pCodigoTMAVentas,int pPermitirStockNegativo, DateTime pFechaTipoDeCambio,
+        public ResultadoServicio<ResultadoVentaGrabadaDTO> AgregarNuevaVenta(VentaDTO pVentaDTO, string pCodigoTipoDocumentoNotaCredito, bool pEsVentaPagoAdelantado,
+                                                    string pCodigoTMAVentas, int pPermitirStockNegativo, DateTime pFechaTipoDeCambio,
                                                     string pTipoDeVenta, string pCodigoCondicionPagoDefault, string pCodigoEstadoDocumentoDefault,
                                                     bool pFlagCambioMonedaVuelto, decimal pEfectivoVueltoExtranjera, decimal pTotalVueltoSegunMoneda,
-                                                    decimal pTotalFaltanteExtranjera, decimal pTotalFaltanteNacional,string pCodigoMonedaVuelto, 
-                                                    string pCodigoMonedaBase, string pCodigoMonedaExtranjera,string pCodigoConfiguracionGeneral)
+                                                    decimal pTotalFaltanteExtranjera, decimal pTotalFaltanteNacional, string pCodigoMonedaVuelto,
+                                                    string pCodigoMonedaBase, string pCodigoMonedaExtranjera, string pCodigoConfiguracionGeneral)
         {
             //Determina si se creara Venta a Cuenta por Cobrar
             bool esVentaACuentaPorCobrar = false;
@@ -171,7 +171,7 @@ namespace PtoVta.Aplicacion.GestionVentas
             //Aqui podria procesarse el calculo del vuelto....
 
             //Obtener datos de configuracion
-            var configuracionGeneral = _IRepositorioConfiguracionGeneral.ObtenerPorCodigo(pCodigoConfiguracionGeneral); 
+            var configuracionGeneral = _IRepositorioConfiguracionGeneral.Obtener();
             if (configuracionGeneral == null)
             {
                 LogFactory.CrearLog().LogWarning(Mensajes.advertencia_ConfiguracionDeAplicacionIncompleta);
@@ -179,7 +179,7 @@ namespace PtoVta.Aplicacion.GestionVentas
             }
 
             //Obtener detalles de Punto de Venta
-            var configPuntoDeVenta = _IRepositorioConfiguracionPuntoVenta.ObtenerPorCodigo(pVentaDTO.CodigoConfiguracionPuntoVenta);
+            var configPuntoDeVenta = _IRepositorioConfiguracionPuntoVenta.ObtenerPorPuntoDeVenta(pVentaDTO.CodigoConfiguracionPuntoVenta);
             if (configPuntoDeVenta == null)
             {
                 LogFactory.CrearLog().LogWarning(Mensajes.advertencia_ConfiguracionPuntoVentaAsociadoAVentaNoExiste);
@@ -188,15 +188,15 @@ namespace PtoVta.Aplicacion.GestionVentas
 
             //Obtener Almacen
             var almacen = _IRepositorioAlmacen.ObtenerPorCodigo(pVentaDTO.CodigoAlmacen);
-            if(almacen == null)
+            if (almacen == null)
             {
                 LogFactory.CrearLog().LogWarning(Mensajes.advertencia_AlmacenAsociadoAVentaNoExiste);
                 return null;
             }
-            
+
             //Obtener Tipo Negocio
             var tipoNegocio = _IRepositorioTipoNegocio.ObtenerPorCodigo(pVentaDTO.CodigoTipoNegocio);
-            if(tipoNegocio == null)
+            if (tipoNegocio == null)
             {
                 LogFactory.CrearLog().LogWarning(Mensajes.advertencia_TipoNegocioAsociadoAVentaNoExiste);
                 return null;
@@ -204,7 +204,7 @@ namespace PtoVta.Aplicacion.GestionVentas
 
             //Obteber Usuario de Punto Venta
             var usuarioSistema = _IRepositorioUsuarioSistema.ObtenerUsuarioSistemaPorUsuario(pVentaDTO.CodigoUsuarioDeSistema);
-            if(usuarioSistema == null)
+            if (usuarioSistema == null)
             {
                 LogFactory.CrearLog().LogWarning(Mensajes.advertencia_UsuarioSistemaAsociadoAVentaNoExiste);
                 return null;
@@ -212,8 +212,8 @@ namespace PtoVta.Aplicacion.GestionVentas
 
             //Obtener Tipo de Documento y Correlativo (usuario no debe ver el correlativo)
             var tipoDocumento = _IRepositorioTipoDocumento.ObtenerCorrelativoDocumento(pVentaDTO.CodigoAlmacen, pVentaDTO.CodigoConfiguracionPuntoVenta,
-                                                                                        pVentaDTO.CodigoTipoDocumento,pTipoDeVenta, 1);
-            if(tipoDocumento == null)
+                                                                                        pVentaDTO.CodigoTipoDocumento, pTipoDeVenta, 1);
+            if (tipoDocumento == null)
             {
                 LogFactory.CrearLog().LogWarning(Mensajes.advertencia_TipoDocumentoAsociadoAVentaNoExiste);
                 return null;
@@ -226,7 +226,7 @@ namespace PtoVta.Aplicacion.GestionVentas
                 LogFactory.CrearLog().LogWarning(Mensajes.advertencia_EstadoDocumentoAsociadoAVentaNoExiste);
                 return null;
             }
-            
+
             //Validacion y asignacion de corrlativo de documento. 2015-03-29
             var correlativoDocumento = FuncionesNegocio.CorrelativoDocumento(tipoDocumento.CorrelativosDocumento.Single().Serie,
                                                                 (long)tipoDocumento.CorrelativosDocumento.FirstOrDefault().Correlativo);
@@ -236,13 +236,13 @@ namespace PtoVta.Aplicacion.GestionVentas
                 throw new ArgumentException(Mensajes.advertencia_CorrelativoDocumentoYaFueGenerado);
             }
             else
-	        {
+            {
                 pVentaDTO.NumeroDocumento = correlativoDocumento;
-	        }
+            }
 
             //Obtener el cliente
             var cliente = _IRepositorioCliente.ObtenerPorCodigo(pVentaDTO.CodigoCliente);
-            if(cliente == null)
+            if (cliente == null)
             {
                 LogFactory.CrearLog().LogWarning(Mensajes.advertencia_ClienteAsociadoAVentaNoExiste);
                 return null;
@@ -250,7 +250,7 @@ namespace PtoVta.Aplicacion.GestionVentas
 
             //Obtener Clase de Tipo de Cambio y el monto del tipo de cambio
             var claseTipoCambio = _IRepositorioClaseTipoCambio.ObtenerPorCodigo(pVentaDTO.CodigoClaseTipoCambio);
-            if(claseTipoCambio == null)
+            if (claseTipoCambio == null)
             {
                 LogFactory.CrearLog().LogWarning(Mensajes.advertencia_ClaseTipoDeCambioAsociadoAVentaNoExiste);
                 return null;
@@ -258,7 +258,7 @@ namespace PtoVta.Aplicacion.GestionVentas
 
             //Obtener el Vendedor
             var vendedor = _IRepositorioVendedor.ObtenerPorCodigo(pVentaDTO.CodigoVendedor);
-            if(vendedor == null)
+            if (vendedor == null)
             {
                 LogFactory.CrearLog().LogWarning(Mensajes.advertencia_VendedorAsociadoAVentaNoExiste);
                 return null;
@@ -266,7 +266,7 @@ namespace PtoVta.Aplicacion.GestionVentas
 
             //Obtener la Moneda
             var moneda = _IRepositorioMoneda.ObtenerPorCodigo(pVentaDTO.CodigoMoneda);
-            if(moneda == null)
+            if (moneda == null)
             {
                 LogFactory.CrearLog().LogWarning(Mensajes.advertencia_MonedaAsociadoAVentaNoExiste);
                 return null;
@@ -277,7 +277,7 @@ namespace PtoVta.Aplicacion.GestionVentas
 
             //Obtener el Tipo de Pago
             TipoPago tipoPagoDeVentaActual = _IRepositorioTipoPago.ObtenerPorCodigo(pVentaDTO.TipoPagoCodigoTipoPago);
-            if(tipoPagoDeVentaActual == null)
+            if (tipoPagoDeVentaActual == null)
             {
                 LogFactory.CrearLog().LogWarning(Mensajes.advertencia_TipoDePagoAsociadoAVentaNoExiste);
                 return null;
@@ -290,26 +290,26 @@ namespace PtoVta.Aplicacion.GestionVentas
 
             //Obtener tipo de Movimiento de Almance para las ventas y determinar si es movimiento de ingreso o salida
             var tipoMovAlmacenVentas = _IRepositorioTipoMovimientoAlmacen.ObtenerPorCodigo(pCodigoTMAVentas);
-            if(tipoMovAlmacenVentas == null)
+            if (tipoMovAlmacenVentas == null)
             {
                 LogFactory.CrearLog().LogWarning(Mensajes.advertencia_TipoMovAlmacenVentasAsociadoAVentaNoExiste);
                 return null;
             }
 
-            var movAlmacenIngresoOSalida =  _IServicioDominioMovimientosAlmacen.MovimientoAlmacenIngresoOSalida(pCodigoTipoDocumentoNotaCredito, 
+            var movAlmacenIngresoOSalida = _IServicioDominioMovimientosAlmacen.MovimientoAlmacenIngresoOSalida(pCodigoTipoDocumentoNotaCredito,
                                                                                                 tipoDocumento, tipoMovAlmacenVentas);
 
             //
-            if (cliente.ControlarSaldoDispo == 1)
+            if (cliente.ControlarSaldoDisponible == 1)
             {
                 saldoDisponibleAdelanto = ObtenerSaldoVentaAdelantado(pVentaDTO.CodigoTipoPago, pVentaDTO.CodigoCliente,
-                                                                        pVentaDTO.CodigoAlmacen, pCodigoTipoDocumentoNotaCredito, 
+                                                                        pVentaDTO.CodigoAlmacen, pCodigoTipoDocumentoNotaCredito,
                                                                         pVentaDTO.FechaProceso);
             }
 
-            _IServicioDominioVentas.ObtenerModalidadPagoDeVenta(condicionPagoDeVentaActual, condicionPagoDefault, tipoPagoDeVentaActual, 
-                                                                tipoPagoEfectivo, cliente, tipoDocumento, 
-                                                                configPuntoDeVenta, pCodigoTipoDocumentoNotaCredito, pVentaDTO.TotalNacional, 
+            _IServicioDominioVentas.ObtenerModalidadPagoDeVenta(condicionPagoDeVentaActual, condicionPagoDefault, tipoPagoDeVentaActual,
+                                                                tipoPagoEfectivo, cliente, tipoDocumento,
+                                                                configPuntoDeVenta, pCodigoTipoDocumentoNotaCredito, pVentaDTO.TotalNacional,
                                                                 esVentaACuentaPorCobrar, saldoDisponibleAdelanto);
 
             if (esVentaACuentaPorCobrar)
@@ -332,11 +332,11 @@ namespace PtoVta.Aplicacion.GestionVentas
             //Crear venta con detalles
             var nuevaVenta = CrearNuevaVenta(pVentaDTO, moneda, claseTipoCambio,
                                             cliente, tipoDocumento, estadoDocumento,
-                                            vendedor, condicionPagoDeVentaActual, tipoPagoDeVentaActual, 
-                                            configPuntoDeVenta,almacen, tipoNegocio, 
-                                            usuarioSistema,pEsVentaPagoAdelantado, esVentaACuentaPorCobrar,
-                                            tipoMovAlmacenVentas,movAlmacenIngresoOSalida,pPermitirStockNegativo,
-                                            pFechaTipoDeCambio,configuracionGeneral.CodigoClienteInterno,configuracionGeneral.CantDecimalPrecio);
+                                            vendedor, condicionPagoDeVentaActual, tipoPagoDeVentaActual,
+                                            configPuntoDeVenta, almacen, tipoNegocio,
+                                            usuarioSistema, pEsVentaPagoAdelantado, esVentaACuentaPorCobrar,
+                                            tipoMovAlmacenVentas, movAlmacenIngresoOSalida, pPermitirStockNegativo,
+                                            pFechaTipoDeCambio, configuracionGeneral.CodigoClienteInterno, configuracionGeneral.CantDecimalPrecio);
 
             //Calcular el vuelto
             _IServicioDominioVentas.CalcularVueltoVentaSegunMoneda(nuevaVenta, pFlagCambioMonedaVuelto,
@@ -349,26 +349,26 @@ namespace PtoVta.Aplicacion.GestionVentas
             tipoDocumento.ActualizaCorrelativoDocumento();
 
             //Persistir transaccion de Venta
-            GrabarTransaccionDeVenta(nuevaVenta, tipoDocumento, _ListaArticulosStockActualizado, 
+            GrabarTransaccionDeVenta(nuevaVenta, tipoDocumento, _ListaArticulosStockActualizado,
                                                     _ListaNuevosMovimientoAlmacen);
 
             //devolver en DTO
             if (nuevaVenta != null)
             {
-                return new ResultadoServicio<ResultadoVentaGrabadaDTO>(7,Mensajes.advertencia_ExitosaCreacionNuevaVentaEnVenta,
-                        string.Empty, nuevaVenta.ProyectadoComo<ResultadoVentaGrabadaDTO>(),null);
+                return new ResultadoServicio<ResultadoVentaGrabadaDTO>(7, Mensajes.advertencia_ExitosaCreacionNuevaVentaEnVenta,
+                        string.Empty, nuevaVenta.ProyectadoComo<ResultadoVentaGrabadaDTO>(), null);
             }
             else
             {
-                LogFactory.CrearLog().LogWarning(Mensajes.advertencia_FalloCreacionNuevaVentaEnVenta); 
+                LogFactory.CrearLog().LogWarning(Mensajes.advertencia_FalloCreacionNuevaVentaEnVenta);
                 return null;
             }
         }
 
         //Pasar esto a servicio del dominio.............................>>>> OKOK123 - P
-        private void ObtenerModalidadPagoDeVenta(CondicionPago pCondicionPagoDeVenta, CondicionPago pCondicionPagoDefault, TipoPago pTipoPagoDeVenta, 
-                                            TipoPago pTipoPagoEfectivo, Cliente pCliente,TipoDocumento pTipoDocumento, 
-                                            ConfiguracionPuntoVenta pConfiguracionPuntoVenta,string pCodigoTipoDocumentoNotaCredito, decimal pTotalNacional, 
+        private void ObtenerModalidadPagoDeVenta(CondicionPago pCondicionPagoDeVenta, CondicionPago pCondicionPagoDefault, TipoPago pTipoPagoDeVenta,
+                                            TipoPago pTipoPagoEfectivo, Cliente pCliente, TipoDocumento pTipoDocumento,
+                                            ConfiguracionPuntoVenta pConfiguracionPuntoVenta, string pCodigoTipoDocumentoNotaCredito, decimal pTotalNacional,
                                             bool pEsVentaACuentaPorCobrar, decimal pSaldoDisponibleAdelanto)
         {
             switch (pTipoPagoDeVenta.CodigoTipoPago) //Credito
@@ -448,7 +448,7 @@ namespace PtoVta.Aplicacion.GestionVentas
                     break;
                 case VentaTipoPago.VentaContadoAdelantado:  //Adelantado
 
-                    if (pCliente.ControlarSaldoDispo == 1)
+                    if (pCliente.ControlarSaldoDisponible == 1)
                     {
                         if (pTotalNacional > pSaldoDisponibleAdelanto)
                         {
@@ -470,7 +470,7 @@ namespace PtoVta.Aplicacion.GestionVentas
 
 
         //Pasar esto a servicio del dominio.............................>>>> OKOK123 - P
-        private static int MovimientoAlmacenIngresoOSalida(Guid pTipoDocumentoNotaCredId, TipoDocumento tipoDocumento, 
+        private static int MovimientoAlmacenIngresoOSalida(Guid pTipoDocumentoNotaCredId, TipoDocumento tipoDocumento,
                                                             TipoMovimientoAlmacen tipoMovAlmacenVentas)
         {
             var movAlmacenIngresoOSalida = tipoDocumento.Id == pTipoDocumentoNotaCredId ? 1 : tipoMovAlmacenVentas.IngresoOSalida;
@@ -485,22 +485,22 @@ namespace PtoVta.Aplicacion.GestionVentas
             if (ventas != null && ventas.Any())
             {
                 //retorna datos adaptador                
-                return new ResultadoServicio<VentaListadoDTO>(7,Mensajes.advertencia_ConsultaVentasPorClienteExitosa,
-                                    string.Empty, null,  ventas.ProyectadoComoColeccion<VentaListadoDTO>());                
+                return new ResultadoServicio<VentaListadoDTO>(7, Mensajes.advertencia_ConsultaVentasPorClienteExitosa,
+                                    string.Empty, null, ventas.ProyectadoComoColeccion<VentaListadoDTO>());
             }
             else
                 //no retorna
                 return null;
         }
 
- 
+
         Venta CrearNuevaVenta(VentaDTO pVentaDTO, Moneda pMoneda, ClaseTipoCambio pClaseTipoCambio,
                                 Cliente pCliente, TipoDocumento pTipoDocumento, EstadoDocumento pEstadoDocumento,
                                 Vendedor pVendedor, CondicionPago pCondicionPago, TipoPago pTipoPago,
-                                ConfiguracionPuntoVenta pConfiguracionPuntoVenta,Almacen pAlmacen, TipoNegocio pTipoNegocio, 
-                                UsuarioSistema pUsuarioSistema,bool pEsVentaPagoAdelantado, bool pEsVentaACuentaPorCobrar,
-                                TipoMovimientoAlmacen pTipoMovimientoAlmacen,int pMovAlmacenVentaIngresoOSalida,int pPermitirStockNegativo,
-                                DateTime pFechaTipoDeCambio,string pCodigoClienteInterno,int pCantidadDecimalPrecio)
+                                ConfiguracionPuntoVenta pConfiguracionPuntoVenta, Almacen pAlmacen, TipoNegocio pTipoNegocio,
+                                UsuarioSistema pUsuarioSistema, bool pEsVentaPagoAdelantado, bool pEsVentaACuentaPorCobrar,
+                                TipoMovimientoAlmacen pTipoMovimientoAlmacen, int pMovAlmacenVentaIngresoOSalida, int pPermitirStockNegativo,
+                                DateTime pFechaTipoDeCambio, string pCodigoClienteInterno, int pCantidadDecimalPrecio)
         {
             try
             {
@@ -513,7 +513,7 @@ namespace PtoVta.Aplicacion.GestionVentas
                                                 pVentaDTO.TotalDescuentoNacional, pVentaDTO.TotalDescuentoExtranjera, pVentaDTO.TotalVueltoNacional,
                                                 pVentaDTO.TotalVueltoExtranjera, pVentaDTO.TotalEfectivoNacional, pVentaDTO.TotalEfectivoExtranjera,
                                                 pVentaDTO.Placa, (decimal)pVentaDTO.NumeroVale, pVentaDTO.TipoCambio,
-                                                pVentaDTO.ProcesadoCierreZ, pVentaDTO.ProcesadoCierreX, (int)pVentaDTO.Kilometraje,
+                                                pVentaDTO.ProcesadoCierreZ, pVentaDTO.ProcesadoCierreX, (int)pVentaDTO.Kilometraje, pVentaDTO.AfectaInventario, 
                                                 pMoneda, pClaseTipoCambio, pCliente,
                                                 pTipoDocumento, pEstadoDocumento, pVendedor,
                                                 pCondicionPago, pTipoPago, pConfiguracionPuntoVenta,
@@ -525,7 +525,7 @@ namespace PtoVta.Aplicacion.GestionVentas
                     foreach (var linea in pVentaDTO.VentaDetalles)
                     {
                         //Obtener Articulo y Precio
-                        var articulo = _IRepositorioArticulo.ObtenerPorCodigo(linea.CodigoArticulo);
+                        var articulo = _IRepositorioArticulo.ObtenerPorCodigo(linea.CodigoArticulo, pAlmacen.CodigoAlmacen);
                         if (articulo == null)
                         {
                             LogFactory.CrearLog().LogWarning(Mensajes.advertencia_ArticuloAsociadoAVentaDetalleNoExiste);
@@ -534,18 +534,18 @@ namespace PtoVta.Aplicacion.GestionVentas
 
                         //Obtener el precio real del articulo
                         decimal precioRealArticulo = 0;
+                        bool enInventarioFisico = true; //Determinar a partir de tabla INVENTARIO FISICO
                         // decimal precioRealArticulo =
                         //             _IServicioAplicacionInventarios.ObtenerPrecioVentaDeArticulo(pCliente.Id,
                         //                 articulo.Id, pAlmacen.Id, pVentaDTO.FechaProceso, pCodigoClienteInterno, pCantidadDecimalPrecio);
 
-                        var detVenta = nuevaVenta.AgregarNuevaVentaDetalle(linea.Secuencia, linea.FechaDocumento,linea.FechaProceso, 
-                                                linea.Periodo, linea.NumeroTurno,linea.NumeroCara, 
-                                                linea.PorcentajeImpuestoIgv, linea.PorcentajeImpuestoIsc,linea.TotalNacional, 
-                                                linea.TotalExtranjera, linea.ImpuestoNacional,linea.ImpuestoExtranjera, 
-                                                (int)linea.PorcentajeDescuentoPrimero,(int)linea.TotalDescuentoNacional,(int)linea.TotalDescuentoExtranjera, 
-                                                linea.Precio, precioRealArticulo,articulo.DescripcionArticulo, linea.Cantidad, 
-                                                linea.UsuarioSistema,linea.EsFormula, linea.CodigoArticulo, 
-                                                linea.CodigoArticuloAlterno,linea.CodigoMoneda, linea.CodigoEstadoDocumento);
+                        var detVenta = nuevaVenta.AgregarNuevaVentaDetalle(linea.Secuencia, linea.NumeroTurno, linea.NumeroCara,
+                                                linea.PorcentajeImpuestoIgv, linea.PorcentajeImpuestoIsc, linea.TotalNacional,
+                                                linea.TotalExtranjera, linea.ImpuestoNacional, linea.ImpuestoExtranjera,
+                                                (int)linea.PorcentajeDescuentoPrimero, (int)linea.TotalDescuentoNacional, (int)linea.TotalDescuentoExtranjera,
+                                                linea.Precio, precioRealArticulo, articulo.DescripcionArticulo, 
+                                                linea.Cantidad, linea.EsFormula, linea.CodigoArticulo, 
+                                                linea.CodigoArticuloAlterno, articulo.EsInventariable, enInventarioFisico);
 
                         //*** EN EL EJEMPLO NLAYER NO ES NECESARIO EstablecerMonedaParaDetalleVenta
                         //Actualizacion Saldos Stock Articulo...Refactoriza??????
@@ -554,9 +554,9 @@ namespace PtoVta.Aplicacion.GestionVentas
                         _ListaArticulosStockActualizado.Add(articulo);
 
                         //Registrar Movimientos Inventarios 
-                        CrearMovimientoAlmacen(pVentaDTO,pAlmacen, articulo, 
-                                                pTipoMovimientoAlmacen,pTipoDocumento, pMovAlmacenVentaIngresoOSalida, 
-                                                pFechaTipoDeCambio,pConfiguracionPuntoVenta);
+                        CrearMovimientoAlmacen(pVentaDTO, pAlmacen, articulo,
+                                                pTipoMovimientoAlmacen, pTipoDocumento, pMovAlmacenVentaIngresoOSalida,
+                                                pFechaTipoDeCambio, pConfiguracionPuntoVenta);
 
                     }
                 }
@@ -580,9 +580,8 @@ namespace PtoVta.Aplicacion.GestionVentas
                             return null;
                         }
 
-                        var ventaConTarjeta = nuevaVenta.AgregarNuevaVentaConTarjeta(vtaConTarjeta.Secuencia, vtaConTarjeta.NumeroTarjeta,
-                                        vtaConTarjeta.TotalTarjetaNacional, vtaConTarjeta.TotalTarjetaExtranjera, vtaConTarjeta.FechaProceso,
-                                        vtaConTarjeta.CodigoMoneda, vtaConTarjeta.CodigoTarjeta, nuevaVenta.CodigoTipoDocumento, nuevaVenta.CodigoAlmacen);
+                        var ventaConTarjeta = nuevaVenta.AgregarNuevaVentaConTarjeta(vtaConTarjeta.Secuencia, vtaConTarjeta.NumeroTarjeta, vtaConTarjeta.TotalTarjetaNacional, 
+                                        vtaConTarjeta.TotalTarjetaExtranjera, vtaConTarjeta.CodigoMoneda, vtaConTarjeta.CodigoTarjeta);
                     }
                 }
 
@@ -592,30 +591,24 @@ namespace PtoVta.Aplicacion.GestionVentas
                     foreach (var vtaConVale in pVentaDTO.VentaConVales)
                     {
                         var cliente = pCliente; //Si no tiene otra funcionalidad dejar con la variable, si no invocar a repositorio
-                        var ventaConVale = nuevaVenta.AgregarNuevaVentaConVale(vtaConVale.NumeroVale, vtaConVale.FechaProceso,vtaConVale.MontoVale, 
-                                                                pVentaDTO.CodigoCliente, nuevaVenta.CodigoAlmacen, nuevaVenta.CodigoTipoDocumento,
-                                                                pVentaDTO.CodigoMoneda);
+                        var ventaConVale = nuevaVenta.AgregarNuevaVentaConVale(vtaConVale.NumeroVale, vtaConVale.MontoVale);
                     }
                 }
 
                 //Registro Documento Anticipado
                 if (pEsVentaPagoAdelantado)
-                    nuevaVenta.AgregarNuevoDocumentoAnticipado(nuevaVenta.FechaProceso,nuevaVenta.CodigoTipoDocumento, 
-                                                                                    nuevaVenta.CodigoAlmacen);
+                    nuevaVenta.AgregarNuevoDocumentoAnticipado();
 
                 //Registro Cuentas por Cobrar
                 if (pEsVentaACuentaPorCobrar)
                 {
-                    var fechaVencimiento =_IServicioDominioCuentaPorCobrar.ObtenerFechaVenceDocumentoCuentaPorCobrar(pVentaDTO.FechaDocumento, 
+                    var fechaVencimiento = _IServicioDominioCuentaPorCobrar.ObtenerFechaVenceDocumentoCuentaPorCobrar(pVentaDTO.FechaDocumento,
                                                                                                                 pCliente, pCondicionPago);
-                    
-                    nuevaVenta.AgregarNuevaCuentaPorCobrar(0, nuevaVenta.FechaDocumento, nuevaVenta.FechaProceso,
-                                            fechaVencimiento, nuevaVenta.TotalNacional, nuevaVenta.TotalExtranjera, 
-                                            0,0, nuevaVenta.TotalNacional, 
-                                            nuevaVenta.TotalExtranjera, pCliente.Ruc,nuevaVenta.TipoCambio, 
-                                            pCliente.DiasDeGracia, 0, pMoneda.CodigoMoneda,
-                                            pClaseTipoCambio.CodigoClaseTipoCambio, pEstadoDocumento.CodigoEstadoDocumento, pCliente.CodigoDiaDePago, 
-                                            pAlmacen.CodigoAlmacen,pUsuarioSistema.CodigoUsuarioDeSistema, pTipoDocumento.CodigoTipoDocumento);
+
+                    nuevaVenta.AgregarNuevaCuentaPorCobrar(0, fechaVencimiento, 0,
+                                            0, 0, 0,
+                                            pCliente.DiasDeGracia, 0, EnumEstadoDocumento.CodigoEstadoDocumentoPendiente,
+                                            pCliente.CodigoDiaDePago, string.Empty);
                 }
 
 
@@ -631,18 +624,18 @@ namespace PtoVta.Aplicacion.GestionVentas
             }
         }
 
-  
+
         //Registrar Movimientos Inventarios 
         void CrearMovimientoAlmacen(VentaDTO pVentaDTO, Almacen pAlmacen, Articulo pArticulo,
-                                    TipoMovimientoAlmacen pTipoMovimientoAlmacen, TipoDocumento pTipoDocumento,int pMovAlmacenVentaIngresoOSalida, 
-                                    DateTime pFechaTipoDeCambio,ConfiguracionPuntoVenta pConfiguracionPuntoVenta)
+                                    TipoMovimientoAlmacen pTipoMovimientoAlmacen, TipoDocumento pTipoDocumento, int pMovAlmacenVentaIngresoOSalida,
+                                    DateTime pFechaTipoDeCambio, ConfiguracionPuntoVenta pConfiguracionPuntoVenta)
         {
             if (pArticulo.EsInventariable)
             {
                 foreach (var linea in pVentaDTO.VentaDetalles)
                 {
                     MovimientoAlmacen movAlmacen = new MovimientoAlmacen();
-                    movAlmacen.CorrelativoMovimiento = pConfiguracionPuntoVenta.CorrelativoMovimientoAlmacenPorVenta;
+                    movAlmacen.CorrelativoMovimiento = pConfiguracionPuntoVenta.CorrelativoMovimientoAlmacenPorVenta.ToString();
                     movAlmacen.FechaDocumento = pVentaDTO.FechaDocumento;
                     movAlmacen.FechaProceso = pVentaDTO.FechaProceso;
                     movAlmacen.MontoTipoDeCambio = pVentaDTO.TipoCambio;
@@ -654,7 +647,7 @@ namespace PtoVta.Aplicacion.GestionVentas
                     movAlmacen.CostoReposicionNacional = pArticulo.ArticuloDetalle.CostoReposicionNacional;
                     movAlmacen.EsArticuloFormula = pArticulo.EsFormula;
                     movAlmacen.Precio = linea.PrecioVenta; //el precio al que se le aplico los descuentos                        
-                    movAlmacen.DocumentoReferencia = pVentaDTO.NumeroDocumento;
+                    movAlmacen.DocumentoReferencia = pVentaDTO.NumeroDocumento.ToString();
                     movAlmacen.EnInventarioFisico = pArticulo.InventariosFisicos != null ? pArticulo.InventariosFisicos.Count : 0; //Crear articulo en inv. fisico
 
                     movAlmacen.EstablecerAlmacenDeMovimientoAlmacen(pAlmacen);
@@ -679,7 +672,7 @@ namespace PtoVta.Aplicacion.GestionVentas
             //Pago
             var pagoInicial = _IRepositorioVenta.ObtenerPagoVentaAdelantada(pCodigoCliente, pCodigoAlmacen,
                                                         pCodigoTipoDocumento, pFechaProcesoVentas);
-            if(pagoInicial == null)
+            if (pagoInicial == null)
             {
                 LogFactory.CrearLog().LogWarning(Mensajes.advertencia_NoSeObtuvoPagoDeVentaAdelantada);
                 return 0;
@@ -739,7 +732,7 @@ namespace PtoVta.Aplicacion.GestionVentas
 
                 if (pCliente.DiaDePago.EstadoSemana == -1)
                 {
-                    int diaSemana = 0;
+                    // int diaSemana = 0;
                     int diasTotal = 0;
                     if (pCliente.DiaDePago.D1Lunes + pCliente.DiaDePago.D2Martes + pCliente.DiaDePago.D3Miercoles +
                         pCliente.DiaDePago.D4Jueves + pCliente.DiaDePago.D5Viernes + pCliente.DiaDePago.D6Sabado +
@@ -877,14 +870,14 @@ namespace PtoVta.Aplicacion.GestionVentas
         }
 
 
-        bool ExisteDocumentoDeVenta(string pCodigoTipoDocumento, decimal pNuevoCorrelativoDocumento,
+        bool ExisteDocumentoDeVenta(string pCodigoTipoDocumento, string pNuevoCorrelativoDocumento,
                                     string pCodigoAlmacen)
         {
             try
             {
                 ////conventir pNuevoCorrelativoDocumento de String a Decimal
                 //Obtener correlativo
-                decimal actualCorrelativoDocumento = _IRepositorioVenta.ObtenerNumeroDocumentoVenta(pCodigoTipoDocumento,
+                string actualCorrelativoDocumento = _IRepositorioVenta.ObtenerNumeroDocumentoVenta(pCodigoTipoDocumento,
                                                                         pNuevoCorrelativoDocumento, pCodigoAlmacen);
 
                 return _IServicioDominioVentas.ExisteComprobanteDePagoDeVenta(pNuevoCorrelativoDocumento, actualCorrelativoDocumento);
@@ -924,48 +917,48 @@ namespace PtoVta.Aplicacion.GestionVentas
 
             // if (validarEntidad.EsValido(pVenta))
             // {
-                _IRepositorioVenta.Agregar(pVenta);
-                // _IRepositorioVenta.UnidadTrabajo.Commit();
+            _IRepositorioVenta.Agregar(pVenta);
+            // _IRepositorioVenta.UnidadTrabajo.Commit();
             // }
             // else
             //     throw new AplicacionExcepcionErrorValidacion(validarEntidad.RecibeMensajesInvalidos(pVenta));
 
         }
 
-        void ActualizarTipoDocumento(TipoDocumento pTipoDocumentoActual)
+        void ActualizarTipoDocumento(TipoDocumento pTipoDocumentoActual, string pCodigoAlmacen, string pNumeroSerie)
         {
             //Persistir TipoDocumento            
             // var validarEntidad = ValidadorEntidadFactory.CrearValidador();
 
             // if (validarEntidad.EsValido(pTipoDocumentoActual))
             // {
-                var tipoDocumentoAPersistido = _IRepositorioTipoDocumento.ObtenerPorCodigo(pTipoDocumentoActual.CodigoTipoDocumento);
-                if (tipoDocumentoAPersistido != null)
-                {
-                    _IRepositorioTipoDocumento.Modificar(pTipoDocumentoActual); //CAMBIAR POR ACTUALIZAR
-                    // _IRepositorioTipoDocumento.UnidadTrabajo.Commit();
-                }
-                else
-                    LogFactory.CrearLog().LogWarning(Mensajes.advertencia_NoSeObtuvoResultadoDeConsultaTipoDocumento);
+            var tipoDocumentoAPersistido = _IRepositorioTipoDocumento.ObtenerPorCodigo(pTipoDocumentoActual.CodigoTipoDocumento);
+            if (tipoDocumentoAPersistido != null)
+            {
+                _IRepositorioTipoDocumento.ActualizarCorrelativoDocumento(pTipoDocumentoActual,pCodigoAlmacen, pNumeroSerie ); //CAMBIAR POR ACTUALIZAR
+                                                                            // _IRepositorioTipoDocumento.UnidadTrabajo.Commit();
+            }
+            else
+                LogFactory.CrearLog().LogWarning(Mensajes.advertencia_NoSeObtuvoResultadoDeConsultaTipoDocumento);
             // }
             // else
             //     throw new AplicacionExcepcionErrorValidacion(validarEntidad.RecibeMensajesInvalidos(pTipoDocumentoActual));
         }
 
-        void ActualizarArticulo(Articulo pArticuloActual)
+        void ActualizarArticulo(Articulo pArticuloActual, string pCodigoArticulo)
         {
             //Persistir Articulo 
             // var validarEntidad = ValidadorEntidadFactory.CrearValidador();
             // if (validarEntidad.EsValido(pArticuloActual))
             // {
-                var articuloAPersistido = _IRepositorioArticulo.ObtenerPorCodigo(pArticuloActual.CodigoArticulo);
-                if (articuloAPersistido != null)
-                {
-                    _IRepositorioArticulo.Modificar(pArticuloActual);
-                    // _IRepositorioArticulo.UnidadTrabajo.Commit();
-                }
-                else
-                    LogFactory.CrearLog().LogWarning(Mensajes.advertencia_NoSeObtuvoResultadoDeConsultaArticuloAPersistir);
+            var articuloAPersistido = _IRepositorioArticulo.ObtenerPorCodigo(pArticuloActual.CodigoArticulo, pCodigoArticulo);
+            if (articuloAPersistido != null)
+            {
+                _IRepositorioArticulo.Modificar(pArticuloActual);
+                // _IRepositorioArticulo.UnidadTrabajo.Commit();
+            }
+            else
+                LogFactory.CrearLog().LogWarning(Mensajes.advertencia_NoSeObtuvoResultadoDeConsultaArticuloAPersistir);
             // }
             // else
             //     throw new AplicacionExcepcionErrorValidacion(validarEntidad.RecibeMensajesInvalidos(pArticuloActual));
@@ -978,15 +971,15 @@ namespace PtoVta.Aplicacion.GestionVentas
             // var validarEntidad = ValidadorEntidadFactory.CrearValidador();
             // if (validarEntidad.EsValido(pMovimientoAlmacen))
             // {
-                _IRepositorioMovimientoAlmacen.Agregar(pMovimientoAlmacen);
-                // _IRepositorioMovimientoAlmacen.UnidadTrabajo.Commit();
+            _IRepositorioMovimientoAlmacen.Agregar(pMovimientoAlmacen);
+            // _IRepositorioMovimientoAlmacen.UnidadTrabajo.Commit();
             // }
             // else
             //     throw new AplicacionExcepcionErrorValidacion(validarEntidad.RecibeMensajesInvalidos(pMovimientoAlmacen));
         }
 
 
-        void GrabarTransaccionDeVenta(Venta pVenta, TipoDocumento pTipoDocumento, 
+        void GrabarTransaccionDeVenta(Venta pVenta, TipoDocumento pTipoDocumento,
                                 List<Articulo> pArticulosStockActualizado, List<MovimientoAlmacen> pMovimientoAlmacen)
         {
             try
@@ -1007,7 +1000,7 @@ namespace PtoVta.Aplicacion.GestionVentas
                     //Persistir Articulo - Detalles de Articulo (actualizacion Stock
                     foreach (var articulo in pArticulosStockActualizado)
                     {
-                        ActualizarArticulo(articulo);
+                        ActualizarArticulo(articulo, pVenta.CodigoAlmacen);
                     }
 
                     //Persistir Movimientos de Almacen
@@ -1017,7 +1010,7 @@ namespace PtoVta.Aplicacion.GestionVentas
                     }
 
                     //Actualizar correlativo de documento
-                    ActualizarTipoDocumento(pTipoDocumento);
+                    ActualizarTipoDocumento(pTipoDocumento, pVenta.CodigoAlmacen, pVenta.NumeroDocumento.ToString().PadRight(7));
 
                     //Completar transaccion
                     ambito.Complete();
@@ -1026,8 +1019,8 @@ namespace PtoVta.Aplicacion.GestionVentas
             }
             catch (Exception ex)
             {
-                string cadenaExcepcion = ex.Message + 
-                    ".Detalles Interno: " + ex.InnerException != null && ex.InnerException.InnerException != null? 
+                string cadenaExcepcion = ex.Message +
+                    ".Detalles Interno: " + ex.InnerException != null && ex.InnerException.InnerException != null ?
                                     ex.InnerException.InnerException.Message : "Ver Detalles.";
                 LogFactory.CrearLog().LogWarning(cadenaExcepcion);
                 throw;
@@ -1066,6 +1059,6 @@ namespace PtoVta.Aplicacion.GestionVentas
                 }
             }
         }
-        
+
     }
 }

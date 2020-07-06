@@ -18,16 +18,14 @@ namespace PtoVta.Infraestructura.Repositorios.Parametros
         {
             using (IDbConnection cn = new SqlConnection(this.CadenaConexion))
             {
-                string cadenaSQL = @"SELECT	USERID		AS CodigoUsuarioDeSistema
-                                            ,EXPIRED	AS FechaExpiracion
-                                            ,USERNAME	AS DescripcionUsuario
-                                            ,PASSWORD	AS Contraseña
-                                            ,STATUS AS EsHabilitado
-                                    FROM    SE_USERREC (NOLOCK)
-                                    WHERE	USERID			= @USERID";
+                string cadenaSQL = @"SELECT	TYPEPAYMENTID	AS CodigoTipoPago
+                                            ,DESCR			AS DescripcionTipoPago
+                                            ,SHOW			AS Mostrar
+                                    FROM	PC_TYPEPAYMENT (NOLOCK)
+                                    WHERE	TYPEPAYMENTID	= @TYPEPAYMENTID";
 
                 var tipoDePago = cn.QueryFirstOrDefault<TipoPago>(cadenaSQL,
-                                    new { USERID = pCodigoTipoPago });
+                                    new { TYPEPAYMENTID = pCodigoTipoPago });
 
                 if (tipoDePago != null)
                 {

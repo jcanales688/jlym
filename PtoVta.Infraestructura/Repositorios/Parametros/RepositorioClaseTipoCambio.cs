@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
@@ -20,34 +21,34 @@ namespace PtoVta.Infraestructura.Repositorios.Parametros
         {
             using (IDbConnection cn = new SqlConnection(this.CadenaConexion))
             {
-                string cadenaSQL = @"SELECT	CLASSID				AS CodigoCategoriaArticulo
-                                            ,DESCR				AS DescripcionCategoriaArticulo
-                                            ,INVTIDSOLOMON		AS CodigoContable
-                                            ,DESCRSPANISH		AS Comentario
-                                            ,BUSINESSTYPE		AS CodigoTipoNegocio
-                                            ,ICONO              AS Imagen
-                                    FROM	IN_CATEGORY		(NOLOCK) 
-                                    WHERE	BUSINESSTYPE		= @BUSINESSTYPE
-                                        
-                                    SELECT	CLASSUBID			AS CodigoSubCategoriaArticulo
-                                            ,DESCR				AS DescripcionSubCategoriaArticulo
-                                            ,PORCENTDIFFERENCE	AS PorcentajeDiferencia
-                                            ,CLASSID			AS CodigoCategoriaArticulo
-                                            ,TYPEDOCFISIN		AS CodigoTipoMovInvFisIngreso
-                                            ,TYPEDOCFISOUT		AS CodigoTipoMovInvFisSalida
-                                            ,ICONO              AS Imagen                                            
-                                    FROM	IN_SUBCATEGORY	(NOLOCK) 
-                                    WHERE	CLASSID				IN(SELECT	CLASSID				
-                                                                    FROM	IN_CATEGORY		(NOLOCK) 
-                                                                    WHERE	BUSINESSTYPE		= @BUSINESSTYPE)";
+                string cadenaSQL = @"SELECT	CURYTYPEID	AS CodigoClaseTipoCambio
+                                            ,DESCR		AS DescripcionClaseTipoCambio
+                                    FROM	PC_CURYRATETYPE (NOLOCK)
+                                    WHERE	CURYTYPEID	= @CURYTYPEID;
+
+                                    SELECT TOP 1 CURYDATE	AS FechaTipoDeCambio
+                                            ,RATE		AS MontoTipoDeCambio
+                                            ,OPERADOR	AS Operador
+                                            ,USERID		AS UsuarioDeSistema
+                                            ,CURYTYPEID	AS CodigoClaseTipoCambio
+                                            ,FROMCURYID AS CodigoMonedaOrigen
+                                            ,TOCURYID	AS CodigoMonedaDestino
+                                    FROM	PC_CURYRATE (NOLOCK)
+                                    WHERE	CURYTYPEID		= @CURYTYPEID
+                                            AND FROMCURYID	= @FROMCURYID
+                                            AND TOCURYID	= @TOCURYID
+                                            AND CURYDATE	= (	SELECT	MAX(CURYDATE) 
+                                                                FROM	PC_CURYRATE (NOLOCK)
+                                                                WHERE	CURYTYPEID		= @CURYTYPEID
+                                                                        AND CURYDATE	<= @CURYDATE)";
 
                 var resultado = cn.QueryMultiple(cadenaSQL,
                                     new
                                     {
-                                        BUSINESSTYPE = pCodigoMonedaOrigen,
-                                        BUSINESSTYPE2 = pCodigoMonedaDestino,
-                                        BUSINESSTYPE4 = pFechaTipoDeCambio,
-                                        BUSINESSTYPE5 = pCodigoClaseTipoCambio
+                                        FROMCURYID = pCodigoMonedaOrigen,
+                                        TOCURYID = pCodigoMonedaDestino,
+                                        CURYDATE = pFechaTipoDeCambio,
+                                        CURYTYPEID = pCodigoClaseTipoCambio
                                     });
 
                 var claseTipoDeCambio = resultado.Read<ClaseTipoCambio>().FirstOrDefault();
@@ -108,16 +109,13 @@ namespace PtoVta.Infraestructura.Repositorios.Parametros
         {
             using (IDbConnection cn = new SqlConnection(this.CadenaConexion))
             {
-                string cadenaSQL = @"SELECT	USERID		AS CodigoUsuarioDeSistema
-                                            ,EXPIRED	AS FechaExpiracion
-                                            ,USERNAME	AS DescripcionUsuario
-                                            ,PASSWORD	AS Contraseña
-                                            ,STATUS AS EsHabilitado
-                                    FROM    SE_USERREC (NOLOCK)
-                                    WHERE	USERID			= @USERID";
+                string cadenaSQL = @"SELECT	CURYTYPEID	AS CodigoClaseTipoCambio
+                                            ,DESCR		AS DescripcionClaseTipoCambio
+                                    FROM	PC_CURYRATETYPE (NOLOCK)
+                                    WHERE	CURYTYPEID	= @CURYTYPEID";
 
                 var claseDeTipoCambio = cn.QueryFirstOrDefault<ClaseTipoCambio>(cadenaSQL,
-                                                        new { USERID = pCodigoClaseTipoCambio });
+                                                        new { CURYTYPEID = pCodigoClaseTipoCambio });
 
                 if (claseDeTipoCambio != null)
                 {
@@ -130,7 +128,17 @@ namespace PtoVta.Infraestructura.Repositorios.Parametros
 
         private ClaseTipoCambio MapeoClaseTipoCambio(ClaseTipoCambio pClaseTipoCambio, TipoDeCambio pTipoDeCambio)
         {
-            return new ClaseTipoCambio();
+            var claseTipoDeCambio = new ClaseTipoCambio();
+            claseTipoDeCambio = pClaseTipoCambio;
+
+            if(pTipoDeCambio != null)
+            {
+                claseTipoDeCambio.AgregarNuevoTipoDeCambio(pTipoDeCambio.FechaTipoDeCambio, pTipoDeCambio.MontoTipoDeCambio,
+                                                            pTipoDeCambio.Operador, pTipoDeCambio.UsuarioDeSistema,
+                                                            pTipoDeCambio.CodigoMonedaOrigen, pTipoDeCambio.CodigoMonedaDestino);                    
+            }
+
+            return claseTipoDeCambio;
         }
     }
 }

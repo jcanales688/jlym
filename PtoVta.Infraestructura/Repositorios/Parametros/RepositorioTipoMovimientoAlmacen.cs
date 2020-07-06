@@ -18,16 +18,21 @@ namespace PtoVta.Infraestructura.Repositorios.Parametros
         {
             using (IDbConnection cn = new SqlConnection(this.CadenaConexion))
             {
-                string cadenaSQL = @"SELECT	USERID		AS CodigoUsuarioDeSistema
-                                            ,EXPIRED	AS FechaExpiracion
-                                            ,USERNAME	AS DescripcionUsuario
-                                            ,PASSWORD	AS Contraseña
-                                            ,STATUS AS EsHabilitado
-                                    FROM    SE_USERREC (NOLOCK)
-                                    WHERE	USERID			= @USERID";
+                string cadenaSQL = @"SELECT  TYPEDOCID		AS CodigoTipoMovimientoAlmacen
+                                            ,DESCR			AS DescripcionTipoMovimientoAlmacen
+                                            ,INOUT			AS IngresoOSalida
+                                            ,STKVALUE		AS EsValorizado
+                                            ,STKCOSPRICE	AS ValorizadoPorPrecioVentaOCostoReposicion         
+                                            ,STKAVGCOST		AS ValorizadoPorCostoPromedio
+                                            ,STKBUY			AS EsTipoIngresoPorCompra
+                                            ,STKVENDOR		AS RequiereProveedor
+                                            ,STKAVERAGE		AS EnCalculoCostoPromedio
+                                            ,DESCR_ABR		AS DescripcionAbreviada
+                                    FROM	PC_IN_TYPEDOC (NOLOCK)
+                                    WHERE	TYPEDOCID = @TYPEDOCID";
 
                 var tipoMovimientoAlmacen = cn.QueryFirstOrDefault<TipoMovimientoAlmacen>(cadenaSQL,
-                                                    new { USERID = pCodigoTipoMovimientoAlmacen });
+                                                    new { TYPEDOCID = pCodigoTipoMovimientoAlmacen });
 
                 if (tipoMovimientoAlmacen != null)
                 {

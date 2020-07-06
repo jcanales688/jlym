@@ -7,7 +7,7 @@ using PtoVta.Dominio.Agregados.Parametros;
 using PtoVta.Dominio.Agregados.Usuario;
 using PtoVta.Dominio.BaseTrabajo;
 using static PtoVta.Dominio.BaseTrabajo.Enumeradores.EstadosVenta;
-using static PtoVta.Dominio.BaseTrabajo.Globales.MensajesDominio;
+using static PtoVta.Dominio.BaseTrabajo.Globales.GlobalDominio;
 
 namespace PtoVta.Dominio.Agregados.Ventas
 {
@@ -23,7 +23,7 @@ namespace PtoVta.Dominio.Agregados.Ventas
         HashSet<CuentaPorCobrar> _lineasCuentaPorCobrar;
 
 
-        public decimal NumeroDocumento { get; set; }
+        public string NumeroDocumento { get; set; }
         public DateTime FechaDocumento { get; set; }
         public DateTime FechaProceso { get; set; }
         public string Periodo { get; set; }
@@ -32,7 +32,7 @@ namespace PtoVta.Dominio.Agregados.Ventas
         public decimal SubTotalNacional { get; set; }
         public decimal SubTotalExtranjera { get; set; }
         public decimal ImpuestoIgvNacional { get; set; }
-        public decimal ImpuestoIGVExtranjera { get; set; }
+        public decimal ImpuestoIgvExtranjera { get; set; }
         public decimal ImpuestoIscNacional { get; set; }
         public decimal ImpuestoIscExtranjera { get; set; }
         public decimal TotalNoAfectoNacional { get; set; }
@@ -52,9 +52,10 @@ namespace PtoVta.Dominio.Agregados.Ventas
         public string Placa { get; set; }
         public Nullable<decimal> NumeroVale { get; set; }
         public decimal TipoCambio { get; set; }
-        public int ProcesadoCierreZ { get; set; }
-        public int ProcesadoCierreX { get; set; }
+        public bool ProcesadoCierreZ { get; set; }
+        public bool ProcesadoCierreX { get; set; }
         public Nullable<int> Kilometraje { get; set; }
+        public bool AfectaInventario { get; set; }
 
         public bool EsHabilitado
         {
@@ -159,7 +160,7 @@ namespace PtoVta.Dominio.Agregados.Ventas
             this.SubTotalNacional = sumSubTotalNacional;
             this.SubTotalExtranjera = sumSubTotalExtranjera;
             this.ImpuestoIgvNacional = sumTotalImpuestoNacional;
-            this.ImpuestoIGVExtranjera = sumTotalImpuestoExtranjera;
+            this.ImpuestoIgvExtranjera = sumTotalImpuestoExtranjera;
 
             this.ValorVenta = this.SubTotalNacional; //Invenstigar la formula de obtencion valor de venta
         }
@@ -357,38 +358,22 @@ namespace PtoVta.Dominio.Agregados.Ventas
 
 
 
-        public VentaDetalle AgregarNuevaVentaDetalle(short pSecuencia, DateTime pFechaDocumento, DateTime pFechaProceso,
-                                        string pPeriodo, int pNumeroTurno, string pNumeroCara, 
-                                        decimal pPorcentajeImpuestoIgv, decimal pPorcentajeImpuestoIsc,decimal pTotalNacional, 
-                                        decimal pTotalExtranjera, decimal pImpuestoNacional, decimal pImpuestoExtranjera,
-                                        Nullable<decimal> pPorcentajeDescuentoPrimero, Nullable<decimal> pTotalDescuentoNacional, Nullable<decimal> pTotalDescuentoExtranjera,
-                                        decimal pPrecio,decimal pPrecioVenta, string pDescripcionArticulo, 
-                                        decimal pCantidad, string pUsuarioSistema, int pEsFormula,
-                                        string pCodigoArticulo, string pCodigoArticuloAlterno, string pCodigoMoneda, 
-                                        string pCodigoEstadoDocumento)
+        public VentaDetalle AgregarNuevaVentaDetalle(short pSecuencia,int pNumeroTurno, string pNumeroCara, 
+                            decimal pPorcentajeImpuestoIgv, decimal pPorcentajeImpuestoIsc,decimal pTotalNacional, 
+                            decimal pTotalExtranjera, decimal pImpuestoNacional, decimal pImpuestoExtranjera,
+                            decimal pPorcentajeDescuentoPrimero, decimal pTotalDescuentoNacional, decimal pTotalDescuentoExtranjera,
+                            decimal pPrecio,decimal pPrecioVenta, string pDescripcionArticulo, 
+                            decimal pCantidad, int pEsFormula, string pCodigoArticulo, 
+                            string pCodigoArticuloAlterno,bool pEsInventariable, bool pEnInventarioFisico)
         {
             //Validaciones
 
 
             if (string.IsNullOrEmpty(pCodigoArticulo)
                 ||
-                string.IsNullOrEmpty(pCodigoMoneda)
-                ||
-                string.IsNullOrEmpty(pCodigoEstadoDocumento)
-                ||
                 pSecuencia <= 0
                 ||
-                pFechaDocumento == null
-                ||
-                pFechaProceso == null
-                ||
-                String.IsNullOrWhiteSpace(pPeriodo)
-                ||
-                pPeriodo.Trim().Length > 6
-                ||
                 String.IsNullOrEmpty(pNumeroCara)
-                ||
-                String.IsNullOrEmpty(pUsuarioSistema)
                 ||
                 pNumeroTurno < 0
                 ||
@@ -407,10 +392,6 @@ namespace PtoVta.Dominio.Agregados.Ventas
                 pCantidad <= 0
                 )
                 throw new ArgumentException(Mensajes.excepcion_DatosNoValidosParaLineaVentaDetalle);
-
-
-
- 
             
             //Crear nuevo detalles venta
             var nuevaLineaVentaDetalle = new VentaDetalle()
@@ -418,13 +399,16 @@ namespace PtoVta.Dominio.Agregados.Ventas
                 VentaId = this.Id,
                 CodigoArticulo = pCodigoArticulo,
                 CodigoArticuloAlterno = pCodigoArticuloAlterno,
-                CodigoMoneda = pCodigoMoneda,
-                CodigoEstadoDocumento = pCodigoEstadoDocumento,
+                CodigoMoneda = this.CodigoMoneda,
+                CodigoEstadoDocumento = this.CodigoEstadoDocumento,
+                CodigoAlmacen = this.CodigoAlmacen,
+                CodigoTipoDocumento = this.CodigoTipoDocumento,
+                CodigoUsuarioDeSistema = this.CodigoUsuarioDeSistema,
                 NumeroDocumento = this.NumeroDocumento,
+                FechaDocumento = this.FechaDocumento,
+                FechaProceso = this.FechaProceso,
+                Periodo = this.Periodo,
                 Secuencia = pSecuencia,
-                FechaDocumento = pFechaDocumento,
-                FechaProceso = pFechaProceso,
-                Periodo = pPeriodo,
                 NumeroTurno = pNumeroTurno,
                 NumeroCara = pNumeroCara,
                 PorcentajeImpuestoIgv = pPorcentajeImpuestoIgv,
@@ -440,9 +424,9 @@ namespace PtoVta.Dominio.Agregados.Ventas
                 PrecioVenta = pPrecioVenta,
                 DescripcionArticulo = pDescripcionArticulo,
                 Cantidad = pCantidad,
-                UsuarioSistema = pUsuarioSistema,
-                EsFormula = pEsFormula
-
+                EsFormula = pEsFormula,
+                EsInventariable = pEsInventariable,
+                EnInventarioFisico = pEnInventarioFisico
             };
 
             //Establecer la identidad
@@ -454,36 +438,29 @@ namespace PtoVta.Dominio.Agregados.Ventas
 
         }
 
-        public VentaConTarjeta AgregarNuevaVentaConTarjeta(short pSecuencia, string pNumeroTarjeta, 
-                decimal pTotalTarjetaNacional,decimal pTotalTarjetaExtranjera, DateTime pFechaProceso,
-                string pCodigoMoneda, string pCodigoTarjeta, string pCodigoTipoDocumento, string pCodigoAlmacen)
+        public VentaConTarjeta AgregarNuevaVentaConTarjeta(short pSecuencia, string pNumeroTarjeta, decimal pTotalTarjetaNacional,
+                    decimal pTotalTarjetaExtranjera, string pCodigoMoneda, string pCodigoTarjeta)
         {
 
             if (string.IsNullOrEmpty(pCodigoMoneda)
                 ||
-                string.IsNullOrEmpty(pCodigoTarjeta)
-                ||
-                string.IsNullOrEmpty(pCodigoTipoDocumento)
-                ||
-                string.IsNullOrEmpty(pCodigoAlmacen)
-                )
+                string.IsNullOrEmpty(pCodigoTarjeta))
                 throw new ArgumentException(Mensajes.excepcion_DatosNoValidosParaLineaVentaConTarjeta);
 
 
             var nuevaLineaVentaConTarjeta = new VentaConTarjeta()
             {
                 VentaId = this.Id,
+                NumeroDocumento = this.NumeroDocumento,                
+                CodigoAlmacen = this.CodigoAlmacen,
+                CodigoTipoDocumento = this.CodigoTipoDocumento,
+                FechaProceso = this.FechaProceso,
                 CodigoMoneda = pCodigoMoneda,
-                CodigoTarjeta = pCodigoTarjeta,
-                CodigoTipoDocumento = pCodigoTipoDocumento,
-                CodigoAlmacen = pCodigoAlmacen,
-                NumeroDocumento = this.NumeroDocumento,
+                CodigoTarjeta = pCodigoTarjeta,        
                 Secuencia = pSecuencia,
                 NumeroTarjeta = pNumeroTarjeta,
                 TotalTarjetaNacional = pTotalTarjetaNacional,
-                TotalTarjetaExtranjera = pTotalTarjetaExtranjera,
-                FechaProceso = pFechaProceso
-             
+                TotalTarjetaExtranjera = pTotalTarjetaExtranjera,             
             };
 
             nuevaLineaVentaConTarjeta.GenerarNuevaIdentidad();
@@ -493,34 +470,24 @@ namespace PtoVta.Dominio.Agregados.Ventas
             return nuevaLineaVentaConTarjeta;
         }
 
-        public VentaConVale AgregarNuevaVentaConVale(
-                decimal pNumeroVale, DateTime pFechaProceso,
-                Nullable<decimal> pMontoVale, string pCodigoCliente, string pCodigoAlmacen, string pCodigoTipoDocumento, string pCodigoMoneda)
+        public VentaConVale AgregarNuevaVentaConVale(decimal pNumeroVale, decimal pMontoVale)
         {
-
-            if (string.IsNullOrEmpty(pCodigoCliente)
+            if (pNumeroVale == 0
                 ||
-                string.IsNullOrEmpty(pCodigoAlmacen)
-                ||
-                string.IsNullOrEmpty(pCodigoTipoDocumento)
-                ||
-                string.IsNullOrEmpty(pCodigoMoneda))
+                pMontoVale == 0)
                     throw new ArgumentException(Mensajes.excepcion_DatosNoValidosParaLineaVentaConVale);
-
 
             var nuevaLineaVentaConVale = new VentaConVale()
             {
                 VentaId =this.Id,                
-                CodigoCliente = pCodigoCliente,
-                CodigoAlmacen = pCodigoAlmacen,
-                CodigoTipoDocumento = pCodigoTipoDocumento,
-                CodigoMoneda = pCodigoMoneda,
                 NumeroDocumento = this.NumeroDocumento,
+                CodigoAlmacen = this.CodigoAlmacen,
+                CodigoTipoDocumento = this.CodigoTipoDocumento,
+                CodigoCliente = this.CodigoCliente,
+                FechaProceso = this.FechaProceso,
+                CodigoMoneda = this.CodigoMoneda,
                 NumeroVale = pNumeroVale,
-                FechaProceso = pFechaProceso,
-                MontoVale = pMontoVale,
-                 
-                
+                MontoVale = pMontoVale                                
             };
 
             nuevaLineaVentaConVale.GenerarNuevaIdentidad();
@@ -533,23 +500,14 @@ namespace PtoVta.Dominio.Agregados.Ventas
 
 
         //nueva innovavion de Agregado - Realacion 1 a 0, 1
-        public DocumentoAnticipado AgregarNuevoDocumentoAnticipado(DateTime pFechaProceso,
-                                        string pCodigoTipoDocumento, string pCodigoAlmacen)
+        public DocumentoAnticipado AgregarNuevoDocumentoAnticipado()
         {
-
-            if (string.IsNullOrEmpty(pCodigoTipoDocumento)
-                ||
-                string.IsNullOrEmpty(pCodigoAlmacen))
-                throw new ArgumentException(Mensajes.excepcion_DatosNoValidosParaLineaDocumentoAnticipado);
-
-
             var nuevaLineaDocumentoAnticipado = new DocumentoAnticipado()
             {
                 NumeroDocumento = this.NumeroDocumento,                
-                CodigoTipoDocumento = pCodigoTipoDocumento,
-                CodigoAlmacen = pCodigoAlmacen,            
-                FechaProceso = pFechaProceso
-
+                CodigoTipoDocumento = this.CodigoTipoDocumento,
+                CodigoAlmacen = this.CodigoAlmacen,            
+                FechaProceso = this.FechaProceso
             };
 
             nuevaLineaDocumentoAnticipado.GenerarNuevaIdentidad();
@@ -557,69 +515,37 @@ namespace PtoVta.Dominio.Agregados.Ventas
             this.DocumentosAnticipado.Add(nuevaLineaDocumentoAnticipado);
 
             return nuevaLineaDocumentoAnticipado;
-
         }
 
 
         //Cuenta por Cobrar
-        public CuentaPorCobrar AgregarNuevaCuentaPorCobrar(
-                double pReferencia, DateTime pFechaDocumento, DateTime pFechaProceso, 
-                DateTime pFechaVencimiento,decimal pTotalNacionalCtaCobrar, decimal pTotalExtranjeraCtaCobrar, decimal pPagoDocumentoNacional, 
-                decimal pPagoDocumentoExtranjera,decimal pSaldoDocumentoNacional, decimal pSaldoDocumentoExtranjera, string pRuc, 
-                decimal pTipoCambio, int pDiasDeGracia,decimal pNumeroVale, string pCodigoMoneda, 
-                string pCodigoClaseTipoCambio, string pCodigoEstadoDocumento, string pCodigoDiaDePago, string pCodigoAlmacen,
-                string pCodigoUsuarioSistema, string pCodigoTipoDocumento)
+        public CuentaPorCobrar AgregarNuevaCuentaPorCobrar(double pReferencia, DateTime pFechaVencimiento, decimal pPagoDocumentoNacional, 
+                                    decimal pPagoDocumentoExtranjera,decimal pSaldoDocumentoNacional, decimal pSaldoDocumentoExtranjera, 
+                                    int pDiasDeGracia, decimal pNumeroVale, string pCodigoEstadoDocumento, 
+                                    string pCodigoDiaDePago, string pCodigoTipoDocumentoReferencia)
         {
-            if (string.IsNullOrEmpty(pCodigoMoneda)
-                ||
-                string.IsNullOrEmpty(pCodigoClaseTipoCambio)
-                ||
-                string.IsNullOrEmpty(pCodigoEstadoDocumento)
+            if (string.IsNullOrEmpty(pCodigoEstadoDocumento)
                 ||
                 string.IsNullOrEmpty(pCodigoDiaDePago)
                 ||
-                string.IsNullOrEmpty(pCodigoAlmacen)
-                ||
-                string.IsNullOrEmpty(pCodigoUsuarioSistema)
-                ||
-                string.IsNullOrEmpty(pCodigoTipoDocumento)
-                ||
-                pReferencia <= 0
-                ||
-                pFechaDocumento == null
-                ||
-                pFechaProceso == null
-                ||
-                pTotalNacionalCtaCobrar < 0
-                ||
-                pPagoDocumentoNacional < 0
-                ||
-                String.IsNullOrEmpty(pRuc)
-                ||
-                pTipoCambio <= 0
-                ||
-                pNumeroVale <= 0
-
-                )
-                throw new ArgumentException(Mensajes.excepcion_DatosNoValidosParaLineaCuentaPorCobrar);
+                pReferencia <= 0)
+                    throw new ArgumentException(Mensajes.excepcion_DatosNoValidosParaLineaCuentaPorCobrar);
 
 
-            var nuevaLineaCuentaPorCobrar = new CuentaPorCobrar(this.NumeroDocumento,pCodigoMoneda,pCodigoClaseTipoCambio,pCodigoEstadoDocumento,
-                                                        pCodigoDiaDePago,pCodigoAlmacen,pCodigoUsuarioSistema,
-                                                        pCodigoTipoDocumento,pReferencia,
-                                                        pFechaDocumento,pFechaProceso,pFechaVencimiento,
-                                                        pTotalNacionalCtaCobrar,pTotalExtranjeraCtaCobrar,pPagoDocumentoNacional,
-                                                        pPagoDocumentoExtranjera,pSaldoDocumentoNacional,pSaldoDocumentoExtranjera,
-                                                        pRuc,pTipoCambio,pDiasDeGracia,
-                                                        pNumeroVale);
+            var nuevaLineaCuentaPorCobrar = new CuentaPorCobrar(this.NumeroDocumento, this.CodigoMoneda, this.CodigoClaseTipoCambio,
+                                pCodigoEstadoDocumento, pCodigoDiaDePago, this.CodigoAlmacen,
+                                this.CodigoUsuarioDeSistema, this.CodigoTipoDocumento, this.CodigoCliente, 
+                                pCodigoTipoDocumentoReferencia, pReferencia,DateTime.Now, 
+                                this.FechaProceso, pFechaVencimiento,this.TotalNacional, 
+                                this.TotalExtranjera, pPagoDocumentoNacional,pPagoDocumentoExtranjera, 
+                                pSaldoDocumentoNacional,pSaldoDocumentoExtranjera,this.RucCliente, 
+                                this.TipoCambio, pDiasDeGracia,pNumeroVale);
 
             nuevaLineaCuentaPorCobrar.GenerarNuevaIdentidad();
 
             this.CuentasPorCobrar.Add(nuevaLineaCuentaPorCobrar);
 
             return nuevaLineaCuentaPorCobrar;
-
-
         }
 
         //Moneda
@@ -874,7 +800,7 @@ namespace PtoVta.Dominio.Agregados.Ventas
         //Almacen
         public void EstablecerAlmacenDeVenta(Almacen pAlmacen)
         {
-            if (pAlmacen == null || pAlmacen.EsTransitorio())
+            if (pAlmacen == null)
             {
                 throw new ArgumentException(Mensajes.excepcion_AlmacenDeVentaEnEstadoNuloOTransitorio);
 

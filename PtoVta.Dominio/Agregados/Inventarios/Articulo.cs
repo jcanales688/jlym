@@ -1,16 +1,16 @@
 using System;
 using System.Collections.Generic;
 using PtoVta.Dominio.BaseTrabajo;
-using static PtoVta.Dominio.BaseTrabajo.Globales.MensajesDominio;
+using static PtoVta.Dominio.BaseTrabajo.Globales.GlobalDominio;
 
 namespace PtoVta.Dominio.Agregados.Inventarios
 {
-    public class Articulo: Entidad
+    public class Articulo : Entidad
     {
         HashSet<ArticuloAlterno> _lineasArticuloAlterno;
         // HashSet<ArticuloDetalle> _lineasArticuloDetalle;
         HashSet<KardexHistorico> _lineasKardexHistorico;
-        HashSet<InventarioFisico> _lineasInventarioFisico;        
+        HashSet<InventarioFisico> _lineasInventarioFisico;
 
 
         bool _EsHabilitado;
@@ -32,9 +32,9 @@ namespace PtoVta.Dominio.Agregados.Inventarios
         public bool EsConsignacion { get; set; }
         public bool EsDesensamble { get; set; }
         public string UsuarioSistema { get; set; }
-        public bool ParaVentaManualEnPlaya { get; set; }     
+        public bool ParaVentaManualEnPlaya { get; set; }
         public bool EditarPrecio { get; set; }
-        public byte[] Imagen{get; set; }
+        public byte[] Imagen { get; set; }
 
         public bool EsHabilitado
         {
@@ -86,10 +86,10 @@ namespace PtoVta.Dominio.Agregados.Inventarios
             {
                 _lineasInventarioFisico = new HashSet<InventarioFisico>(value);
             }
-        }        
+        }
 
 
-        public virtual ICollection<ArticuloAlterno> ArticulosAlternos 
+        public virtual ICollection<ArticuloAlterno> ArticulosAlternos
         {
             get
             {
@@ -120,40 +120,41 @@ namespace PtoVta.Dominio.Agregados.Inventarios
         // }        
 
         public void AgregarArticuloDetalle(decimal pStockMinimo,
-                    decimal pStockMaximo,decimal pStockInicial,decimal pStockActual,
-                    Nullable<DateTime> pFechaCreacion,Nullable<DateTime> pFechaUltimoInv,Nullable<decimal> pStockUltimoInv,
-                    decimal pCostoPromedioNacional,decimal pCostoPromedioExtranjera,decimal pCostoReposicionNacional,
-                    decimal pCostoReposicionExtranjera,decimal pCostoRepoNacionalUltimoInv,decimal pCostoRepoExtranjeraUltimoInv,
-                    decimal pPrecio,string pCodContableInventariable,string pCodContableNoInventariable,
-                    string pCodigoArticulo,string  pCodigoTipoPrecioInventario, string pCodigoAlmacen)
+                    decimal pStockMaximo, decimal pStockInicial, decimal pStockActual,
+                    Nullable<DateTime> pFechaCreacion, Nullable<DateTime> pFechaUltimoInv, Nullable<decimal> pStockUltimoInv,
+                    decimal pCostoPromedioNacional, decimal pCostoPromedioExtranjera, decimal pCostoReposicionNacional,
+                    decimal pCostoReposicionExtranjera, decimal pCostoRepoNacionalUltimoInv, decimal pCostoRepoExtranjeraUltimoInv,
+                    decimal pPrecio, string pCodContableInventariable, string pCodContableNoInventariable,
+                    string pCodigoArticulo, string pCodigoTipoPrecioInventario, string pCodigoAlmacen)
         {
-            var articuloDetalle = new ArticuloDetalle(){
-                    StockMinimo = pStockMinimo,
-                    StockMaximo = pStockMaximo,
-                    StockInicial = pStockInicial,
-                    StockActual = pStockActual,
-                    FechaCreacion = pFechaCreacion,
-                    FechaUltimoInv = pFechaUltimoInv,
-                    StockUltimoInv = pStockUltimoInv,
-                    CostoPromedioNacional = pCostoPromedioNacional,
-                    CostoPromedioExtranjera = pCostoPromedioExtranjera,
-                    CostoReposicionNacional = pCostoReposicionNacional,
-                    CostoReposicionExtranjera = pCostoReposicionExtranjera,
-                    CostoRepoNacionalUltimoInv = pCostoRepoNacionalUltimoInv,
-                    CostoRepoExtranjeraUltimoInv = pCostoRepoExtranjeraUltimoInv,
-                    Precio = pPrecio,
-                    CodContableInventariable = pCodContableInventariable,
-                    CodContableNoInventariable = pCodContableNoInventariable,
-                    CodigoArticulo = pCodigoArticulo,
-                    CodigoTipoPrecioInventario = pCodigoTipoPrecioInventario,
-                    CodigoAlmacen = pCodigoAlmacen
+            var articuloDetalle = new ArticuloDetalle()
+            {
+                StockMinimo = pStockMinimo,
+                StockMaximo = pStockMaximo,
+                StockInicial = pStockInicial,
+                StockActual = pStockActual,
+                FechaCreacion = pFechaCreacion,
+                FechaUltimoInv = pFechaUltimoInv,
+                StockUltimoInv = pStockUltimoInv,
+                CostoPromedioNacional = pCostoPromedioNacional,
+                CostoPromedioExtranjera = pCostoPromedioExtranjera,
+                CostoReposicionNacional = pCostoReposicionNacional,
+                CostoReposicionExtranjera = pCostoReposicionExtranjera,
+                CostoRepoNacionalUltimoInv = pCostoRepoNacionalUltimoInv,
+                CostoRepoExtranjeraUltimoInv = pCostoRepoExtranjeraUltimoInv,
+                Precio = pPrecio,
+                CodContableInventariable = pCodContableInventariable,
+                CodContableNoInventariable = pCodContableNoInventariable,
+                CodigoArticulo = pCodigoArticulo,
+                CodigoTipoPrecioInventario = pCodigoTipoPrecioInventario,
+                CodigoAlmacen = pCodigoAlmacen
             };
 
             this.ArticuloDetalle = articuloDetalle;
-
         }
 
-        public KardexHistorico AgregarNuevoKardexHistorico(
+
+       public KardexHistorico AgregarNuevoKardexHistorico(
                             int pAnioHistorico, decimal pCantidadFinal00, decimal pCantidadFinal01,
                             decimal pCantidadFinal02, decimal pCantidadFinal03, decimal pCantidadFinal04,
                             decimal pCantidadFinal05, decimal pCantidadFinal06, decimal pCantidadFinal07,
@@ -265,9 +266,28 @@ namespace PtoVta.Dominio.Agregados.Inventarios
             this.KardexHistoricos.Add(nuevaLineaKardexHistorico);
 
             return nuevaLineaKardexHistorico;
+        }        
 
+        public InventarioFisico AgregarInventarioFisico(decimal pStockFisico, string pCodigoAlmacen,
+                                string pCodigoCategoriaArticulo, string pCodigoSubCategoriaArticulo)
+        {
+            var nuevaLineaInventarioFisico = new InventarioFisico()
+            {
+                CodigoArticulo = this.CodigoArticulo,
+                CodigoAlmacen = pCodigoAlmacen,
+                CodigoCategoriaArticulo = pCodigoCategoriaArticulo,
+                CodigoSubCategoriaArticulo = pCodigoSubCategoriaArticulo,
+                StockFisico = pStockFisico
+            };
 
+            //Establecer la identidad
+            nuevaLineaInventarioFisico.GenerarNuevaIdentidad();
+
+            this.InventariosFisicos.Add(nuevaLineaInventarioFisico);
+
+            return nuevaLineaInventarioFisico;
         }
+
 
         public void RecalcularStock(int pPermitirStockNegativo, int pMovAlmacenVentaIngresoOSalida,
             decimal pCantidadMovAlmacen)
@@ -304,7 +324,7 @@ namespace PtoVta.Dominio.Agregados.Inventarios
                 this.ArticuloDetalle.StockActual = nuevoStock;
 
             }
-        }                    
+        }
 
         public void EstablecerReferenciaMarcaArticuloDeArticulo(string pCodigoMarcaArticulo)
         {
@@ -366,7 +386,7 @@ namespace PtoVta.Dominio.Agregados.Inventarios
                 this.CodigoTipoInventario = pCodigoTipoInventario;
                 // this.TipoInventario = null;
             }
-        }         
+        }
 
 
         public void EstablecerReferenciaUnidadDeMedidaDeArticulo(string pCodigoUnidadDeMedida)
@@ -394,7 +414,7 @@ namespace PtoVta.Dominio.Agregados.Inventarios
                 this._EsHabilitado = false;
         }
 
-    
+
     }
 
 }

@@ -5,7 +5,7 @@ using PtoVta.Dominio.Agregados.Colaborador;
 using PtoVta.Dominio.Agregados.Parametros;
 using PtoVta.Dominio.Agregados.Usuario;
 using PtoVta.Dominio.BaseTrabajo;
-using static PtoVta.Dominio.BaseTrabajo.Globales.MensajesDominio;
+using static PtoVta.Dominio.BaseTrabajo.Globales.GlobalDominio;
 
 namespace PtoVta.Dominio.Agregados.Ventas
 {
@@ -29,8 +29,8 @@ namespace PtoVta.Dominio.Agregados.Ventas
         public int DiasDeGracia { get; set; }
         public decimal MontoLimiteCredito { get; set; }
         public decimal Deuda { get; set; }
-        public Nullable<int> EsAfecto { get; set; }
-        public Nullable<int> ControlarSaldoDispo { get; set; }
+        public int EsAfecto { get; set; }
+        public int ControlarSaldoDisponible { get; set; }
 
         public bool EsHabilitado
         {
@@ -56,6 +56,10 @@ namespace PtoVta.Dominio.Agregados.Ventas
         public string CodigoCondicionPagoTicket { get; private set; }
         public string CodigoEstadoDeCliente { get; private set; }
         public string CodigoUsuarioDeSistema { get; private set; }
+        public string CodigoPais { get; private set; }
+        public string CodigoDepartamento { get; private set; }
+        public string CodigoDistrito { get; private set; }                
+    
 
         public virtual Moneda Moneda { get; private set; }
         public virtual ClaseTipoCambio ClaseTipoCambio { get; private set; }
@@ -69,8 +73,12 @@ namespace PtoVta.Dominio.Agregados.Ventas
         public virtual CondicionPago CondicionPagoTicket { get; private set; }
         public virtual EstadoDeCliente EstadoDeCliente { get; private set; }
         public virtual UsuarioSistema UsuarioSistema { get; private set; }
+        public virtual Pais Pais { get; private set; }
+        public virtual Departamento Departamento { get; private set; }
+        // public virtual Provincia Provincia { get; private set; }
+        public virtual Distrito Distrito { get; private set; }            
 
-
+        
         public virtual ClienteDireccion DireccionPrimero { get; set; }
         public virtual ClienteDireccion DireccionSegundo { get; set; }
 
@@ -231,8 +239,6 @@ namespace PtoVta.Dominio.Agregados.Ventas
                 )
                 throw new ArgumentException(Mensajes.excepcion_DatosNoValidosParaLineaDocumentoLibre);
 
-
-
             var nuevaLineaDocumentoLibre = new DocumentoLibre()
             {
                 CodigoCliente = this.CodigoCliente,
@@ -250,12 +256,339 @@ namespace PtoVta.Dominio.Agregados.Ventas
             this.DocumentosLibre.Add(nuevaLineaDocumentoLibre);
 
             return nuevaLineaDocumentoLibre;
-
-
         }
 
 
 
+
+        //Moneda
+        public void EstablecerMonedaDeCliente(Moneda pMoneda)
+        {
+            if (pMoneda == null)
+            {
+                throw new ArgumentException(Mensajes.excepcion_MonedaDeClienteEnEstadoNuloOTransitorio);
+            }
+
+            this.CodigoMoneda = pMoneda.CodigoMoneda;
+            this.Moneda = pMoneda;
+        }
+
+        public void EstablecerReferenciaMonedaDeCliente(string pCodigoMoneda)
+        {
+            if (!string.IsNullOrEmpty(pCodigoMoneda))
+            {
+                this.CodigoMoneda = pCodigoMoneda;
+                this.Moneda = null;
+            }
+        }
+
+
+        //ClaseTipoCambio
+        public void EstablecerClaseTipoCambioDeCliente(ClaseTipoCambio pClaseTipoCambio)
+        {
+            if (pClaseTipoCambio == null)
+            {
+                throw new ArgumentException(Mensajes.excepcion_ClaseTipoCambioDeClienteEnEstadoNuloOTransitorio);
+            }
+
+            this.CodigoClaseTipoCambio = pClaseTipoCambio.CodigoClaseTipoCambio;
+            this.ClaseTipoCambio = pClaseTipoCambio;
+        }
+
+        public void EstablecerReferenciaClaseTipoCambioDeCliente(string pCodigoClaseTipoCambio)
+        {
+            if (!string.IsNullOrEmpty(pCodigoClaseTipoCambio))
+            {
+                this.CodigoClaseTipoCambio = pCodigoClaseTipoCambio;
+                this.ClaseTipoCambio = null;
+            }
+        }
+
+
+      //TipoCliente
+        public void EstablecerTipoClienteDeCliente(TipoCliente pTipoCliente)
+        {
+            if (pTipoCliente == null)
+            {
+                throw new ArgumentException(Mensajes.excepcion_TipoClienteDeClienteEnEstadoNuloOTransitorio);
+            }
+
+            this.CodigoTipoCliente = pTipoCliente.CodigoTipoCliente;
+            this.TipoCliente = pTipoCliente;
+        }
+
+        public void EstablecerReferenciaTipoClienteDeCliente(string pCodigoTipoCliente)
+        {
+            if (!string.IsNullOrEmpty(pCodigoTipoCliente))
+            {
+                this.CodigoTipoCliente = pCodigoTipoCliente;
+                this.TipoCliente = null;
+            }
+        }
+
+        //ZonaCliente
+        public void EstablecerZonaClienteDeCliente(ZonaCliente pZonaCliente)
+        {
+            if (pZonaCliente == null)
+            {
+                throw new ArgumentException(Mensajes.excepcion_ZonaClienteDeClienteEnEstadoNuloOTransitorio);
+            }
+
+            this.CodigoZonaCliente = pZonaCliente.CodigoZonaCliente;
+            this.ZonaCliente = pZonaCliente;
+        }
+
+        public void EstablecerReferenciaZonaClienteDeCliente(string pCodigoZonaCliente)
+        {
+            if (!string.IsNullOrEmpty(pCodigoZonaCliente))
+            {
+                this.CodigoZonaCliente = pCodigoZonaCliente;
+                this.ZonaCliente = null;
+            }
+        }
+
+
+      //DiaDePago
+        public void EstablecerDiaDePagoDeCliente(DiaDePago pDiaDePago)
+        {
+            if (pDiaDePago == null)
+            {
+                throw new ArgumentException(Mensajes.excepcion_DiaDePagoDeClienteEnEstadoNuloOTransitorio);
+            }
+
+            this.CodigoDiaDePago = pDiaDePago.CodigoDiaDePago;
+            this.DiaDePago = pDiaDePago;
+        }
+
+        public void EstablecerReferenciaDiaDePagoDeCliente(string pCodigoDiaDePago)
+        {
+            if (!string.IsNullOrEmpty(pCodigoDiaDePago))
+            {
+                this.CodigoDiaDePago = pCodigoDiaDePago;
+                this.DiaDePago = null;
+            }
+        }
+
+        
+
+        //Vendedor
+        public void EstablecerVendedorDeCliente(Vendedor pVendedor)
+        {
+            if (pVendedor == null)
+            {
+                throw new ArgumentException(Mensajes.excepcion_VendedorDeClienteEnEstadoNuloOTransitorio);
+            }
+
+            this.CodigoVendedor = pVendedor.CodigoVendedor;
+            this.Vendedor = pVendedor;
+        }
+
+        public void EstablecerReferenciaVendedorDeCliente(string pCodigoVendedor)
+        {
+            if (!string.IsNullOrEmpty(pCodigoVendedor))
+            {
+                this.CodigoVendedor = pCodigoVendedor;
+                this.Vendedor = null;
+            }
+        }
+
+        //ImpuestoIgv
+        public void EstablecerImpuestoIgvDeCliente(Impuesto pImpuestoIgv)
+        {
+            if (pImpuestoIgv == null)
+            {
+                throw new ArgumentException(Mensajes.excepcion_ImpuestoIgvDeClienteEnEstadoNuloOTransitorio);
+            }
+
+            this.CodigoImpuestoIgv = pImpuestoIgv.CodigoImpuesto;
+            this.ImpuestoIgv = pImpuestoIgv;
+        }
+
+        public void EstablecerReferenciaImpuestoIgvDeCliente(string pCodigoImpuestoIgv)
+        {
+            if (!string.IsNullOrEmpty(pCodigoImpuestoIgv))
+            {
+
+                this.CodigoImpuestoIgv = pCodigoImpuestoIgv;
+                this.ImpuestoIgv = null;
+            }
+        }
+
+
+        //ImpuestoIsc
+        public void EstablecerImpuestoIscDeCliente(Impuesto pImpuestoIsc)
+        {
+            if (pImpuestoIsc == null)
+            {
+                throw new ArgumentException(Mensajes.excepcion_ImpuestoIscDeClienteEnEstadoNuloOTransitorio);
+            }
+
+            this.CodigoImpuestoIsc = pImpuestoIsc.CodigoImpuesto;
+            this.ImpuestoIsc = pImpuestoIsc;
+        }
+
+        public void EstablecerReferenciaImpuestoIscDeCliente(string pCodigoImpuestoIsc)
+        {
+            if (!string.IsNullOrEmpty(pCodigoImpuestoIsc))
+            {
+                this.CodigoImpuestoIsc = pCodigoImpuestoIsc;
+                this.ImpuestoIsc = null;
+            }
+        }
+
+
+        //CondicionPagoDocumento
+        public void EstablecerCondicionPagoDocumentoGeneradoDeCliente(CondicionPago pCondicionPagoDocumentoGenerado)
+        {
+            if (pCondicionPagoDocumentoGenerado == null)
+            {
+                throw new ArgumentException(Mensajes.excepcion_CondicionPagoDocumentoGeneradoDeClienteEnEstadoNuloOTransitorio);
+            }
+
+            this.CodigoCondicionPagoDocumentoGenerado = pCondicionPagoDocumentoGenerado.CodigoCondicionPago;
+            this.CondicionPagoDocumentoGenerado = pCondicionPagoDocumentoGenerado;
+        }
+
+        public void EstablecerReferenciaCondicionPagoDocumentoGeneradoDeCliente(string pCodigoCondicionPagoDocumentoGenerado)
+        {
+            if (!string.IsNullOrEmpty(pCodigoCondicionPagoDocumentoGenerado))
+            {
+                this.CodigoCondicionPagoDocumentoGenerado = pCodigoCondicionPagoDocumentoGenerado;
+                this.CondicionPagoDocumentoGenerado = null;
+            }
+        }
+
+        //CondicionPagoTicket
+        public void EstablecerCondicionPagoTicketDeCliente(CondicionPago pCondicionPagoTicket)
+        {
+            if (pCondicionPagoTicket == null)
+            {
+                throw new ArgumentException(Mensajes.excepcion_CondicionPagoTicketDeClienteEnEstadoNuloOTransitorio);
+            }
+
+            this.CodigoCondicionPagoTicket = pCondicionPagoTicket.CodigoCondicionPago;
+            this.CondicionPagoTicket = pCondicionPagoTicket;
+        }
+
+        public void EstablecerReferenciaCondicionPagoTicketDeCliente(string pCodigoCondicionPagoTicket)
+        {
+            if (!string.IsNullOrEmpty(pCodigoCondicionPagoTicket))
+            {
+                this.CodigoCondicionPagoTicket = pCodigoCondicionPagoTicket;
+                this.CondicionPagoTicket = null;
+            }
+        }
+
+
+        //EstadoDeCliente
+        public void EstablecerEstadoDeClienteDeCliente(EstadoDeCliente pEstadoDeCliente)
+        {
+            if (pEstadoDeCliente == null)
+            {
+                throw new ArgumentException(Mensajes.excepcion_EstadoDeClienteDeClienteEnEstadoNuloOTransitorio);
+            }
+
+            this.CodigoEstadoDeCliente = pEstadoDeCliente.CodigoEstadoDeCliente;
+            this.EstadoDeCliente = pEstadoDeCliente;
+        }
+
+        public void EstablecerReferenciaEstadoDeClienteDeCliente(string pCodigoEstadoDeCliente)
+        {
+            if (!string.IsNullOrEmpty(pCodigoEstadoDeCliente))
+            {
+                this.CodigoEstadoDeCliente= pCodigoEstadoDeCliente;
+                this.EstadoDeCliente = null;
+            }
+        }
+
+        //UsuarioSistema
+        public void EstablecerUsuarioSistemaDeCliente(UsuarioSistema pUsuarioSistema)
+        {
+            if (pUsuarioSistema == null)
+            {
+                throw new ArgumentException(Mensajes.excepcion_UsuarioSistemaDeClienteEnEstadoNuloOTransitorio);
+            }
+
+            this.CodigoUsuarioDeSistema = pUsuarioSistema.CodigoUsuarioDeSistema;
+            this.UsuarioSistema = pUsuarioSistema;
+        }
+
+        public void EstablecerReferenciaUsuarioSistemaDeCliente(string pCodigoUsuarioDeSistema)
+        {
+            if (!string.IsNullOrEmpty(pCodigoUsuarioDeSistema))
+            {
+                this.CodigoUsuarioDeSistema = pCodigoUsuarioDeSistema;
+                this.UsuarioSistema = null;
+            }
+        }
+
+
+        //Pais
+        public void EstablecerPaisDeCliente(Pais pPais)
+        {
+            if (pPais == null)
+            {
+                throw new ArgumentException(Mensajes.excepcion_PaisDeClienteEnEstadoNuloOTransitorio);
+            }
+
+            this.CodigoPais = pPais.CodigoPais;
+            this.Pais = pPais;
+        }
+
+        public void EstablecerReferenciaPaisDeCliente(string pCodigoPais)
+        {
+            if (!string.IsNullOrEmpty(pCodigoPais))
+            {
+                this.CodigoPais = pCodigoPais;
+                this.Pais = null;
+            }
+        }
+
+
+        //Departamento
+        public void EstablecerDepartamentoDeCliente(Departamento pDepartamento)
+        {
+            if (pDepartamento == null)
+            {
+                throw new ArgumentException(Mensajes.excepcion_DepartamentoDeClienteEnEstadoNuloOTransitorio);
+            }
+
+            this.CodigoDepartamento = pDepartamento.CodigoDepartamento;
+            this.Departamento = pDepartamento;
+        }
+
+        public void EstablecerReferenciaDepartamentoDeCliente(string pCodigoDepartamento)
+        {
+            if (!string.IsNullOrEmpty(pCodigoDepartamento))
+            {
+                this.CodigoDepartamento = pCodigoDepartamento;
+                this.Departamento = null;
+            }
+        }
+
+
+        //Distrito
+        public void EstablecerDistritoDeCliente(Distrito pDistrito)
+        {
+            if (pDistrito == null)
+            {
+                throw new ArgumentException(Mensajes.excepcion_DistritoDeClienteEnEstadoNuloOTransitorio);
+            }
+
+            this.CodigoDistrito = pDistrito.CodigoDistrito;
+            this.Distrito = pDistrito;
+        }
+
+        public void EstablecerReferenciaDistritoDeCliente(string pCodigoDistrito)
+        {
+            if (!string.IsNullOrEmpty(pCodigoDistrito))
+            {
+                this.CodigoDistrito = pCodigoDistrito;
+                this.Distrito = null;
+            }
+        }
+
+  
 
         public bool ValidarLimiteCredito(decimal montoVenta)
         {

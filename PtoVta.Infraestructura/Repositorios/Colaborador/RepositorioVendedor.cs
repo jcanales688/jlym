@@ -118,16 +118,20 @@ namespace PtoVta.Infraestructura.Repositorios.Colaborador
         {
             using (IDbConnection cn = new SqlConnection(this.CadenaConexion))
             {
-                string cadenaSQL = @"SELECT	USERID		AS CodigoUsuarioDeSistema
-                                            ,EXPIRED	AS FechaExpiracion
-                                            ,USERNAME	AS DescripcionUsuario
-                                            ,PASSWORD	AS Contraseña
-                                            ,STATUS AS EsHabilitado
-                                    FROM    SE_USERREC (NOLOCK)
-                                    WHERE	USERID			= @USERID";
+                string cadenaSQL = @"SELECT	SALESPERNAME		AS NombresVendedor
+                                            ,IDENTITYDOC		AS DocumentoIdentidad
+                                            ,SALESPERID			AS CodigoVendedor
+                                            ,PASSWORD			AS Clave
+                                            ,SITEID				AS CodigoAlmacen
+                                            ,''					AS CodigoEstadoVendedor
+                                            ,USERID				AS CodigoUsuarioSistema
+                                            ,ACCESSUSERID		AS CodigoUsuarioSistemaAcceso
+                                            ,CASE STATUSPERSONID WHEN '01' THEN 1 ELSE 0 END AS EsHabilitado
+                                    FROM    PC_OP_SALESPERSON  (NOLOCK)
+                                    WHERE	SALESPERID	= @SALESPERID";
 
                 var vendedor = cn.QueryFirstOrDefault<Vendedor>(cadenaSQL,
-                                                    new { USERID = pCodigoVendedor });
+                                                    new { SALESPERID = pCodigoVendedor });
 
                 if (vendedor != null)
                 {

@@ -16,19 +16,25 @@ namespace PtoVta.Infraestructura.Repositorios.Parametros
             this.CadenaConexion = pCadenaConexion;
         }
 
-        public override void Modificar(TipoDocumento pTipoDocumento)
+        public void ActualizarCorrelativoDocumento(TipoDocumento pTipoDocumento, string pCodigoAlmacen, string pNumeroSerie)
         {
+            var correlativoUtilizado = pTipoDocumento.CorrelativosDocumento.FirstOrDefault(w => w.Serie == pNumeroSerie
+                                    && w.CodigoAlmacen == pCodigoAlmacen && w.CodigoTipoDocumento == pTipoDocumento.CodigoTipoDocumento);
+
             using (IDbConnection cn = new SqlConnection(this.CadenaConexion))
             {
-                string sqlActualizaTipoDocumento = @"UPDATE INTO OP_SALESPERSON(SALESPERID, SALESPERNAME, IDENTITYDOC, PHONE, SEX, INITIALDATE, 
-                                                            BIRTHDATE, PASSWORD, SITEID, STATUSPERSONID, USERID, ACCESSUSERID,  ADDRESS1, ADDRESS2) 
-                                                            VALUES
-                                                            (@SALESPERID, @SALESPERNAME, @IDENTITYDOC, @PHONE, @SEX, @INITIALDATE, 
-                                                            @BIRTHDATE, @PASSWORD, @SITEID, @STATUSPERSONID, @USERID, @ACCESSUSERID, @ADDRESS1, @ADDRESS2)";
+                string sqlActualizaCorrelativoTipoDocumento = @"UPDATE	PC_OP_DOCSERIES
+                                                                SET		NBRDOC			= @NBRDOC
+                                                                WHERE	DOCTYPEID		= @DOCTYPEID 
+                                                                        AND SITEID		= @SITEID
+                                                                        AND NBRSERIES	= @NBRSERIES";
 
-                var filasAfectadas = cn.Execute(sqlActualizaTipoDocumento, new
+                var filasAfectadas = cn.Execute(sqlActualizaCorrelativoTipoDocumento, new
                 {
-                    SALESPERID = pTipoDocumento.CodigoTipoDocumento
+                    DOCTYPEID = pTipoDocumento.CodigoTipoDocumento,
+                    SITEID = correlativoUtilizado.CodigoAlmacen,
+                    NBRSERIES = correlativoUtilizado.Serie,
+                    NBRDOC = correlativoUtilizado.Correlativo
                 });
             }
         }
@@ -38,35 +44,34 @@ namespace PtoVta.Infraestructura.Repositorios.Parametros
         {
             using (IDbConnection cn = new SqlConnection(this.CadenaConexion))
             {
-                string cadenaSQL = @"SELECT	CLASSID				AS CodigoCategoriaArticulo
-                                            ,DESCR				AS DescripcionCategoriaArticulo
-                                            ,INVTIDSOLOMON		AS CodigoContable
-                                            ,DESCRSPANISH		AS Comentario
-                                            ,BUSINESSTYPE		AS CodigoTipoNegocio
-                                            ,ICONO              AS Imagen
-                                    FROM	IN_CATEGORY		(NOLOCK) 
-                                    WHERE	BUSINESSTYPE		= @BUSINESSTYPE
-                                        
-                                    SELECT	CLASSUBID			AS CodigoSubCategoriaArticulo
-                                            ,DESCR				AS DescripcionSubCategoriaArticulo
-                                            ,PORCENTDIFFERENCE	AS PorcentajeDiferencia
-                                            ,CLASSID			AS CodigoCategoriaArticulo
-                                            ,TYPEDOCFISIN		AS CodigoTipoMovInvFisIngreso
-                                            ,TYPEDOCFISOUT		AS CodigoTipoMovInvFisSalida
-                                            ,ICONO              AS Imagen                                            
-                                    FROM	IN_SUBCATEGORY	(NOLOCK) 
-                                    WHERE	CLASSID				IN(SELECT	CLASSID				
-                                                                    FROM	IN_CATEGORY		(NOLOCK) 
-                                                                    WHERE	BUSINESSTYPE		= @BUSINESSTYPE)";
+                string cadenaSQL = @"SELECT	DOCTYPEID	AS CodigoTipoDocumento
+                                            ,DESCR		AS DescripcionTipoDocumento
+                                            ,MINDES		AS Abreviatura
+                                    FROM	PC_DOCTYPE (NOLOCK)
+                                    WHERE	DOCTYPEID	= @DOCTYPEID;
+
+                                    SELECT	NBRSERIES	AS Serie
+                                            ,NBRDOC		AS Correlativo
+                                            ,''			AS TipoDeVenta
+                                            ,EXONERADO	AS Estado
+                                            ,DOCTYPEID	AS CodigoTipoDocumento
+                                            ,SITEID		AS CodigoAlmacen
+                                            ,''			AS CodigoConfiguracionPuntoVenta
+                                    FROM	PC_OP_DOCSERIES (NOLOCK)
+                                    WHERE	DOCTYPEID	= @DOCTYPEID
+                                            AND SITEID	= @SITEID
+                                            AND ISNULL(USER1, '') = @USER1
+                                            AND ISNULL(USER2, '') = @USER2
+                                            AND EXONERADO		  = @EXONERADO";
 
                 var resultado = cn.QueryMultiple(cadenaSQL,
                                     new
                                     {
-                                        BUSINESSTYPE = pCodigoAlmacen,
-                                        BUSINESSTYPEq = pCodigoConfiguracionPuntoVenta,
-                                        BUSINESSTYPEw = pCodigoTipoDocumento,
-                                        BUSINESSTYPEe = pTipoDeVenta,
-                                        BUSINESSTYPEr = pEstado
+                                        SITEID = pCodigoAlmacen,
+                                        USER1 = pCodigoConfiguracionPuntoVenta,
+                                        DOCTYPEID = pCodigoTipoDocumento,
+                                        USER2 = pTipoDeVenta,
+                                        EXONERADO = pEstado
                                     });
 
                 var tipoDocumento = resultado.Read<TipoDocumento>().FirstOrDefault();
@@ -99,16 +104,14 @@ namespace PtoVta.Infraestructura.Repositorios.Parametros
         {
             using (IDbConnection cn = new SqlConnection(this.CadenaConexion))
             {
-                string cadenaSQL = @"SELECT	USERID		AS CodigoUsuarioDeSistema
-                                            ,EXPIRED	AS FechaExpiracion
-                                            ,USERNAME	AS DescripcionUsuario
-                                            ,PASSWORD	AS Contraseña
-                                            ,STATUS AS EsHabilitado
-                                    FROM    SE_USERREC (NOLOCK)
-                                    WHERE	USERID			= @USERID";
+                string cadenaSQL = @"SELECT	DOCTYPEID	AS CodigoTipoDocumento
+                                            ,DESCR		AS DescripcionTipoDocumento
+                                            ,MINDES		AS Abreviatura
+                                    FROM	PC_DOCTYPE (NOLOCK)
+                                    WHERE	DOCTYPEID	= @DOCTYPEID";
 
                 var tipoDocumento = cn.QueryFirstOrDefault<TipoDocumento>(cadenaSQL,
-                                                new { USERID = pCodigoTipoDocumento });
+                                                new { DOCTYPEID = pCodigoTipoDocumento });
 
                 if (tipoDocumento != null)
                 {
@@ -122,7 +125,20 @@ namespace PtoVta.Infraestructura.Repositorios.Parametros
 
         private TipoDocumento MapeoTipoDocumento(TipoDocumento pTipoDocumento, List<CorrelativoDocumento> pCorrelativosDocumento)
         {
-            return new TipoDocumento();
+            var tipoDocumento = new TipoDocumento();
+            tipoDocumento = pTipoDocumento;
+
+            if (pCorrelativosDocumento != null)
+            {
+                foreach (var correlativoDocumento in pCorrelativosDocumento)
+                {
+                    tipoDocumento.AgregarNuevoCorrelativoDocumento(correlativoDocumento.Serie, correlativoDocumento.Correlativo,
+                                                    correlativoDocumento.TipoDeVenta, correlativoDocumento.Estado,
+                                                    correlativoDocumento.CodigoAlmacen, correlativoDocumento.CodigoConfiguracionPuntoVenta);
+                }
+            }
+
+            return tipoDocumento;
         }
     }
 }

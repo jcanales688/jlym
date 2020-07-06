@@ -2,13 +2,13 @@ using System;
 using PtoVta.Dominio.Agregados.Inventarios;
 using PtoVta.Dominio.Agregados.Parametros;
 using PtoVta.Dominio.BaseTrabajo;
-using static PtoVta.Dominio.BaseTrabajo.Globales.MensajesDominio;
+using static PtoVta.Dominio.BaseTrabajo.Globales.GlobalDominio;
 
 namespace PtoVta.Dominio.Agregados.Ventas
 {
     public class VentaDetalle : Entidad
     {
-        public decimal NumeroDocumento { get; set; }
+        public string NumeroDocumento { get; set; }
         public short Secuencia { get; set; }
         public DateTime FechaDocumento { get; set; }
         public DateTime FechaProceso { get; set; }
@@ -28,14 +28,18 @@ namespace PtoVta.Dominio.Agregados.Ventas
         public decimal PrecioVenta { get; set; }
         public string DescripcionArticulo { get; set; }
         public decimal Cantidad { get; set; }
-        public string UsuarioSistema { get; set; }
+        public string CodigoUsuarioDeSistema { get; set; }
         public int EsFormula { get; set; }
+        public bool EsInventariable { get; set; }
+        public bool EnInventarioFisico { get; set; }
 
         public Guid VentaId { get; set; }
         public string CodigoArticulo { get; set; }
         public string CodigoArticuloAlterno { get; set; }
         public string CodigoMoneda { get; set; }
         public string CodigoEstadoDocumento { get; set; }
+        public string CodigoAlmacen { get; set; }
+        public string CodigoTipoDocumento  { get; set; }
 
         public Articulo Articulo { get;private set; }
         public Moneda Moneda{get; private set;}

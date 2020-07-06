@@ -19,15 +19,64 @@ namespace PtoVta.Infraestructura.Repositorios.Inventarios
         {
             using (IDbConnection cn = new SqlConnection(this.CadenaConexion))
             {
-                string sqlAgregaMovimientoAlmacen = @"INSERT INTO OP_SALESPERSON(SALESPERID, SALESPERNAME, IDENTITYDOC, PHONE, SEX, INITIALDATE, 
-                                                            BIRTHDATE, PASSWORD, SITEID, STATUSPERSONID, USERID, ACCESSUSERID,  ADDRESS1, ADDRESS2) 
-                                                            VALUES
-                                                            (@SALESPERID, @SALESPERNAME, @IDENTITYDOC, @PHONE, @SEX, @INITIALDATE, 
-                                                            @BIRTHDATE, @PASSWORD, @SITEID, @STATUSPERSONID, @USERID, @ACCESSUSERID, @ADDRESS1, @ADDRESS2)";
+                string sqlAgregaMovimientoAlmacen = @"INSERT INTO PC_INTRAMOV
+                                                            (BATNBR
+                                                            ,INTRDATE
+                                                            ,INTRDATEPROCE
+                                                            ,CURYRATE
+                                                            ,CURYDATE
+                                                            ,PERPOST
+                                                            ,SWTINOUT
+                                                            ,QTY
+                                                            ,STDCOSTPEN
+                                                            ,STDCOSTUSD
+                                                            ,COMPONENT
+                                                            ,SLSPRICE
+                                                            ,REFNBR
+                                                            ,STKFISI
+                                                            ,SITEID
+                                                            ,INVTIDSKU
+                                                            ,TYPEDOCID
+                                                            ,DOCTYPEID)
+                                                    VALUES	(@BATNBR
+                                                            ,@INTRDATE
+                                                            ,@INTRDATEPROCE
+                                                            ,@CURYRATE
+                                                            ,@CURYDATE
+                                                            ,@PERPOST
+                                                            ,@SWTINOUT
+                                                            ,@QTY
+                                                            ,@STDCOSTPEN
+                                                            ,@STDCOSTUSD
+                                                            ,@COMPONENT
+                                                            ,@SLSPRICE
+                                                            ,@REFNBR
+                                                            ,@STKFISI
+                                                            ,@SITEID
+                                                            ,@INVTIDSKU
+                                                            ,@TYPEDOCID
+                                                            ,@DOCTYPEID)";
 
                 var filasAfectadas = cn.Execute(sqlAgregaMovimientoAlmacen, new
                 {
-                    SALESPERID = pMovimientoAlmacen.CodigoTipoDocumento
+                    BATNBR = pMovimientoAlmacen.CorrelativoMovimiento
+                    ,INTRDATE = pMovimientoAlmacen.FechaDocumento
+                    ,INTRDATEPROCE = pMovimientoAlmacen.FechaProceso
+                    ,CURYRATE = pMovimientoAlmacen.MontoTipoDeCambio
+                    ,CURYDATE = pMovimientoAlmacen.FechaTipoDeCambio
+                    ,PERPOST = pMovimientoAlmacen.Periodo
+                    ,SWTINOUT = pMovimientoAlmacen.FlagEntradaSalida
+                    ,QTY = pMovimientoAlmacen.Cantidad
+                    ,STDCOSTPEN = pMovimientoAlmacen.CostoReposicionNacional
+                    ,STDCOSTUSD = pMovimientoAlmacen.CostoReposicionExtranjera
+                    ,COMPONENT = pMovimientoAlmacen.EsArticuloFormula
+                    ,SLSPRICE  = pMovimientoAlmacen.Precio
+                    ,REFNBR = pMovimientoAlmacen.DocumentoReferencia
+                    ,STKFISI = pMovimientoAlmacen.EnInventarioFisico
+                    ,SITEID = pMovimientoAlmacen.CodigoAlmacen
+                    ,INVTIDSKU = pMovimientoAlmacen.CodigoArticulo
+                    ,TYPEDOCID = pMovimientoAlmacen.CodigoTipoMovimientoAlmacen
+                    ,DOCTYPEID = pMovimientoAlmacen.CodigoTipoDocumento
                 });
             }
         }

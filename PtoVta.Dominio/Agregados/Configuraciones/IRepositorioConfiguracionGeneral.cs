@@ -5,6 +5,6 @@ namespace PtoVta.Dominio.Agregados.Configuraciones
 {
     public interface IRepositorioConfiguracionGeneral : IRepositorio<ConfiguracionGeneral>
     {
-        ConfiguracionGeneral ObtenerPorCodigo(string pCodigoConfiguracionGeneral);
+        ConfiguracionGeneral Obtener();
     }
 }
