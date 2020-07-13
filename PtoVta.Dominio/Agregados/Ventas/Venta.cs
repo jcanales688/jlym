@@ -630,6 +630,15 @@ namespace PtoVta.Dominio.Agregados.Ventas
             //                            (long)tipoDocumento.CorrelativoDocumento.Single().Correlativo);
         }
 
+        public void EstablecerReferenciaTipoDocumentoDeVenta(string pCodigoTipoDocumento)
+        {
+            if (!string.IsNullOrEmpty(pCodigoTipoDocumento))
+            {
+                this.CodigoTipoDocumento = pCodigoTipoDocumento;
+                this.TipoDocumento = null;
+            }
+        }        
+
         //ImpuestoIgv
         public void EstablecerImpuestoIgvDeCliente(Impuesto pImpuestoIgv)
         {
@@ -677,14 +686,7 @@ namespace PtoVta.Dominio.Agregados.Ventas
         }
 
 
-        public void EstablecerReferenciaTipoDocumentoDeVenta(string pCodigoTipoDocumento)
-        {
-            if (!string.IsNullOrEmpty(pCodigoTipoDocumento))
-            {
-                this.CodigoTipoDocumento = pCodigoTipoDocumento;
-                this.TipoDocumento = null;
-            }
-        }
+
 
 
         //EstadoDocumento
