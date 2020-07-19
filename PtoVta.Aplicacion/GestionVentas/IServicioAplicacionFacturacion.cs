@@ -9,10 +9,11 @@ namespace PtoVta.Aplicacion.GestionVentas
     {
         ResultadoServicio<ResultadoVentaGrabadaDTO> AgregarNuevaVenta(VentaDTO pVentaDTO);
         ResultadoServicio<ResultadoVentaGrabadaDTO> AgregarNuevaVentaDesdePedidoRetail(int pCorrelativoPedido);
-        ResultadoServicio<ResultadoVentaGrabadaDTO> AgregarNuevaVentaDesdePedidoEESS(int pCorrelativoPedido);
-        ResultadoServicio<VentaListadoDTO> BuscarVentasPorCliente(string pCodigoCliente);      
+        ResultadoServicio<ResultadoVentaGrabadaDTO> AgregarNuevaVentaDesdePedidoEESS(int pCorrelativoPedido);   
         ResultadoServicio<VentaListadoDTO> ObtenerVentas(string pCodigoAlmacen, string pFechaProcesoInicio, string pFechaProcesoFin, 
                                                             string pNumeroDocumento, string pCodigoTipoNegocio);
+
+        ResultadoServicio<VentaListadoDTO> BuscarVentasPorCliente(string pCodigoCliente);                                                               
     }
 
 }

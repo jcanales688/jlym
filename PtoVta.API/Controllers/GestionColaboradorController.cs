@@ -34,16 +34,16 @@ namespace PtoVta.API.Controllers
                 if (pVendedor == null)
                     return BadRequest("Vendedor a grabar no puede ser nulo."); 
 
-                var estadoUsuarioAgregado = _IServicioAplicacionVendedor.AgregarNuevoUsuarioVendedor(pVendedor);
+                var estadoUsuarioVendorAgregado = _IServicioAplicacionVendedor.AgregarNuevoUsuarioVendedor(pVendedor);
 
-                if(estadoUsuarioAgregado == null)
+                if(estadoUsuarioVendorAgregado == null)
                 {
                     return BadRequest(
                         new ResultadoServicio<VendedorDTO>(0,"Creacion de nuevo Vendedor fallo.", "", null, null)
                     );
                 }
 
-                return Ok(estadoUsuarioAgregado);
+                return Ok(estadoUsuarioVendorAgregado);
             }
             catch (Exception ex)
             {

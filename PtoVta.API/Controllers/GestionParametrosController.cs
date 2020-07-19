@@ -11,7 +11,7 @@ using PtoVta.Aplicacion.GestionParametros;
 
 namespace PtoVta.API.Controllers
 {
-    [Route("api/[controller]")]    
+    [Route("api/[controller]")]
     [ApiController]
     public class GestionParametrosController : ControllerBase
     {
@@ -27,26 +27,25 @@ namespace PtoVta.API.Controllers
         [HttpGet]
         [ProducesResponseType(typeof(ResultadoServicio<CategoriaArticuloDTO>), (int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
-        public  IActionResult ConsultarCategorias(string pTipoNegocio)
-        {try
+        public IActionResult ConsultarCategorias(string pTipoNegocio)
         {
-            var categorias = _IServicioAplicacionParametros.ObtenerCategorias(pTipoNegocio);
-
-            if (categorias == null)
+            try
             {
-                return NotFound();
+                var categorias = _IServicioAplicacionParametros.ObtenerCategorias(pTipoNegocio);
+
+                if (categorias == null)
+                {
+                    return NotFound();
+                }
+
+                return Ok(categorias);
             }
-
-            return Ok(categorias);            
-        }
-        catch (Exception ex)
-        {
-            return NotFound(
-                new ResultadoServicio<CategoriaArticuloDTO>(0,"Problemas al recuperar las Categorias.", ex.Message, null, null)
-            );
-        }
-
-
+            catch (Exception ex)
+            {
+                return NotFound(
+                    new ResultadoServicio<CategoriaArticuloDTO>(0, "Problemas al recuperar las Categorias.", ex.Message, null, null)
+                );
+            }
         }
     }
 }
