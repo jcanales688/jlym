@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using PtoVta.Dominio.BaseTrabajo;
 
 namespace PtoVta.Dominio.Agregados.Ventas
@@ -7,5 +8,6 @@ namespace PtoVta.Dominio.Agregados.Ventas
     { 
         Cliente ObtenerClientePorRUC(string pClienteRUC, string pCodigoAlmacen) ;
         Cliente ObtenerPorCodigo(string pCodigoCliente);
+
     }
 }

@@ -8,6 +8,7 @@ using PtoVta.Dominio.Agregados.CuentasPorCobrar;
 using PtoVta.Dominio.Agregados.Parametros;
 using PtoVta.Dominio.Agregados.Ventas;
 using PtoVta.Infraestructura.BaseTrabajo;
+using static PtoVta.Dominio.BaseTrabajo.Globales.GlobalDominio;
 
 namespace PtoVta.Infraestructura.Repositorios.Ventas
 {
@@ -159,7 +160,7 @@ namespace PtoVta.Infraestructura.Repositorios.Ventas
                         SALESPERID = pVenta.CodigoVendedor,
                         TERMID = pVenta.CodigoCondicionPago,
                         TYPEPAYMENTID = pVenta.CodigoTipoPago,
-                        SALESPOINT = pVenta.CodigoConfiguracionPuntoVenta,
+                        SALESPOINT = pVenta.CodigoPuntoDeVenta,
                         SITEID = pVenta.CodigoAlmacen,
                         BUSINESSTYPE = pVenta.CodigoTipoNegocio,
                         USERID = pVenta.CodigoUsuarioDeSistema,
@@ -533,7 +534,7 @@ namespace PtoVta.Infraestructura.Repositorios.Ventas
                                             ,SALESPERID			AS CodigoVendedor
                                             ,TERMID				AS CodigoCondicionPago
                                             ,TYPEPAYMENTID		AS CodigoTipoPago
-                                            ,SALESPOINT			AS CodigoConfiguracionPuntoVenta
+                                            ,SALESPOINT			AS CodigoPuntoDeVenta
                                             ,SITEID				AS CodigoAlmacen
                                             ,BUSINESSTYPE		AS CodigoTipoNegocio
                                             ,USERID				AS CodigoUsuarioDeSistema
@@ -555,8 +556,85 @@ namespace PtoVta.Infraestructura.Repositorios.Ventas
             // return unidadTrabajoActual.Ventas
             //         .Where(v => v.ClienteId == pCodigoCliente
             //              );
-
         }
+
+        public IEnumerable<Venta> ObtenerTodos(string pCodigoAlmacen, string pFechaProcesoInicio, string pFechaProcesoFin, 
+                                                string pNumeroDocumento, string pCodigoTipoNegocio)
+        {
+            using (IDbConnection cn = new SqlConnection(this.CadenaConexion))
+            {
+                var numeroBuscado = "%" + (string.IsNullOrEmpty(pNumeroDocumento) ? string.Empty : pNumeroDocumento.Trim()) + "%";                
+                
+                string cadenaSQL = @"SELECT  NBRDOCUMENT			AS NumeroDocumento
+                                            ,DATEDOC			AS FechaDocumento
+                                            ,DATEPROCESALES		AS FechaProceso
+                                            ,PERPOST			AS Periodo
+                                            ,TOTALPEN			AS TotalNacional
+                                            ,TOTALUSD			AS TotalExtranjera
+                                            ,SUBTOTALPEN		AS SubTotalNacional
+                                            ,SUBTOTALUSD		AS SubTotalExtranjera
+                                            ,TAXIGVPEN			AS ImpuestoIgvNacional
+                                            ,TAXIGVUSD			AS ImpuestoIGVExtranjera
+                                            ,TAXISCPEN			AS ImpuestoIscNacional
+                                            ,TAXISCUSD			AS ImpuestoIscExtranjera
+                                            ,TOTALNOTAFFECTPEN	AS TotalNoAfectoNacional
+                                            ,TOTALNOTAFFECTUSD	AS TotalNoAfectoExtranjera
+                                            ,0					AS TotalAfectoNacional
+                                            ,0					AS ValorVenta
+                                            ,PORCENTDISCOUNT1	AS PorcentajeDescuentoPrimero
+                                            ,PORCENTDISCOUNT2	AS PorcentajeDescuentoSegundo
+                                            ,TOTDISCOUNTPEN		AS TotalDescuentoNacional
+                                            ,TOTDISCOUNTUSD		AS TotalDescuentoExtranjera
+                                            ,TOTRETURNEDPEN		AS TotalVueltoNacional
+                                            ,TOTRETURNEDUSD		AS TotalVueltoExtranjera
+                                            ,TOTCASHPEN			AS TotalEfectivoNacional
+                                            ,TOTCASHUSD			AS TotalEfectivoExtranjera
+                                            ,TAXREGNBR			AS RucCliente
+                                            ,CUSTNAME			AS NombreCompletoCliente
+                                            ,PLACA				AS Placa
+                                            ,NBRBONUS			AS NumeroVale
+                                            ,CURYRATE			AS TipoCambio
+                                            ,STKCLOSEDZ			AS ProcesadoCierreZ
+                                            ,STKCLOSEDX			AS ProcesadoCierreX
+                                            ,KILOMETRAJE		AS Kilometraje
+                                            ,CURYID				AS CodigoMoneda
+                                            ,CURYTYPEID			AS CodigoClaseTipoCambio
+                                            ,CUSTIDSS			AS CodigoCliente
+                                            ,DOCTYPEID			AS CodigoTipoDocumento
+                                            ,DOCSTATUSID		AS CodigoEstadoDocumento
+                                            ,SALESPERID			AS CodigoVendedor
+                                            ,TERMID				AS CodigoCondicionPago
+                                            ,TYPEPAYMENTID		AS CodigoTipoPago
+                                            ,SALESPOINT			AS CodigoPuntoDeVenta
+                                            ,SITEID				AS CodigoAlmacen
+                                            ,BUSINESSTYPE		AS CodigoTipoNegocio
+                                            ,USERID				AS CodigoUsuarioDeSistema
+                                            ,TAXIGVID			AS CodigoImpuestoIgv
+                                            ,TAXISCID			AS CodigoImpuestoIsc
+                                    FROM	PC_VENTAS (NOLOCK)
+                                    WHERE	SITEID				= @SITEID
+                                            AND DATEPROCESALES	BETWEEN @DATEPROCESALESINI AND @DATEPROCESALESFIN
+                                            AND NBRDOCUMENT		LIKE @NBRDOCUMENT
+                                            AND BUSINESSTYPE	= @BUSINESSTYPE
+                                    ORDER BY 1, 3, 2";
+
+                var ventasConsultados = cn.Query<Venta>(cadenaSQL, new 
+                                            { 
+                                                SITEID = pCodigoAlmacen,
+                                                DATEPROCESALESINI = pFechaProcesoInicio,
+                                                DATEPROCESALESFIN = pFechaProcesoFin,
+                                                NBRDOCUMENT = numeroBuscado,
+                                                BUSINESSTYPE = pCodigoTipoNegocio
+                                            }).ToList();
+
+                if (ventasConsultados != null && ventasConsultados.Any())
+                {
+                    return ventasConsultados;
+                }
+                else
+                    return null;
+            }
+        }        
 
         public IEnumerable<Venta> ObtenerPagoVentaAdelantada(string pCodigoCliente, string pCodigoAlmacen,
                                                             string pCodigoTipoDocumento, DateTime pFechaProcesoVentas)
@@ -603,7 +681,7 @@ namespace PtoVta.Infraestructura.Repositorios.Ventas
                                             ,V.SALESPERID			AS CodigoVendedor
                                             ,V.TERMID				AS CodigoCondicionPago
                                             ,V.TYPEPAYMENTID		AS CodigoTipoPago
-                                            ,V.SALESPOINT			AS CodigoConfiguracionPuntoVenta
+                                            ,V.SALESPOINT			AS CodigoPuntoDeVenta
                                             ,V.SITEID				AS CodigoAlmacen
                                             ,V.BUSINESSTYPE			AS CodigoTipoNegocio
                                             ,V.USERID				AS CodigoUsuarioDeSistema
@@ -717,7 +795,7 @@ namespace PtoVta.Infraestructura.Repositorios.Ventas
                                             ,V.SALESPERID			AS CodigoVendedor
                                             ,V.TERMID				AS CodigoCondicionPago
                                             ,V.TYPEPAYMENTID		AS CodigoTipoPago
-                                            ,V.SALESPOINT			AS CodigoConfiguracionPuntoVenta
+                                            ,V.SALESPOINT			AS CodigoPuntoDeVenta
                                             ,V.SITEID				AS CodigoAlmacen
                                             ,V.BUSINESSTYPE			AS CodigoTipoNegocio
                                             ,V.USERID				AS CodigoUsuarioDeSistema
@@ -831,7 +909,7 @@ namespace PtoVta.Infraestructura.Repositorios.Ventas
                 ventaPagoAdelantado.EstablecerReferenciaVendedorDeVenta(pagoVentaAdelantada.CodigoVendedor);
                 ventaPagoAdelantado.EstablecerReferenciaCondicionPagoDeVenta(pagoVentaAdelantada.CodigoCondicionPago);
                 ventaPagoAdelantado.EstablecerReferenciaTipoPagoDeVenta(pagoVentaAdelantada.CodigoTipoPago);
-                ventaPagoAdelantado.EstablecerReferenciaConfiguracionPuntoVentaDeVenta(pagoVentaAdelantada.CodigoConfiguracionPuntoVenta);
+                ventaPagoAdelantado.EstablecerReferenciaConfiguracionPuntoVentaDeVenta(pagoVentaAdelantada.CodigoPuntoDeVenta);
                 ventaPagoAdelantado.EstablecerReferenciaAlmacenDeVenta(pagoVentaAdelantada.CodigoAlmacen);
                 ventaPagoAdelantado.EstablecerReferenciaTipoNegocioDeVenta(pagoVentaAdelantada.CodigoTipoNegocio);
                 ventaPagoAdelantado.EstablecerReferenciaUsuarioSistemaDeVenta(pagoVentaAdelantada.CodigoUsuarioDeSistema);
@@ -910,7 +988,7 @@ namespace PtoVta.Infraestructura.Repositorios.Ventas
                 ventaPagoAdelantado.EstablecerReferenciaVendedorDeVenta(consumoVentaAdelantada.CodigoVendedor);
                 ventaPagoAdelantado.EstablecerReferenciaCondicionPagoDeVenta(consumoVentaAdelantada.CodigoCondicionPago);
                 ventaPagoAdelantado.EstablecerReferenciaTipoPagoDeVenta(consumoVentaAdelantada.CodigoTipoPago);
-                ventaPagoAdelantado.EstablecerReferenciaConfiguracionPuntoVentaDeVenta(consumoVentaAdelantada.CodigoConfiguracionPuntoVenta);
+                ventaPagoAdelantado.EstablecerReferenciaConfiguracionPuntoVentaDeVenta(consumoVentaAdelantada.CodigoPuntoDeVenta);
                 ventaPagoAdelantado.EstablecerReferenciaAlmacenDeVenta(consumoVentaAdelantada.CodigoAlmacen);
                 ventaPagoAdelantado.EstablecerReferenciaTipoNegocioDeVenta(consumoVentaAdelantada.CodigoTipoNegocio);
                 ventaPagoAdelantado.EstablecerReferenciaUsuarioSistemaDeVenta(consumoVentaAdelantada.CodigoUsuarioDeSistema);

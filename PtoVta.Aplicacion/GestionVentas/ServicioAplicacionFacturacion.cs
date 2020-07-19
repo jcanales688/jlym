@@ -42,6 +42,9 @@ namespace PtoVta.Aplicacion.GestionVentas
         private IRepositorioTipoNegocio _IRepositorioTipoNegocio;
         private IRepositorioUsuarioSistema _IRepositorioUsuarioSistema;
 
+        private IRepositorioPedidoEESS _IRepositorioPedidoEESS;
+        private IRepositorioPedidoRetail _IRepositorioPedidoRetail;
+
         private IServicioDominioVentas _IServicioDominioVentas;
         private IServicioDominioMovimientosAlmacen _IServicioDominioMovimientosAlmacen;
         private IServicioDominioCuentaPorCobrar _IServicioDominioCuentaPorCobrar;
@@ -55,9 +58,10 @@ namespace PtoVta.Aplicacion.GestionVentas
                                 IRepositorioArticulo pIrepositorioArticulo, IRepositorioTarjeta pIrepositorioTarjeta,
                                 IRepositorioMovimientoAlmacen pIrepositorioMovimientoAlmacen, IRepositorioAlmacen pIRepositorioAlmacen,
                                 IRepositorioTipoNegocio pIRepositorioTipoNegocio, IRepositorioUsuarioSistema pIRepositorioUsuarioSistema,
-                                IServicioDominioVentas pIServicioDominioVentas
-                                , IServicioDominioMovimientosAlmacen pIServicioDominioMovimientosAlmacen
-                                , IServicioDominioCuentaPorCobrar pIServicioDominioCuentaPorCobrar)
+                                IRepositorioPedidoEESS pIRepositorioPedidoEESS, IRepositorioPedidoRetail pIRepositorioPedidoRetail,
+                                IServicioDominioVentas pIServicioDominioVentas,
+                                IServicioDominioMovimientosAlmacen pIServicioDominioMovimientosAlmacen,
+                                IServicioDominioCuentaPorCobrar pIServicioDominioCuentaPorCobrar)
         {
             if (pIrepositorioVenta == null)
                 throw new ArgumentNullException("pIrepositorioVenta Nulo en ServicioAplicacionFacturacion");
@@ -113,6 +117,12 @@ namespace PtoVta.Aplicacion.GestionVentas
             if (pIRepositorioUsuarioSistema == null)
                 throw new ArgumentNullException("pIRepositorioUsuarioSistema Nulo En ServicioAplicacionFacturacion");
 
+            if (pIRepositorioPedidoEESS == null)
+                throw new ArgumentNullException("pIRepositorioPedidoEESS Nulo En ServicioAplicacionFacturacion");
+
+            if (pIRepositorioPedidoRetail == null)
+                throw new ArgumentNullException("pIRepositorioPedidoRetail Nulo En ServicioAplicacionFacturacion");
+
             if (pIServicioDominioVentas == null)
                 throw new ArgumentNullException("pIServicioDominioVentas Nulo En ServicioAplicacionFacturacion");
 
@@ -140,6 +150,8 @@ namespace PtoVta.Aplicacion.GestionVentas
             _IRepositorioAlmacen = pIRepositorioAlmacen;
             _IRepositorioTipoNegocio = pIRepositorioTipoNegocio;
             _IRepositorioUsuarioSistema = pIRepositorioUsuarioSistema;
+            _IRepositorioPedidoEESS = pIRepositorioPedidoEESS;
+            _IRepositorioPedidoRetail = pIRepositorioPedidoRetail;
 
             _IServicioDominioVentas = pIServicioDominioVentas;
             _IServicioDominioMovimientosAlmacen = pIServicioDominioMovimientosAlmacen;
@@ -148,13 +160,29 @@ namespace PtoVta.Aplicacion.GestionVentas
 
 
 
-        public ResultadoServicio<ResultadoVentaGrabadaDTO> AgregarNuevaVenta(VentaDTO pVentaDTO, string pCodigoTipoDocumentoNotaCredito, bool pEsVentaPagoAdelantado,
-                                                    string pCodigoTMAVentas, int pPermitirStockNegativo, DateTime pFechaTipoDeCambio,
-                                                    string pTipoDeVenta, string pCodigoCondicionPagoDefault, string pCodigoEstadoDocumentoDefault,
-                                                    bool pFlagCambioMonedaVuelto, decimal pEfectivoVueltoExtranjera, decimal pTotalVueltoSegunMoneda,
-                                                    decimal pTotalFaltanteExtranjera, decimal pTotalFaltanteNacional, string pCodigoMonedaVuelto,
-                                                    string pCodigoMonedaBase, string pCodigoMonedaExtranjera, string pCodigoConfiguracionGeneral)
+        public ResultadoServicio<ResultadoVentaGrabadaDTO> AgregarNuevaVenta(VentaDTO pVentaDTO)
         {
+            //PASARLO A VENTAS DTO
+            bool pEsVentaPagoAdelantado = false;
+            string pTipoDeVenta = string.Empty;
+            bool pFlagCambioMonedaVuelto = false;
+            decimal pEfectivoVueltoExtranjera = 0;
+            decimal pTotalVueltoSegunMoneda = 0;
+            decimal pTotalFaltanteExtranjera = 0;
+            decimal pTotalFaltanteNacional = 0;
+            string pCodigoMonedaVuelto = string.Empty;
+
+            //PASARLO A CONFIGURACION
+            string pCodigoTipoDocumentoNotaCredito = string.Empty;
+            string pCodigoTMAVentas = string.Empty;
+            int pPermitirStockNegativo = 0;
+            DateTime pFechaTipoDeCambio = DateTime.Now;
+            string pCodigoCondicionPagoDefault = string.Empty;
+            string pCodigoEstadoDocumentoDefault = string.Empty;
+            string pCodigoMonedaBase = string.Empty;
+            string pCodigoMonedaExtranjera = string.Empty;
+            string pCodigoConfiguracionGeneral = string.Empty;
+
             //Determina si se creara Venta a Cuenta por Cobrar
             bool esVentaACuentaPorCobrar = false;
             decimal saldoDisponibleAdelanto = 0;
@@ -179,7 +207,7 @@ namespace PtoVta.Aplicacion.GestionVentas
             }
 
             //Obtener detalles de Punto de Venta
-            var configPuntoDeVenta = _IRepositorioConfiguracionPuntoVenta.ObtenerPorPuntoDeVenta(pVentaDTO.CodigoConfiguracionPuntoVenta);
+            var configPuntoDeVenta = _IRepositorioConfiguracionPuntoVenta.ObtenerPorPuntoDeVenta(pVentaDTO.CodigoPuntoDeVenta);
             if (configPuntoDeVenta == null)
             {
                 LogFactory.CrearLog().LogWarning(Mensajes.advertencia_ConfiguracionPuntoVentaAsociadoAVentaNoExiste);
@@ -211,7 +239,7 @@ namespace PtoVta.Aplicacion.GestionVentas
             }
 
             //Obtener Tipo de Documento y Correlativo (usuario no debe ver el correlativo)
-            var tipoDocumento = _IRepositorioTipoDocumento.ObtenerCorrelativoDocumento(pVentaDTO.CodigoAlmacen, pVentaDTO.CodigoConfiguracionPuntoVenta,
+            var tipoDocumento = _IRepositorioTipoDocumento.ObtenerCorrelativoDocumento(pVentaDTO.CodigoAlmacen, pVentaDTO.CodigoPuntoDeVenta,
                                                                                         pVentaDTO.CodigoTipoDocumento, pTipoDeVenta, 1);
             if (tipoDocumento == null)
             {
@@ -336,11 +364,11 @@ namespace PtoVta.Aplicacion.GestionVentas
                                             configPuntoDeVenta, almacen, tipoNegocio,
                                             usuarioSistema, pEsVentaPagoAdelantado, esVentaACuentaPorCobrar,
                                             tipoMovAlmacenVentas, movAlmacenIngresoOSalida, pPermitirStockNegativo,
-                                            pFechaTipoDeCambio, configuracionGeneral.CodigoClienteInterno, configuracionGeneral.CantDecimalPrecio);
+                                            pFechaTipoDeCambio, configuracionGeneral.CodigoClienteInterno, configuracionGeneral.CantidadDecimalPrecio);
 
             //Calcular el vuelto
             _IServicioDominioVentas.CalcularVueltoVentaSegunMoneda(nuevaVenta, pFlagCambioMonedaVuelto,
-                                                configuracionGeneral.CantDecimalPrecio, pEfectivoVueltoExtranjera,
+                                                configuracionGeneral.CantidadDecimalPrecio, pEfectivoVueltoExtranjera,
                                                 pTotalVueltoSegunMoneda, pTotalFaltanteExtranjera,
                                                 pTotalFaltanteNacional,
                                                 pCodigoMonedaVuelto, pCodigoMonedaBase, pCodigoMonedaExtranjera);
@@ -493,6 +521,329 @@ namespace PtoVta.Aplicacion.GestionVentas
                 return null;
         }
 
+        public ResultadoServicio<VentaListadoDTO> ObtenerVentas(string pCodigoAlmacen, string pFechaProcesoInicio, 
+                                        string pFechaProcesoFin, string pNumeroDocumento, string pCodigoTipoNegocio)
+        {
+            //Obtenemos list de entidad Ventas
+            var ventas = _IRepositorioVenta.ObtenerTodos(pCodigoAlmacen, pFechaProcesoInicio, 
+                                                    pFechaProcesoFin, pNumeroDocumento, pCodigoTipoNegocio);
+            if (ventas != null && ventas.Any())
+            {
+                //retorna datos adaptador                
+                return new ResultadoServicio<VentaListadoDTO>(7, Mensajes.advertencia_ConsultaVentasPorAlmacenExitosa,
+                                    string.Empty, null, ventas.ProyectadoComoColeccion<VentaListadoDTO>());
+            }
+            else
+                //no retorna
+                return null;
+        }        
+
+
+        public ResultadoServicio<ResultadoVentaGrabadaDTO> AgregarNuevaVentaDesdePedidoRetail(int pCorrelativoPedido)
+        {
+            var pedidoRetail = _IRepositorioPedidoRetail.ObtenerPorNumeroPedido(pCorrelativoPedido);
+            if (pedidoRetail != null)
+            {
+                var ventaDto = MaterializarPedidoRetailAVentaDTO(pedidoRetail);
+                var resultadoAgregaNuevaVentaDesdePedidoRetail = AgregarNuevaVenta(ventaDto);
+
+                return resultadoAgregaNuevaVentaDesdePedidoRetail;
+            }
+            else
+            {
+                LogFactory.CrearLog().LogWarning(Mensajes.advertencia_FalloCreacionNuevaVentaAPartirDePedidoRetail);
+                return null;
+            }
+        }
+
+        public ResultadoServicio<ResultadoVentaGrabadaDTO> AgregarNuevaVentaDesdePedidoEESS(int pCorrelativoPedido)
+        {
+            var pedidoEESS = _IRepositorioPedidoEESS.ObtenerPorNumeroPedido(pCorrelativoPedido);
+            if (pedidoEESS != null)
+            {
+                var ventaDto = MaterializarPedidoEESSAVentaDTO(pedidoEESS);
+                var resultadoAgregaNuevaVentaDesdePedidoEESS = AgregarNuevaVenta(ventaDto);
+
+                return resultadoAgregaNuevaVentaDesdePedidoEESS;
+            }
+            else
+            {
+                LogFactory.CrearLog().LogWarning(Mensajes.advertencia_FalloCreacionNuevaVentaAPartirDePedidoEESS);
+                return null;
+            }
+        }
+
+
+        VentaDTO MaterializarPedidoRetailAVentaDTO(PedidoRetail pPedidoRetail)
+        {
+            var nuevaVentaDto = new VentaDTO
+            {
+                NumeroDocumento = pPedidoRetail.NumeroDocumento,
+                FechaDocumento = pPedidoRetail.FechaDocumento,
+                FechaProceso = pPedidoRetail.FechaProceso,
+                Periodo = pPedidoRetail.Periodo,
+                TotalNacional = pPedidoRetail.TotalNacional,
+                TotalExtranjera = pPedidoRetail.TotalExtranjera,
+                SubTotalNacional = pPedidoRetail.SubTotalNacional,
+                SubTotalExtranjera = pPedidoRetail.SubTotalExtranjera,
+                ImpuestoIgvNacional = pPedidoRetail.ImpuestoIgvNacional,
+                ImpuestoIGVExtranjera = pPedidoRetail.ImpuestoIgvExtranjera,
+                ImpuestoIscNacional = pPedidoRetail.ImpuestoIscNacional,
+                ImpuestoIscExtranjera = pPedidoRetail.ImpuestoIscExtranjera,
+                TotalNoAfectoNacional = pPedidoRetail.TotalNoAfectoNacional,
+                TotalNoAfectoExtranjera = pPedidoRetail.TotalNoAfectoExtranjera,
+                TotalAfectoNacional = 0,
+                ValorVenta = 0,
+                PorcentajeDescuentoPrimero = pPedidoRetail.PorcentajeDescuentoPrimero,
+                PorcentajeDescuentoSegundo = pPedidoRetail.PorcentajeDescuentoSegundo,
+                TotalDescuentoNacional = pPedidoRetail.TotalDescuentoNacional,
+                TotalDescuentoExtranjera = pPedidoRetail.TotalDescuentoExtranjera,
+                TotalVueltoNacional = pPedidoRetail.TotalVueltoNacional,
+                TotalVueltoExtranjera = pPedidoRetail.TotalVueltoExtranjera,
+                TotalEfectivoNacional = pPedidoRetail.TotalEfectivoNacional,
+                TotalEfectivoExtranjera = pPedidoRetail.TotalEfectivoExtranjera,
+                ClienteRuc = pPedidoRetail.RucCliente,
+                ClienteNombresORazonSocial = pPedidoRetail.NombreCompletoCliente,
+                Placa = pPedidoRetail.Placa,
+                NumeroVale = pPedidoRetail.NumeroVale,
+                TipoCambio = pPedidoRetail.TipoCambio,
+                ProcesadoCierreZ = false,
+                ProcesadoCierreX = false,
+                Kilometraje = pPedidoRetail.Kilometraje,
+                AfectaInventario = pPedidoRetail.AfectaInventario,
+                TipoPagoCodigoTipoPago = string.Empty,
+
+                CodigoMoneda = pPedidoRetail.CodigoMoneda,
+                CodigoClaseTipoCambio = pPedidoRetail.CodigoClaseTipoCambio,
+                CodigoCliente = pPedidoRetail.CodigoCliente,
+                CodigoTipoDocumento = pPedidoRetail.CodigoTipoDocumento,
+                CodigoEstadoDocumento = EnumEstadoDocumento.CodigoEstadoDocumentoPorDefecto,
+                CodigoVendedor = pPedidoRetail.CodigoVendedor,
+                CodigoCondicionPago = pPedidoRetail.CodigoCondicionPago,
+                CodigoTipoPago = pPedidoRetail.CodigoTipoPago,
+                CodigoPuntoDeVenta = pPedidoRetail.CodigoPuntoDeVenta,
+                CodigoAlmacen = pPedidoRetail.CodigoAlmacen,
+                CodigoTipoNegocio = pPedidoRetail.CodigoTipoNegocio,
+                CodigoUsuarioDeSistema = pPedidoRetail.CodigoUsuarioDeSistema,
+                CodigoImpuestoIgv = pPedidoRetail.CodigoImpuestoIgv,
+                CodigoImpuestoIsc = pPedidoRetail.CodigoImpuestoIsc
+            };
+
+            if (pPedidoRetail.PedidoRetailDetalles != null && pPedidoRetail.PedidoRetailDetalles.Any())
+            {
+                foreach (var detallePedido in pPedidoRetail.PedidoRetailDetalles)
+                {
+                    nuevaVentaDto.VentaDetalles.Add(new VentaDetalleDTO
+                    {
+                        NumeroDocumento = detallePedido.NumeroDocumento,
+                        Secuencia = detallePedido.Secuencia,
+                        FechaDocumento = detallePedido.FechaDocumento,
+                        FechaProceso = detallePedido.FechaProceso,
+                        Periodo = detallePedido.Periodo,
+                        NumeroTurno = detallePedido.NumeroTurno,
+                        NumeroCara = string.Empty,
+                        PorcentajeImpuestoIgv = detallePedido.PorcentajeImpuestoIgv,
+                        PorcentajeImpuestoIsc = detallePedido.PorcentajeImpuestoIsc,
+                        TotalNacional = detallePedido.TotalNacional,
+                        TotalExtranjera = detallePedido.TotalExtranjera,
+                        ImpuestoNacional = detallePedido.ImpuestoNacional,
+                        ImpuestoExtranjera = detallePedido.ImpuestoExtranjera,
+                        PorcentajeDescuentoPrimero = 0,
+                        TotalDescuentoNacional = 0,
+                        TotalDescuentoExtranjera = 0,
+                        Precio = detallePedido.Precio,
+                        PrecioVenta = detallePedido.PrecioVenta,
+                        ArticuloDescripcionArticulo = detallePedido.DescripcionArticulo,
+                        Cantidad = detallePedido.Cantidad,
+                        UsuarioSistema = pPedidoRetail.CodigoUsuarioDeSistema,
+                        EsFormula = detallePedido.EsFormula,
+                        ArticuloCodigoArticulo = string.Empty,
+
+                        CodigoArticulo = detallePedido.CodigoArticulo,
+                        CodigoArticuloAlterno = detallePedido.CodigoArticuloAlterno,
+                        CodigoMoneda = detallePedido.CodigoMoneda,
+                        CodigoEstadoDocumento = EnumEstadoDocumento.CodigoEstadoDocumentoPorDefecto,
+                    });
+                }
+            }
+
+            if (pPedidoRetail.PedidoRetailConTarjetas != null && pPedidoRetail.PedidoRetailConTarjetas.Any())
+            {
+                foreach (var pedidoConTarjeta in pPedidoRetail.PedidoRetailConTarjetas)
+                {
+                    nuevaVentaDto.VentaConTarjetas.Add(new VentaConTarjetaDTO
+                    {
+                        NumeroDocumento = pPedidoRetail.NumeroDocumento,
+                        Secuencia = pedidoConTarjeta.Secuencia,
+                        NumeroTarjeta = pedidoConTarjeta.NumeroTarjeta,
+                        TotalTarjetaNacional = pedidoConTarjeta.TotalTarjetaNacional,
+                        TotalTarjetaExtranjera = pedidoConTarjeta.TotalTarjetaExtranjera,
+                        FechaProceso = pPedidoRetail.FechaProceso,
+                        TarjetaDescripcionTarjeta = pedidoConTarjeta.DescripcionTarjeta,
+
+                        CodigoMoneda = pedidoConTarjeta.CodigoMoneda,
+                        CodigoTarjeta = pedidoConTarjeta.CodigoTarjeta,
+                        CodigoTipoDocumento = EnumEstadoDocumento.CodigoEstadoDocumentoPorDefecto,
+                        CodigoAlmacen = pedidoConTarjeta.CodigoMoneda
+                    });
+                }
+            }
+
+            if (pPedidoRetail.PedidoRetailConVales != null && pPedidoRetail.PedidoRetailConVales.Any())
+            {
+                foreach (var pedidoConVale in pPedidoRetail.PedidoRetailConVales)
+                {
+                    nuevaVentaDto.VentaConVales.Add(new VentaConValeDTO
+                    {
+                        NumeroDocumento = pPedidoRetail.NumeroDocumento,
+                        NumeroVale = pedidoConVale.NumeroVale,
+                        FechaProceso = pPedidoRetail.FechaProceso,
+                        MontoVale = pPedidoRetail.TotalNacional,
+
+                        CodigoCliente = pedidoConVale.CodigoCliente,
+                        CodigoAlmacen = pedidoConVale.CodigoAlmacen,
+                        CodigoTipoDocumento = EnumEstadoDocumento.CodigoEstadoDocumentoPorDefecto,
+                        CodigoMoneda = pPedidoRetail.CodigoMoneda
+                    });
+                }
+            }
+
+            return nuevaVentaDto;
+        }
+
+        VentaDTO MaterializarPedidoEESSAVentaDTO(PedidoEESS pPedidoEESS)
+        {
+            var nuevaVentaDto = new VentaDTO
+            {
+                NumeroDocumento = pPedidoEESS.NumeroDocumento,
+                FechaDocumento = pPedidoEESS.FechaDocumento,
+                FechaProceso = pPedidoEESS.FechaProceso,
+                Periodo = pPedidoEESS.Periodo,
+                TotalNacional = pPedidoEESS.TotalNacional,
+                TotalExtranjera = pPedidoEESS.TotalExtranjera,
+                SubTotalNacional = pPedidoEESS.SubTotalNacional,
+                SubTotalExtranjera = pPedidoEESS.SubTotalExtranjera,
+                ImpuestoIgvNacional = pPedidoEESS.ImpuestoIgvNacional,
+                ImpuestoIGVExtranjera = pPedidoEESS.ImpuestoIgvExtranjera,
+                ImpuestoIscNacional = pPedidoEESS.ImpuestoIscNacional,
+                ImpuestoIscExtranjera = pPedidoEESS.ImpuestoIscExtranjera,
+                TotalNoAfectoNacional = pPedidoEESS.TotalNoAfectoNacional,
+                TotalNoAfectoExtranjera = pPedidoEESS.TotalNoAfectoExtranjera,
+                TotalAfectoNacional = 0,
+                ValorVenta = 0,
+                PorcentajeDescuentoPrimero = pPedidoEESS.PorcentajeDescuentoPrimero,
+                PorcentajeDescuentoSegundo = pPedidoEESS.PorcentajeDescuentoSegundo,
+                TotalDescuentoNacional = pPedidoEESS.TotalDescuentoNacional,
+                TotalDescuentoExtranjera = pPedidoEESS.TotalDescuentoExtranjera,
+                TotalVueltoNacional = pPedidoEESS.TotalVueltoNacional,
+                TotalVueltoExtranjera = pPedidoEESS.TotalVueltoExtranjera,
+                TotalEfectivoNacional = pPedidoEESS.TotalEfectivoNacional,
+                TotalEfectivoExtranjera = pPedidoEESS.TotalEfectivoExtranjera,
+                ClienteRuc = pPedidoEESS.RucCliente,
+                ClienteNombresORazonSocial = pPedidoEESS.NombreCompletoCliente,
+                Placa = pPedidoEESS.Placa,
+                NumeroVale = pPedidoEESS.NumeroVale,
+                TipoCambio = pPedidoEESS.TipoCambio,
+                ProcesadoCierreZ = pPedidoEESS.ProcesadoCierreZ,
+                ProcesadoCierreX = pPedidoEESS.ProcesadoCierreX,
+                Kilometraje = pPedidoEESS.Kilometraje,
+                AfectaInventario = pPedidoEESS.AfectaInventario,
+                TipoPagoCodigoTipoPago = string.Empty,
+
+                CodigoMoneda = pPedidoEESS.CodigoMoneda,
+                CodigoClaseTipoCambio = pPedidoEESS.CodigoClaseTipoCambio,
+                CodigoCliente = pPedidoEESS.CodigoCliente,
+                CodigoTipoDocumento = pPedidoEESS.CodigoTipoDocumento,
+                CodigoEstadoDocumento = pPedidoEESS.CodigoEstadoDocumento,
+                CodigoVendedor = pPedidoEESS.CodigoVendedor,
+                CodigoCondicionPago = pPedidoEESS.CodigoCondicionPago,
+                CodigoTipoPago = pPedidoEESS.CodigoTipoPago,
+                CodigoPuntoDeVenta = pPedidoEESS.CodigoPuntoDeVenta,
+                CodigoAlmacen = pPedidoEESS.CodigoAlmacen,
+                CodigoTipoNegocio = EnumTipoNegocio.TipoNegocioEESS,
+                CodigoUsuarioDeSistema = pPedidoEESS.CodigoUsuarioDeSistema,
+                CodigoImpuestoIgv = pPedidoEESS.CodigoImpuestoIgv,
+                CodigoImpuestoIsc = pPedidoEESS.CodigoImpuestoIsc
+            };
+
+            if (pPedidoEESS.PedidoEESSDetalles != null && pPedidoEESS.PedidoEESSDetalles.Any())
+            {
+                foreach (var detallePedido in pPedidoEESS.PedidoEESSDetalles)
+                {
+                    nuevaVentaDto.VentaDetalles.Add(new VentaDetalleDTO
+                    {
+                        NumeroDocumento = detallePedido.NumeroDocumento,
+                        Secuencia = detallePedido.Secuencia,
+                        FechaDocumento = detallePedido.FechaDocumento,
+                        FechaProceso = detallePedido.FechaProceso,
+                        Periodo = detallePedido.Periodo,
+                        NumeroTurno = detallePedido.NumeroTurno,
+                        NumeroCara = detallePedido.NumeroCara,
+                        PorcentajeImpuestoIgv = detallePedido.PorcentajeImpuestoIgv,
+                        PorcentajeImpuestoIsc = detallePedido.PorcentajeImpuestoIsc,
+                        TotalNacional = detallePedido.TotalNacional,
+                        TotalExtranjera = detallePedido.TotalExtranjera,
+                        ImpuestoNacional = detallePedido.ImpuestoNacional,
+                        ImpuestoExtranjera = detallePedido.ImpuestoExtranjera,
+                        PorcentajeDescuentoPrimero = detallePedido.PorcentajeDescuentoPrimero,
+                        TotalDescuentoNacional = 0,
+                        TotalDescuentoExtranjera = 0,
+                        Precio = detallePedido.Precio,
+                        PrecioVenta = detallePedido.PrecioVenta,
+                        ArticuloDescripcionArticulo = detallePedido.DescripcionArticulo,
+                        Cantidad = detallePedido.Cantidad,
+                        UsuarioSistema = detallePedido.CodigoUsuarioDeSistema,
+                        EsFormula = detallePedido.EsFormula,
+                        ArticuloCodigoArticulo = string.Empty,
+
+                        CodigoArticulo = detallePedido.CodigoArticulo,
+                        CodigoArticuloAlterno = detallePedido.CodigoArticuloAlterno,
+                        CodigoMoneda = detallePedido.CodigoMoneda,
+                        CodigoEstadoDocumento = detallePedido.CodigoEstadoDocumento
+                    });
+                }
+            }
+
+            if (!string.IsNullOrEmpty(pPedidoEESS.CodigoTarjeta))
+            {
+                nuevaVentaDto.VentaConTarjetas.Add(new VentaConTarjetaDTO
+                {
+                    NumeroDocumento = pPedidoEESS.NumeroDocumento,
+                    Secuencia = 1,
+                    NumeroTarjeta = pPedidoEESS.NumeroTarjeta,
+                    TotalTarjetaNacional = pPedidoEESS.PagoTarjeta,
+                    TotalTarjetaExtranjera = 0,
+                    FechaProceso = pPedidoEESS.FechaProceso,
+                    TarjetaDescripcionTarjeta = pPedidoEESS.DescripcionTarjeta,
+
+                    CodigoMoneda = pPedidoEESS.CodigoMoneda,
+                    CodigoTarjeta = pPedidoEESS.CodigoTarjeta,
+                    CodigoTipoDocumento = pPedidoEESS.CodigoTipoDocumento,
+                    CodigoAlmacen = pPedidoEESS.CodigoAlmacen
+                });
+            }
+
+            if (pPedidoEESS.PedidoEESSConVales != null && pPedidoEESS.PedidoEESSConVales.Any())
+            {
+                foreach (var pedidoConVale in pPedidoEESS.PedidoEESSConVales)
+                {
+                    nuevaVentaDto.VentaConVales.Add(new VentaConValeDTO
+                    {
+                        NumeroDocumento = pPedidoEESS.NumeroDocumento,
+                        NumeroVale = pedidoConVale.NumeroVale,
+                        FechaProceso = pPedidoEESS.FechaProceso,
+                        MontoVale = pPedidoEESS.TotalNacional,
+
+                        CodigoCliente = pedidoConVale.CodigoCliente,
+                        CodigoAlmacen = pedidoConVale.CodigoAlmacen,
+                        CodigoTipoDocumento = pPedidoEESS.CodigoTipoDocumento,
+                        CodigoMoneda = pPedidoEESS.CodigoMoneda
+                    });
+                }
+            }
+
+            return nuevaVentaDto;
+        }
 
         Venta CrearNuevaVenta(VentaDTO pVentaDTO, Moneda pMoneda, ClaseTipoCambio pClaseTipoCambio,
                                 Cliente pCliente, TipoDocumento pTipoDocumento, EstadoDocumento pEstadoDocumento,
@@ -513,7 +864,7 @@ namespace PtoVta.Aplicacion.GestionVentas
                                                 pVentaDTO.TotalDescuentoNacional, pVentaDTO.TotalDescuentoExtranjera, pVentaDTO.TotalVueltoNacional,
                                                 pVentaDTO.TotalVueltoExtranjera, pVentaDTO.TotalEfectivoNacional, pVentaDTO.TotalEfectivoExtranjera,
                                                 pVentaDTO.Placa, (decimal)pVentaDTO.NumeroVale, pVentaDTO.TipoCambio,
-                                                pVentaDTO.ProcesadoCierreZ, pVentaDTO.ProcesadoCierreX, (int)pVentaDTO.Kilometraje, pVentaDTO.AfectaInventario, 
+                                                pVentaDTO.ProcesadoCierreZ, pVentaDTO.ProcesadoCierreX, (int)pVentaDTO.Kilometraje, pVentaDTO.AfectaInventario,
                                                 pMoneda, pClaseTipoCambio, pCliente,
                                                 pTipoDocumento, pEstadoDocumento, pVendedor,
                                                 pCondicionPago, pTipoPago, pConfiguracionPuntoVenta,
@@ -543,8 +894,8 @@ namespace PtoVta.Aplicacion.GestionVentas
                                                 linea.PorcentajeImpuestoIgv, linea.PorcentajeImpuestoIsc, linea.TotalNacional,
                                                 linea.TotalExtranjera, linea.ImpuestoNacional, linea.ImpuestoExtranjera,
                                                 (int)linea.PorcentajeDescuentoPrimero, (int)linea.TotalDescuentoNacional, (int)linea.TotalDescuentoExtranjera,
-                                                linea.Precio, precioRealArticulo, articulo.DescripcionArticulo, 
-                                                linea.Cantidad, linea.EsFormula, linea.CodigoArticulo, 
+                                                linea.Precio, precioRealArticulo, articulo.DescripcionArticulo,
+                                                linea.Cantidad, linea.EsFormula, linea.CodigoArticulo,
                                                 linea.CodigoArticuloAlterno, articulo.EsInventariable, enInventarioFisico);
 
                         //*** EN EL EJEMPLO NLAYER NO ES NECESARIO EstablecerMonedaParaDetalleVenta
@@ -580,7 +931,7 @@ namespace PtoVta.Aplicacion.GestionVentas
                             return null;
                         }
 
-                        var ventaConTarjeta = nuevaVenta.AgregarNuevaVentaConTarjeta(vtaConTarjeta.Secuencia, vtaConTarjeta.NumeroTarjeta, vtaConTarjeta.TotalTarjetaNacional, 
+                        var ventaConTarjeta = nuevaVenta.AgregarNuevaVentaConTarjeta(vtaConTarjeta.Secuencia, vtaConTarjeta.NumeroTarjeta, vtaConTarjeta.TotalTarjetaNacional,
                                         vtaConTarjeta.TotalTarjetaExtranjera, vtaConTarjeta.CodigoMoneda, vtaConTarjeta.CodigoTarjeta);
                     }
                 }
@@ -935,8 +1286,8 @@ namespace PtoVta.Aplicacion.GestionVentas
             var tipoDocumentoAPersistido = _IRepositorioTipoDocumento.ObtenerPorCodigo(pTipoDocumentoActual.CodigoTipoDocumento);
             if (tipoDocumentoAPersistido != null)
             {
-                _IRepositorioTipoDocumento.ActualizarCorrelativoDocumento(pTipoDocumentoActual,pCodigoAlmacen, pNumeroSerie ); //CAMBIAR POR ACTUALIZAR
-                                                                            // _IRepositorioTipoDocumento.UnidadTrabajo.Commit();
+                _IRepositorioTipoDocumento.ActualizarCorrelativoDocumento(pTipoDocumentoActual, pCodigoAlmacen, pNumeroSerie); //CAMBIAR POR ACTUALIZAR
+                                                                                                                               // _IRepositorioTipoDocumento.UnidadTrabajo.Commit();
             }
             else
                 LogFactory.CrearLog().LogWarning(Mensajes.advertencia_NoSeObtuvoResultadoDeConsultaTipoDocumento);

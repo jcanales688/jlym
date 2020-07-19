@@ -16,16 +16,16 @@ namespace PtoVta.Dominio.Agregados.Configuraciones
         public int CantidadCaras { get; set; }
         public string SimboloMonedaBase{ get; set; }
         public string SimboloMonedaExtranjera{ get; set; }
-        public int CantDecimalPrecio { get; set; }
-        public int CantDecimalCosto { get; set; }
-        public int CantDecimalStock { get; set; }
-        public int CantDecimalResultado { get; set; }
-        public Nullable<int> CantDecimalDescuento { get; set; }
-        public decimal PorcentajeImpuesto { get; set; }
+        public int CantidadDecimalPrecio { get; set; }
+        public int CantidadDecimalCosto { get; set; }
+        public int CantidadDecimalStock { get; set; }
+        public int CantidadDecimalResultado { get; set; }
+        public int CantidadDecimalDescuento { get; set; }
+        public int PorcentajeImpuesto { get; set; }
         public DateTime FechaProceso { get; set; }
-        public Nullable<int> TipoControlCombustible { get; set; }
+        public int TipoControlCombustible { get; set; }
         public decimal DiferenciaDiariaPermitida { get; set; }
-        public Nullable<int> DiasCambioClave { get; set; }
+        public int DiasCambioClave { get; set; }
         public bool EsHabilitado
         {
             get
@@ -42,7 +42,7 @@ namespace PtoVta.Dominio.Agregados.Configuraciones
         public string CodigoAlmacenOrigen { get; private set; }
         public string CodigoMonedaBase { get; private set; }
         public string CodigoMonedaExtranjeraPorDefecto { get; private set; }
-        public string CodigoClaseTipoCambioVentas { get; private set; }
+        public string CodigoClaseTipoCambioVenta { get; private set; }
         public string CodigoClaseTipoCambioOrigen { get; private set; }
         public string CodigoImpuesto { get; private set; }
         public string CodigoClienteInterno { get; private set; }
@@ -119,7 +119,7 @@ namespace PtoVta.Dominio.Agregados.Configuraciones
             }
 
             //relacion
-            this.CodigoClaseTipoCambioVentas = pClaseTipoCambioVentas.CodigoClaseTipoCambio;
+            this.CodigoClaseTipoCambioVenta = pClaseTipoCambioVentas.CodigoClaseTipoCambio;
             this.ClaseTipoCambioVentas = pClaseTipoCambioVentas;
         }
 

@@ -51,7 +51,7 @@ namespace PtoVta.Aplicacion.DTO.Ventas
         public string CodigoVendedor { get; set; }
         public string CodigoCondicionPago { get; set; }
         public string CodigoTipoPago { get; set; }
-        public string CodigoConfiguracionPuntoVenta { get; set; }
+        public string CodigoPuntoDeVenta { get; set; }
         public string CodigoAlmacen { get; set; }
         public string CodigoTipoNegocio { get; set; }
         public string CodigoUsuarioDeSistema { get; set; }

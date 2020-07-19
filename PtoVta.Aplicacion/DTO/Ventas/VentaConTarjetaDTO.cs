@@ -5,7 +5,7 @@ namespace PtoVta.Aplicacion.DTO.Ventas
 {
     public class VentaConTarjetaDTO
     {
-        public decimal NumeroDocumento { get; set; }
+        public string NumeroDocumento { get; set; }
         public short Secuencia { get; set; }
         public string NumeroTarjeta { get; set; }
         public decimal TotalTarjetaNacional { get; set; }

@@ -14,19 +14,19 @@ namespace PtoVta.Dominio.Agregados.Parametros
 
         public string CodigoTipoDocumento { get; private set; }
         public string CodigoAlmacen { get; private  set; }
-        public string CodigoConfiguracionPuntoVenta { get;private  set; }
+        public string CodigoPuntoDeVenta { get;private  set; }
 
         public Almacen Almacen { get; private set; }
         public ConfiguracionPuntoVenta ConfiguracionPuntoVenta { get; private set; }
 
         public CorrelativoDocumento(){}
         public CorrelativoDocumento(string pCodigoTipoDocumento, string pCodigoAlmacen, 
-                                    string pCodigoConfiguracionPuntoVenta, string pSerie,
+                                    string pCodigoPuntoDeVenta, string pSerie,
                                     long pCorrelativo, string pTipoDeVenta, int pEstado)
         {
             CodigoTipoDocumento = pCodigoTipoDocumento;
             CodigoAlmacen = pCodigoAlmacen;
-            CodigoConfiguracionPuntoVenta = pCodigoConfiguracionPuntoVenta;
+            CodigoPuntoDeVenta = pCodigoPuntoDeVenta;
 
             Serie = pSerie;
             Correlativo = pCorrelativo;

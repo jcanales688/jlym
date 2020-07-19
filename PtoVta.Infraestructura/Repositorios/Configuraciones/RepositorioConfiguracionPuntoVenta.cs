@@ -17,12 +17,11 @@ namespace PtoVta.Infraestructura.Repositorios.Configuraciones
             this.CadenaConexion = pCadenaConexion;
         }
 
-        public ConfiguracionPuntoVenta ObtenerPorTerminalYPuntoVenta(string pNombreTerminal, string pNombrePuntoDeVenta)
+        public ConfiguracionPuntoVenta ObtenerPorTerminalYPuntoVenta(string pNombreTerminal, string pCodigoPuntoDeVenta)
         {
             using (IDbConnection cn = new SqlConnection(this.CadenaConexion))
             {
-                string cadenaSQL = @"SELECT	''					AS CodigoConfiguracionPuntoVenta 
-                                            ,SALESPOINT			AS NombrePuntoVenta 
+                string cadenaSQL = @"SELECT	SALESPOINT			AS CodigoPuntoDeVenta 
                                             ,TERMINALNAME		AS NombreTerminal 
                                             ,SERIALNUMBER		AS NumeroSerieMaquinaRegistradora
                                             ,STKTICKFAC			AS PermiteTicketFactura 
@@ -72,7 +71,7 @@ namespace PtoVta.Infraestructura.Repositorios.Configuraciones
 
                 var resultado = cn.QueryMultiple(cadenaSQL,
                                             new { 
-                                                    SALESPOINT = pNombrePuntoDeVenta, 
+                                                    SALESPOINT = pCodigoPuntoDeVenta, 
                                                     TERMINALNAME = pNombreTerminal, 
                                                     DOCSTATUSIDDEFAULT = EnumEstadoDocumento.CodigoEstadoDocumentoPorDefecto,
                                                     TYPEPAYMENTIDDEFAULT = EnumTipoPago.TipoPagoPorDefecto,
@@ -100,12 +99,11 @@ namespace PtoVta.Infraestructura.Repositorios.Configuraciones
             // return configPtoVta;
         }
 
-        public ConfiguracionPuntoVenta ObtenerPorPuntoDeVenta(string pNombrePuntoDeVenta)
+        public ConfiguracionPuntoVenta ObtenerPorPuntoDeVenta(string pCodigoPuntoDeVenta)
         {
             using (IDbConnection cn = new SqlConnection(this.CadenaConexion))
             {
-                string cadenaSQL = @"SELECT	''					AS CodigoConfiguracionPuntoVenta 
-                                            ,SALESPOINT			AS NombrePuntoVenta 
+                string cadenaSQL = @"SELECT	SALESPOINT			AS CodigoPuntoDeVenta 
                                             ,TERMINALNAME		AS NombreTerminal 
                                             ,SERIALNUMBER		AS NumeroSerieMaquinaRegistradora
                                             ,STKTICKFAC			AS PermiteTicketFactura 
@@ -135,7 +133,7 @@ namespace PtoVta.Infraestructura.Repositorios.Configuraciones
                                     WHERE	SALESPOINT			= @SALESPOINT";
 
                 var configuracionPuntoDeVenta = cn.QueryFirstOrDefault<ConfiguracionPuntoVenta>(cadenaSQL,
-                                                    new { SALESPOINT = pNombrePuntoDeVenta });
+                                                    new { SALESPOINT = pCodigoPuntoDeVenta });
 
                 if (configuracionPuntoDeVenta != null)
                 {

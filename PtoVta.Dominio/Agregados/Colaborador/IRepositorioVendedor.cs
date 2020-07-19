@@ -7,7 +7,7 @@ namespace PtoVta.Dominio.Agregados.Colaborador
     {
         Vendedor ObtenerVendedorPorUsuario(string pUsuarioVendedor);
 
-        Vendedor ObtenerVendedorPendienteCierre(DateTime pFechaProceso, string pCodigoConfiguracionPuntoVenta);    
+        Vendedor ObtenerVendedorPendienteCierre(DateTime pFechaProceso, string pCodigoPuntoDeVenta);    
 
         Vendedor ObtenerPorCodigo(string pCodigoVendedor);            
     }

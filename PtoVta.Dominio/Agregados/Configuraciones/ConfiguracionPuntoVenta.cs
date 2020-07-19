@@ -13,8 +13,8 @@ namespace PtoVta.Dominio.Agregados.Configuraciones
 
         HashSet<CierreZetaPuntoDeVenta> _lineasCierreZetaPuntoDeVenta;
 
-        public string CodigoConfiguracionPuntoVenta { get; set; }    
-        public string NombrePuntoVenta { get; set; }
+        // public string CodigoConfiguracionPuntoVenta { get; set; }    
+        public string CodigoPuntoDeVenta { get; set; }
         public string NombreTerminal { get; set; }
         public string NumeroSerieMaquinaRegistradora { get; set; }
         public bool PermiteTicketFactura { get; set; }
@@ -53,9 +53,9 @@ namespace PtoVta.Dominio.Agregados.Configuraciones
         public string CodigoTipoNegocio { get; private set; }
         public string CodigoAlmacenPuntoVenta { get; private set; }
         public string CodigoTipoImpresora { get; private set; }
-        public string CodigoEstadoDocumentoDefault { get; set; }
-        public string CodigoTipoPagoDefault { get; set; }
-        public string CodigoEstadoDocumentoAnulado { get; set; }
+        public string CodigoEstadoDocumentoDefault { get; private  set; }
+        public string CodigoTipoPagoDefault { get; private set; }
+        public string CodigoEstadoDocumentoAnulado { get; private  set; }
 
 
         public virtual Moneda MonedaCaja { get; private set; }
@@ -118,7 +118,7 @@ namespace PtoVta.Dominio.Agregados.Configuraciones
 
             var nuevaLineaCierreZetaPuntoDeVenta = new CierreZetaPuntoDeVenta()
             {
-                CodigoConfiguracionPuntoVenta = this.CodigoConfiguracionPuntoVenta,
+                CodigoPuntoDeVenta = this.CodigoPuntoDeVenta,
                 FechaProcesoVentas = pFechaProcesoVentas,
                 FechaCierreZeta = pFechaCierreZeta,
                 TotalCierreZeta = pTotalCierreZeta,

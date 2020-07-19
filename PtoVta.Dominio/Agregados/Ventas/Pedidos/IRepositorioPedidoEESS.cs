@@ -7,6 +7,6 @@ namespace PtoVta.Dominio.Agregados.Ventas
     public interface IRepositorioPedidoEESS: IRepositorio<PedidoEESS>
     {
         PedidoEESS ObtenerPorNumeroPedido(int pCorrelativo);
-        IEnumerable<PedidoEESS> ObtenerTodos(string pCodigoConfiguracionPuntoVenta);        
+        IEnumerable<PedidoEESS> ObtenerTodos(string pCodigoPuntoDeVenta);        
     }
 }

@@ -21,7 +21,31 @@ namespace PtoVta.Dominio.BaseTrabajo.Globales
         {
             public const string TipoPagoPorDefecto = "01";    
         }
+
+        public struct EnumTipoNegocio
+        {
+            public const string TipoNegocioDesactivado = "0";    
+            public const string TipoNegocioEESS = "1";    
+            public const string TipoNegocioRetail = "2";                
+            public const string TipoNegocioOficina = "3";                
+        }
         
+        public struct EnumModoTipoVenta
+        {
+            public const string ModoTipoVentaManual = "M";
+            public const string ModoTipoVentaAutomatico = "A";
+        }
+
+        public struct EmunCondicionPago
+        {
+            public const string CondicionPagoPagoContraentrega = "00";
+        }
+
+        public struct EnumGenerales
+        {
+            public const int AnchoTicket = 40;
+        }
+
         public struct Mensajes
         {
             public const string advertencia_AdvertenciaVentaOTipoDocumentoInvalido = "Advertencia Venta O Tipo Documento Invalido";
@@ -198,6 +222,26 @@ namespace PtoVta.Dominio.BaseTrabajo.Globales
             public const string excepcion_PaisDeClienteEnEstadoNuloOTransitorio = "Pais de Cliente en Estado Nulo o Transitorio";
             public const string excepcion_DepartamentoDeClienteEnEstadoNuloOTransitorio = "Departamento de Cliente en Estado Nulo o Transitorio";
             public const string excepcion_DistritoDeClienteEnEstadoNuloOTransitorio = "Distrito de Cliente en Estado Nulo o Transitorio";
+            public const string advertencia_ExitosaCreacionNuevoPedidoEESS = "Creacion Nuevo pedido EESS se realizo exitosamente";
+            public const string advertencia_ExitosaCreacionNuevoPedidoRetail = "Creacion Nuevo pedido Retail se realizo exitosamente";
+            public const string advertencia_ConsultaPedidosEESSPorPuntoDeVentaExitosa = "Consulta de pedidos EESS por punto de venta exitosa.";
+            public const string advertencia_ConsultaPedidosRetailPorPuntoDeVentaExitosa = "Consulta de pedidos retail por punto de venta exitosa.";
+            public const string advertencia_ConsultaPedidoEESSPorNumeroPedidoExitosa = "Consulta de pedidos EESS por numero de pedido exitosa.";
+            public const string advertencia_ConsultaPedidoRetailPorNumeroPedidoExitosa = "Consulta de pedidos retail por numero de pedido exitosa.";
+            public const string advertencia_NoSePuedeGrabarPedidoEESSNulo = "No se puede grabar pedido EESS nulo";
+            public const string advertencia_NoSePuedeGrabarPedidoRetailNulo = "No se puede grabar pedido retail nulo";
+            public const string advertencia_FalloCreacionNuevaVentaAPartirDePedidoRetail = "Fallo Creacion Nueva Venta a Partir de Pedido Retail";
+            public const string advertencia_FalloCreacionNuevaVentaAPartirDePedidoEESS = "Fallo Creacion Nueva Venta a Partir de Pedido EESS";
+            public const string advertencia_ConsultaVentasPorAlmacenExitosa = "Consulta de ventas por almacen exitosa.";
+            public const string excepcion_DatosNoValidosParaLineaClientePlaca = "Placa incorrecta para agregar linea placa de cliente";
+            public const string advertencia_NoSePuedeGrabarClienteNulo = "No se puede grabar cliente nulo";
+            public const string advertencia_ConsultaConfiguracionPuntoDeVentaExitosa = "Consulta Configuracion Punto de Venta Exitosa";
+            public const string advertencia_ConsultaConfiguracionGlobalExitosa = "Consulta Configuracion Global del sistema Exitosa";
+            public const string advertencia_ConsultaConfiguracionGeneralFallo = "Consulta Configuracion General Fallo";
+            public const string advertencia_ConsultaConfiguracionVentaFallo = "Consulta Configuracion Venta Fallo";
+            public const string advertencia_ConsultaConfiguracionInventarioFallo = "Consulta Configuracion Inventario Fallo";
+            public const string advertencia_ConsultaConfiguracionFormatoTicketFallo = "Consulta Configuracion Formato de Ticket Fallo";
+
 
         }
 

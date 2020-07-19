@@ -96,7 +96,7 @@ namespace PtoVta.Infraestructura.Repositorios.Colaborador
         }
 
 
-        public Vendedor ObtenerVendedorPendienteCierre(DateTime pFechaProceso, string pCodigoConfiguracionPuntoVenta)
+        public Vendedor ObtenerVendedorPendienteCierre(DateTime pFechaProceso, string pCodigoPuntoDeVenta)
         {
 
             //busqueda solo aquel registro que indica qu no cerro X    
@@ -105,7 +105,7 @@ namespace PtoVta.Infraestructura.Repositorios.Colaborador
             // var consultaPendienteCierre = (from cv in conjuntoVendedor.Include(m => m.MovimientosFondoCaja)
             //     from mc in cv.MovimientosFondoCaja
             //     where cv.Id == mc.VendedorId
-            //           && mc.ConfiguracionPuntoVentaId == pCodigoConfiguracionPuntoVenta
+            //           && mc.ConfiguracionPuntoVentaId == pCodigoPuntoDeVenta
             //           && mc.RealizoCierreX == 0
             //     select cv).FirstOrDefault();
 

@@ -222,7 +222,7 @@ namespace PtoVta.Infraestructura.Repositorios.Ventas
                         TAXISCID = pPedidoEESS.CodigoImpuestoIsc,
                         CUSTIDSS = pPedidoEESS.CodigoCliente,
                         CURYTYPEID = pPedidoEESS.CodigoClaseTipoCambio,
-                        SALESPOINT = pPedidoEESS.CodigoConfiguracionPuntoVenta,
+                        SALESPOINT = pPedidoEESS.CodigoPuntoDeVenta,
                         IDESTADO = pPedidoEESS.CodigoEstado,
                         MONEDACREDITO = pPedidoEESS.CodigoMonedaCredito,
                         TIPODECAMBIO = pPedidoEESS.CodigoClaseTipoCambioClienteCredito,
@@ -360,7 +360,7 @@ namespace PtoVta.Infraestructura.Repositorios.Ventas
                                 INVTIDSKU = detallePedido.CodigoArticulo,
                                 CURYID = detallePedido.CodigoMoneda,
                                 DOCSTATUSID = detallePedido.CodigoEstadoDocumento,
-                                PTOVTA = detallePedido.CodigoConfiguracionPuntoVenta,
+                                PTOVTA = detallePedido.CodigoPuntoDeVenta,
                                 STKUNITID = detallePedido.CodigoUnidadDeMedida,
                                 USERID = detallePedido.CodigoUsuarioDeSistema,
                                 INVTIDALTER = detallePedido.CodigoArticuloAlterno,
@@ -374,7 +374,7 @@ namespace PtoVta.Infraestructura.Repositorios.Ventas
                     {
                         foreach (var pedidoConVale in pPedidoEESS.PedidoEESSConVales)
                         {
-                         string sqlAgregaPedidoConVale = @"INSERT INTO PC_TMP_OP_BONUS
+                            string sqlAgregaPedidoConVale = @"INSERT INTO PC_TMP_OP_BONUS
                                                                             (CORRNBR
                                                                             ,NBRBONUS
                                                                             ,CUSTIDSS
@@ -401,44 +401,139 @@ namespace PtoVta.Infraestructura.Repositorios.Ventas
 
         public PedidoEESS ObtenerPorNumeroPedido(int pCorrelativo)
         {
-          using (IDbConnection cn = new SqlConnection(this.CadenaConexion))
+            using (IDbConnection cn = new SqlConnection(this.CadenaConexion))
             {
-                string cadenaSQL = @"SELECT	M.MODULEID	AS CodigoModuloSistema
-                                            ,M.MODULENAME	AS NombreModulo
-                                    FROM	SE_MODULE (NOLOCK)	M
-                                    WHERE	MODULEID	= @MODULEID;
+                string cadenaSQL = @"SELECT	CORRNBR AS Correlativo,
+                                            NBRSIDE AS NumeroCara,
+                                            NBRDOCUMENT AS NumeroDocumento,
+                                            STKINVENTORY AS AfectaInventario,
+                                            DATEDOC AS FechaDocumento,
+                                            DATEPROCESALES AS FechaProceso,
+                                            PERPOST AS Periodo,
+                                            TOTALPEN AS TotalNacional,
+                                            TOTALUSD AS TotalExtranjera,
+                                            SUBTOTALPEN AS SubTotalNacional,
+                                            SUBTOTALUSD AS SubTotalExtranjera,
+                                            TAXIGVPEN AS ImpuestoIgvNacional,
+                                            TAXIGVUSD AS ImpuestoIgvExtranjera,
+                                            TAXISCPEN AS ImpuestoIscNacional,
+                                            TAXISCUSD AS ImpuestoIscExtranjera,
+                                            TOTALNOTAFFECTPEN AS TotalNoAfectoNacional,
+                                            TOTALNOTAFFECTUSD AS TotalNoAfectoExtranjera,
+                                            PORCENTDISCOUNT1 AS PorcentajeDescuentoPrimero,
+                                            PORCENTDISCOUNT2 AS PorcentajeDescuentoSegundo,
+                                            TOTDISCOUNTPEN AS TotalDescuentoNacional,
+                                            TOTDISCOUNTUSD AS TotalDescuentoExtranjera,
+                                            TOTRETURNEDPEN AS TotalVueltoNacional,
+                                            TOTRETURNEDUSD AS TotalVueltoExtranjera,
+                                            TOTCASHPEN AS TotalEfectivoNacional,
+                                            TOTCASHUSD AS TotalEfectivoExtranjera,
+                                            TAXREGNBR AS RucCliente,
+                                            CUSTNAME AS NombreCompletoCliente,
+                                            PLACA AS Placa,
+                                            NBRBONUS AS NumeroVale,
+                                            CURYRATE AS TipoCambio,
+                                            STKCLOSEDZ AS ProcesadoCierreZ,
+                                            STKCLOSEDX AS ProcesadoCierreX,
+                                            POINTNUMBER AS NumeroPuntos,
+                                            TERMINALNAME AS NombreTerminal,
+                                            KILOMETRAJE AS Kilometraje,
+                                            ADDRESS AS DireccionCliente,
+                                            TYPECUSTOMER AS TipoCliente,
+                                            DSCRTYPECUST AS DescripcionTipoCliente,
+                                            ESTADO AS DescripcionEstado,
+                                            MONTOTIPOCAMBIO AS TipoCambioClienteCredito,
+                                            DIASDEGRACIA AS DiasDeGraciaClienteCredito,
+                                            LIMITECRED AS LimiteCreditoClienteCredito,
+                                            DEUDACLIENTE AS DeudaClienteClienteCredito,
+                                            MTOSURPLUS AS PlusCreditoClienteCredito,
+                                            AFECTO AS Afecto,
+                                            NBRCARD AS NumeroTarjeta,
+                                            PAGO AS PagoTarjeta,
+                                            DESCRCARD AS DescripcionTarjeta,
+                                            DOCTYPEID AS CodigoTipoDocumento,
+                                            TYPEPAYMENTID AS CodigoTipoPago,
+                                            SITEID AS CodigoAlmacen,
+                                            CURYID AS CodigoMoneda,
+                                            DOCSTATUSID AS CodigoEstadoDocumento,
+                                            TERMID AS CodigoCondicionPago,
+                                            SALESPERID AS CodigoVendedor,
+                                            USERID AS CodigoUsuarioDeSistema,
+                                            TAXIGVID AS CodigoImpuestoIgv,
+                                            TAXISCID AS CodigoImpuestoIsc,
+                                            CUSTIDSS AS CodigoCliente,
+                                            CURYTYPEID AS CodigoClaseTipoCambio,
+                                            SALESPOINT AS CodigoPuntoDeVenta,
+                                            IDESTADO AS CodigoEstado,
+                                            MONEDACREDITO AS CodigoMonedaCredito,
+                                            TIPODECAMBIO AS CodigoClaseTipoCambioClienteCredito,
+                                            PROMOTIONCARDID AS CodigoTarjetaPromocion,
+                                            CARDID AS CodigoTarjeta,
+                                            CURYIDCARD AS CodigoMonedaTarjeta
+                                    FROM	PC_TMP_OP_SALES (NOLOCK)
+                                    WHERE	CORRNBR = @CORRNBR;
 
-                                    SELECT	V.SCREENID		AS CodigoVentanaUsuario
-                                            ,V.SCREENNAME	AS NombreVentana
-                                            ,V.SCREENTYPE	AS TipoVentana
-                                            ,V.MODULEID		AS CodigoModuloSistema
-                                    FROM	SE_SCREEN (NOLOCK)	V
-                                            INNER JOIN SE_ACCESSDETRIGHTS (NOLOCK) D	ON V.SCREENID = D.SCREENID
-                                    WHERE	V.MODULEID		= @MODULEID
-                                                AND D.USERID	        = @USERID;
-                                                                                        
-                                    SELECT	D.VIEWRIGHTS		AS DerechoConsultar
-                                            ,D.INSERTRIGHTS		AS DerechoInsertar
-                                            ,D.UPDATERIGHTS		AS DerechoActualizar
-                                            ,D.DELETERIGHTS		AS DerechoEliminar
-                                            ,D.PRINTRIGHTS		AS DerechoImprimir	
-                                            ,D.NULLRIGHTS		AS DerechoAnular
-                                            ,D.CLOSERIGHTS		AS DerechoEmitir	
-                                            ,D.SCREENID			AS CodigoVentanaUsuario
-                                            ,D.USERID			AS CodigoUsuarioSistema
-                                    FROM	SE_ACCESSDETRIGHTS (NOLOCK) D
-                                    WHERE	LTRIM(RTRIM(D.SCREENID)) + LTRIM(RTRIM(D.USERID)) IN(SELECT	LTRIM(RTRIM(V.SCREENID)) + LTRIM(RTRIM(D.USERID))
-                                                                                                FROM	SE_SCREEN (NOLOCK)	V
-                                                                                                        INNER JOIN SE_ACCESSDETRIGHTS (NOLOCK) D	ON V.SCREENID = D.SCREENID
-                                                                                                WHERE	V.MODULEID		= @MODULEID
-                                                                                                        AND D.USERID            = @USERID)";
+                                    SELECT	CORRNBR AS Correlativo,
+                                            SEQUENCE AS Secuencia,
+                                            NBRDOCUMENT AS NumeroDocumento,
+                                            DATEDOC AS FechaDocumento,
+                                            DATEPROCESALES AS FechaProceso,
+                                            PERPOST AS Periodo,
+                                            STKCLOSEDZ AS ProcesadoCierreZ,
+                                            STKCLOSEDX AS ProcesadoCierreX,
+                                            NBRTURN AS NumeroTurno,
+                                            NBRSIDE AS NumeroCara,
+                                            NBRTRANSACFUEL AS NumeroTransaccionCombustible,
+                                            DISCDSCTO1 AS PorcentajeDescuentoPrimero,
+                                            DISCDSCTO2 AS PorcentajeDescuentoSegundo,
+                                            DISCMTOPEN AS PorcentajeDescuentoNacional,
+                                            DISCMTOUSD AS PorcentajeDescuentoExtranjera,
+                                            PORCENTTAXIGV AS PorcentajeImpuestoIgv,
+                                            PORCENTTAXISC AS PorcentajeImpuestoIsc,
+                                            TOTALPEN AS TotalNacional,
+                                            TOTALUSD AS TotalExtranjera,
+                                            TAXPEN AS ImpuestoNacional,
+                                            TAXUSD AS ImpuestoExtranjera,
+                                            STKITEM AS EsInventariable,
+                                            STKFISI AS EnInventarioFisico,
+                                            SLS_PRICE AS Precio,
+                                            SLSPRICESALE AS PrecioVenta,
+                                            STDCOSTPEN AS CostoEstandarNacional,
+                                            STDCOSTUSD AS CostoEstandarExtranjera,
+                                            DESCRINVENTORY AS DescripcionArticulo,
+                                            QTY AS Cantidad,
+                                            KIT AS EsFormula,
+                                            COMBUSTIBLE AS EsArticuloCombustible,
+                                            NUM_PEAJE AS NumeroPeaje,
+                                            DOCTYPEID AS CodigoTipoDocumento,
+                                            SITEID AS CodigoAlmacen,
+                                            INVTIDSKU AS CodigoArticulo,
+                                            CURYID AS CodigoMoneda,
+                                            DOCSTATUSID AS CodigoEstadoDocumento,
+                                            PTOVTA AS CodigoPuntoDeVenta,
+                                            STKUNITID AS CodigoUnidadDeMedida,
+                                            USERID AS CodigoUsuarioDeSistema,
+                                            INVTIDALTER AS CodigoArticuloAlterno
+                                    FROM	PC_TMP_OP_SALESDET (NOLOCK)
+                                    WHERE	CORRNBR IN (SELECT	CORRNBR
+                                                        FROM	PC_TMP_OP_SALES (NOLOCK)
+                                                        WHERE	CORRNBR = @CORRNBR);
+
+                                    SELECT	CORRNBR AS Correlativo,
+                                            NBRBONUS AS NumeroVale,
+                                            CUSTIDSS AS CodigoCliente,
+                                            SITEID AS CodigoAlmacen
+                                    FROM	PC_TMP_OP_BONUS (NOLOCK)
+                                    WHERE	CORRNBR IN (SELECT	CORRNBR
+                                                        FROM	PC_TMP_OP_SALES (NOLOCK)
+                                                        WHERE	CORRNBR = @CORRNBR)";
 
                 var resultado = cn.QueryMultiple(cadenaSQL,
-                                    new { CORRNBR = pCorrelativo});
+                                    new { CORRNBR = pCorrelativo });
 
-                var pedidoEESS = resultado.Read<PedidoEESS>().FirstOrDefault();                                    
-                var pedidoEESSDetalles = resultado.Read<PedidoEESSDetalle>().ToList();                                    
-                var pedidoEESSConVales = resultado.Read<PedidoEESSConVale>().ToList();                                    
+                var pedidoEESS = resultado.Read<PedidoEESS>().FirstOrDefault();
+                var pedidoEESSDetalles = resultado.Read<PedidoEESSDetalle>().ToList();
+                var pedidoEESSConVales = resultado.Read<PedidoEESSConVale>().ToList();
                 if (pedidoEESS != null)
                 {
                     return MapeoPedidoEESS(pedidoEESS, pedidoEESSDetalles, pedidoEESSConVales);
@@ -449,15 +544,136 @@ namespace PtoVta.Infraestructura.Repositorios.Ventas
             }
         }
 
-        public IEnumerable<PedidoEESS> ObtenerTodos(string pCodigoConfiguracionPuntoVenta)
+        public IEnumerable<PedidoEESS> ObtenerTodos(string pCodigoPuntoDeVenta)
         {
-            throw new NotImplementedException();
+            using (IDbConnection cn = new SqlConnection(this.CadenaConexion))
+            {
+                string cadenaSQL = @"SELECT	CORRNBR AS Correlativo,
+                                            NBRSIDE AS NumeroCara,
+                                            NBRDOCUMENT AS NumeroDocumento,
+                                            STKINVENTORY AS AfectaInventario,
+                                            DATEDOC AS FechaDocumento,
+                                            DATEPROCESALES AS FechaProceso,
+                                            PERPOST AS Periodo,
+                                            TOTALPEN AS TotalNacional,
+                                            TOTALUSD AS TotalExtranjera,
+                                            SUBTOTALPEN AS SubTotalNacional,
+                                            SUBTOTALUSD AS SubTotalExtranjera,
+                                            TAXIGVPEN AS ImpuestoIgvNacional,
+                                            TAXIGVUSD AS ImpuestoIgvExtranjera,
+                                            TAXISCPEN AS ImpuestoIscNacional,
+                                            TAXISCUSD AS ImpuestoIscExtranjera,
+                                            TOTALNOTAFFECTPEN AS TotalNoAfectoNacional,
+                                            TOTALNOTAFFECTUSD AS TotalNoAfectoExtranjera,
+                                            PORCENTDISCOUNT1 AS PorcentajeDescuentoPrimero,
+                                            PORCENTDISCOUNT2 AS PorcentajeDescuentoSegundo,
+                                            TOTDISCOUNTPEN AS TotalDescuentoNacional,
+                                            TOTDISCOUNTUSD AS TotalDescuentoExtranjera,
+                                            TOTRETURNEDPEN AS TotalVueltoNacional,
+                                            TOTRETURNEDUSD AS TotalVueltoExtranjera,
+                                            TOTCASHPEN AS TotalEfectivoNacional,
+                                            TOTCASHUSD AS TotalEfectivoExtranjera,
+                                            TAXREGNBR AS RucCliente,
+                                            CUSTNAME AS NombreCompletoCliente,
+                                            PLACA AS Placa,
+                                            NBRBONUS AS NumeroVale,
+                                            CURYRATE AS TipoCambio,
+                                            STKCLOSEDZ AS ProcesadoCierreZ,
+                                            STKCLOSEDX AS ProcesadoCierreX,
+                                            POINTNUMBER AS NumeroPuntos,
+                                            TERMINALNAME AS NombreTerminal,
+                                            KILOMETRAJE AS Kilometraje,
+                                            ADDRESS AS DireccionCliente,
+                                            TYPECUSTOMER AS TipoCliente,
+                                            DSCRTYPECUST AS DescripcionTipoCliente,
+                                            ESTADO AS DescripcionEstado,
+                                            MONTOTIPOCAMBIO AS TipoCambioClienteCredito,
+                                            DIASDEGRACIA AS DiasDeGraciaClienteCredito,
+                                            LIMITECRED AS LimiteCreditoClienteCredito,
+                                            DEUDACLIENTE AS DeudaClienteClienteCredito,
+                                            MTOSURPLUS AS PlusCreditoClienteCredito,
+                                            AFECTO AS Afecto,
+                                            NBRCARD AS NumeroTarjeta,
+                                            PAGO AS PagoTarjeta,
+                                            DESCRCARD AS DescripcionTarjeta,
+                                            DOCTYPEID AS CodigoTipoDocumento,
+                                            TYPEPAYMENTID AS CodigoTipoPago,
+                                            SITEID AS CodigoAlmacen,
+                                            CURYID AS CodigoMoneda,
+                                            DOCSTATUSID AS CodigoEstadoDocumento,
+                                            TERMID AS CodigoCondicionPago,
+                                            SALESPERID AS CodigoVendedor,
+                                            USERID AS CodigoUsuarioDeSistema,
+                                            TAXIGVID AS CodigoImpuestoIgv,
+                                            TAXISCID AS CodigoImpuestoIsc,
+                                            CUSTIDSS AS CodigoCliente,
+                                            CURYTYPEID AS CodigoClaseTipoCambio,
+                                            SALESPOINT AS CodigoPuntoDeVenta,
+                                            IDESTADO AS CodigoEstado,
+                                            MONEDACREDITO AS CodigoMonedaCredito,
+                                            TIPODECAMBIO AS CodigoClaseTipoCambioClienteCredito,
+                                            PROMOTIONCARDID AS CodigoTarjetaPromocion,
+                                            CARDID AS CodigoTarjeta,
+                                            CURYIDCARD AS CodigoMonedaTarjeta
+                                    FROM	PC_TMP_OP_SALES (NOLOCK)
+                                    WHERE	SALESPOINT = @SALESPOINT
+                                    ORDER BY 1";
+
+                var resultado = cn.Query<PedidoEESS>(cadenaSQL,
+                                    new
+                                    {
+                                        SALESPOINT = pCodigoPuntoDeVenta                                        
+                                    });
+
+                var ventas = resultado.AsList();
+
+                if (ventas != null)
+                {
+                    return ventas;
+                }
+                else
+                    return null;
+            }
         }
 
 
-        private PedidoEESS MapeoPedidoEESS(PedidoEESS pPedidoEESS, List<PedidoEESSDetalle> pPedidoEESSDetalles, List<PedidoEESSConVale> pPedidoEESSConVale )
+        private PedidoEESS MapeoPedidoEESS(PedidoEESS pPedidoEESS, List<PedidoEESSDetalle> pPedidoEESSDetalles, 
+                                                List<PedidoEESSConVale> pPedidoEESSConVale)
         {
-            return new PedidoEESS();
+            var nuevoPedidoEESS = new PedidoEESS();
+            nuevoPedidoEESS = pPedidoEESS;
+            
+            if(pPedidoEESSDetalles != null && pPedidoEESSDetalles.Any())
+            {
+                var lista = nuevoPedidoEESS.PedidoEESSDetalles as List<PedidoEESSDetalle>;
+                lista.AddRange(pPedidoEESSDetalles);
+
+                // foreach (var detallePedido in pPedidoEESSDetalles)
+                // {                            
+                //     nuevoPedidoEESS.AgregarNuevoPedidoEESSDetalle(detallePedido.Secuencia, detallePedido.NumeroDocumento, detallePedido.FechaDocumento,    
+                //                     detallePedido.FechaProceso, detallePedido.Periodo, detallePedido.ProcesadoCierreZ,        
+                //                     detallePedido.ProcesadoCierreX, detallePedido.NumeroTurno, detallePedido.NumeroCara,          
+                //                     detallePedido.NumeroTransaccionCombustible, detallePedido.PorcentajeDescuentoPrimero, detallePedido.PorcentajeDescuentoSegundo,        
+                //                     detallePedido.PorcentajeDescuentoNacional, detallePedido.PorcentajeDescuentoExtranjera, detallePedido.PorcentajeImpuestoIgv,        
+                //                     detallePedido.PorcentajeImpuestoIsc, detallePedido.TotalNacional, detallePedido.TotalExtranjera,        
+                //                     detallePedido.ImpuestoNacional, detallePedido.ImpuestoExtranjera, detallePedido.EsInventariable,        
+                //                     detallePedido.EnInventarioFisico, detallePedido.Precio, detallePedido.PrecioVenta,        
+                //                     detallePedido.CostoEstandarNacional, detallePedido.CostoEstandarExtranjera, detallePedido.DescripcionArticulo,        
+                //                     detallePedido.Cantidad, detallePedido.EsFormula, detallePedido.EsArticuloCombustible,        
+                //                     detallePedido.NumeroPeaje, detallePedido.CodigoArticulo, detallePedido.CodigoUnidadDeMedida, 
+                //                     detallePedido.CodigoArticuloAlterno);
+                // }
+            }
+
+            if(pPedidoEESSConVale != null && pPedidoEESSConVale.Any())
+            {
+                foreach (var pedidoConVale in pPedidoEESSConVale)
+                {
+                    nuevoPedidoEESS.AgregarNuevoPedidoEESSConVale(pedidoConVale.NumeroVale);
+                }
+            }
+
+            return nuevoPedidoEESS;
         }
     }
 }

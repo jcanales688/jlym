@@ -119,7 +119,7 @@ namespace PtoVta.Dominio.Agregados.Ventas
         public string CodigoEstadoDocumento { get; set; }  
         
         // PTOVTA	UD_PTOVTA
-        public string CodigoConfiguracionPuntoVenta { get; set; }
+        public string CodigoPuntoDeVenta { get; set; }
 
         // STKUNITID	UD_STKUNITID
         public string CodigoUnidadDeMedida { get; set; } 

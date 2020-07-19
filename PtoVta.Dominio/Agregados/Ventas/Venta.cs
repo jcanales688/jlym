@@ -79,7 +79,7 @@ namespace PtoVta.Dominio.Agregados.Ventas
         public string CodigoVendedor { get; private set; }
         public string CodigoCondicionPago { get; private set; }
         public string CodigoTipoPago { get; private set; }
-        public string CodigoConfiguracionPuntoVenta { get; private set; }
+        public string CodigoPuntoDeVenta { get; private set; }
         public string CodigoAlmacen { get; private set; }
         public string CodigoTipoNegocio { get; private set; }
         public string CodigoUsuarioDeSistema { get; private set; }
@@ -785,16 +785,16 @@ namespace PtoVta.Dominio.Agregados.Ventas
                 throw new ArgumentException(Mensajes.excepcion_ConfiguracionPuntoVentaDeVentaEnEstadoNuloOTransitorio);
             }
 
-            this.CodigoConfiguracionPuntoVenta = pConfiguracionPuntoVenta.CodigoConfiguracionPuntoVenta;
+            this.CodigoPuntoDeVenta = pConfiguracionPuntoVenta.CodigoPuntoDeVenta;
             this.ConfiguracionPuntoVenta = pConfiguracionPuntoVenta;
         }
 
-        public void EstablecerReferenciaConfiguracionPuntoVentaDeVenta(string pCodigoConfiguracionPuntoVenta)
+        public void EstablecerReferenciaConfiguracionPuntoVentaDeVenta(string pCodigoPuntoDeVenta)
         {
-            if (!string.IsNullOrEmpty(pCodigoConfiguracionPuntoVenta))
+            if (!string.IsNullOrEmpty(pCodigoPuntoDeVenta))
             {
 
-                this.CodigoConfiguracionPuntoVenta = pCodigoConfiguracionPuntoVenta;
+                this.CodigoPuntoDeVenta = pCodigoPuntoDeVenta;
                 this.ConfiguracionPuntoVenta = null;
             }
         }

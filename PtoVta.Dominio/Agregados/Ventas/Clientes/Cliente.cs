@@ -13,6 +13,7 @@ namespace PtoVta.Dominio.Agregados.Ventas
     {
         bool _EsHabilitado;
 
+        HashSet<ClientePlaca> _lineasClientePlaca;        
         HashSet<ClienteLimiteCredito> _lineasClienteLimiteCredito;
         HashSet<AsignacionListaPrecioCliente> _lineasAsignacionListaPrecioCliente;
         HashSet<DocumentoLibre> _lineasDocumentoLibre; 
@@ -98,6 +99,21 @@ namespace PtoVta.Dominio.Agregados.Ventas
                 this._EsHabilitado = false;
         }
 
+        public virtual ICollection<ClientePlaca> ClientePlacas
+        {
+            get
+            {
+                if (_lineasClientePlaca == null)
+                    _lineasClientePlaca = new HashSet<ClientePlaca>();
+
+                return _lineasClientePlaca;
+            }
+            set
+            {
+                _lineasClientePlaca = new HashSet<ClientePlaca>(value);
+            }
+        }        
+
         public virtual ICollection<AsignacionListaPrecioCliente> AsignacionListasPrecioCliente
         {
             get
@@ -143,7 +159,21 @@ namespace PtoVta.Dominio.Agregados.Ventas
             }
         }
 
+        public ClientePlaca AgregarNuevoClientePlaca(string pDescripcionPlaca)
+        {
+            if (string.IsNullOrEmpty(pDescripcionPlaca))
+                throw new ArgumentException(Mensajes.excepcion_DatosNoValidosParaLineaClientePlaca);
 
+            var nuevaLineaClientePlaca = new ClientePlaca()
+            {
+                CodigoCliente = this.CodigoCliente,                
+                DescripcionPlaca = pDescripcionPlaca
+            };
+
+            this.ClientePlacas.Add(nuevaLineaClientePlaca);
+
+            return nuevaLineaClientePlaca;
+        }
 
         public AsignacionListaPrecioCliente AgregarNuevaAsignacionListaPrecioCliente(DateTime pFechaCreacion, string pCodigoAlmacen, 
                                                                         string pCodigoListaPrecioCliente, string pCodigoUsuarioDeSistema)

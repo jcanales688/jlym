@@ -7,9 +7,9 @@ namespace PtoVta.Dominio.Agregados.Ventas
     public class PedidoRetail:Entidad
     {
         HashSet<PedidoRetailDetalle> _lineasPedidoRetailDetalle;
-        HashSet<PedidoRetailConVale> _lineasPedidoRetailConVale;
         HashSet<PedidoRetailConTarjeta> _lineasPedidoRetailConTarjeta;        
-        
+        HashSet<PedidoRetailConVale> _lineasPedidoRetailConVale;
+                
                 
         // CORRNBR	int
         public int Correlativo { get; set; }
@@ -161,7 +161,7 @@ namespace PtoVta.Dominio.Agregados.Ventas
         public string CodigoTarjetaPromocion { get; private set; } 
 
         // SALESPOINT	UD_PTOVTA    
-        public string CodigoConfiguracionPuntoVenta { get; private set; }           
+        public string CodigoPuntoDeVenta { get; private set; }           
 
         // businesstype	char
         public string CodigoTipoNegocio { get; private set; } 
@@ -284,8 +284,7 @@ namespace PtoVta.Dominio.Agregados.Ventas
         }
 
 
-        public PedidoRetailConTarjeta AgregarNuevoPedidoRetailConTarjeta(
-                    short pSecuencia, string pNumeroTarjeta, decimal pTotalTarjetaNacional,
+        public PedidoRetailConTarjeta AgregarNuevoPedidoRetailConTarjeta(short pSecuencia, string pNumeroTarjeta, decimal pTotalTarjetaNacional,
                     decimal pTotalTarjetaExtranjera, int pEsTransaccionPinPad, string pTipoTarjeta,
                     string pDNIAsociadoATarjeta, string pDescripcionTarjeta,  string  pCodigoTarjeta)
         {
@@ -436,12 +435,12 @@ namespace PtoVta.Dominio.Agregados.Ventas
 
 
         //Configuracion PuntoVenta
-        public void EstablecerReferenciaConfiguracionPuntoVentaDeVenta(string pCodigoConfiguracionPuntoVenta)
+        public void EstablecerReferenciaConfiguracionPuntoVentaDeVenta(string pCodigoPuntoDeVenta)
         {
-            if (!string.IsNullOrEmpty(pCodigoConfiguracionPuntoVenta))
+            if (!string.IsNullOrEmpty(pCodigoPuntoDeVenta))
             {
 
-                this.CodigoConfiguracionPuntoVenta = pCodigoConfiguracionPuntoVenta;
+                this.CodigoPuntoDeVenta = pCodigoPuntoDeVenta;
                 // this.ConfiguracionPuntoVenta = null;
             }
         }

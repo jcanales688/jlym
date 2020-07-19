@@ -25,7 +25,7 @@ namespace PtoVta.Dominio.Agregados.Ventas
             string pCodigoMoneda, string pCodigoEstadoDocumento, string pCodigoCondicionPago,
             string pCodigoVendedor, string pCodigoUsuarioDeSistema, string pCodigoImpuestoIgv,
             string pCodigoImpuestoIsc, string pCodigoCliente, string pCodigoClaseTipoCambio,  
-            string pCodigoConfiguracionPuntoVenta, string pCodigoEstado, string pCodigoMonedaCredito, 
+            string pCodigoPuntoDeVenta, string pCodigoEstado, string pCodigoMonedaCredito, 
             string pCodigoClaseTipoCambioClienteCredito, string pCodigoTarjetaPromocion, string pCodigoTarjeta,
             string pCodigoMonedaTarjeta)
         {
@@ -92,7 +92,7 @@ namespace PtoVta.Dominio.Agregados.Ventas
             nuevoPedidoEESS.EstablecerReferenciaImpuestoIscDeCliente(pCodigoImpuestoIsc);
             nuevoPedidoEESS.EstablecerReferenciaClienteDeVenta(pCodigoCliente);
             nuevoPedidoEESS.EstablecerReferenciaClaseTipoCambioDeVenta(pCodigoClaseTipoCambio);
-            nuevoPedidoEESS.EstablecerReferenciaConfiguracionPuntoVentaDeVenta(pCodigoConfiguracionPuntoVenta);
+            nuevoPedidoEESS.EstablecerReferenciaConfiguracionPuntoVentaDeVenta(pCodigoPuntoDeVenta);
             nuevoPedidoEESS.EstablecerReferenciaEstadoDeVenta(pCodigoEstado);
             nuevoPedidoEESS.EstablecerReferenciaMonedaCreditoDeVenta(pCodigoMonedaCredito);
             nuevoPedidoEESS.EstablecerReferenciaClaseTipoCambioClienteCreditoDeVenta(pCodigoClaseTipoCambioClienteCredito);

@@ -79,7 +79,7 @@ namespace PtoVta.Infraestructura.Tests
             ventaNueva.EstablecerVendedorDeVenta(new Vendedor{ CodigoVendedor = "76408758" });
             ventaNueva.EstablecerCondicionPagoDeVenta(new CondicionPago{ CodigoCondicionPago = "00"});
             ventaNueva.EstablecerTipoPagoDeVenta(new TipoPago{ CodigoTipoPago = "01"});
-            ventaNueva.EstablecerConfiguracionPuntoVentaDeVenta(new ConfiguracionPuntoVenta{CodigoConfiguracionPuntoVenta = "PTOVTA02"});
+            ventaNueva.EstablecerConfiguracionPuntoVentaDeVenta(new ConfiguracionPuntoVenta{CodigoPuntoDeVenta = "PTOVTA02"});
             ventaNueva.EstablecerAlmacenDeVenta(new Almacen{ CodigoAlmacen = "24"});
             ventaNueva.EstablecerTipoNegocioDeVenta(new TipoNegocio{ CodigoTipoNegocio = "1" });
             ventaNueva.EstablecerUsuarioSistemaDeVenta(new UsuarioSistema{ CodigoUsuarioDeSistema = "VENDPLAYA"});

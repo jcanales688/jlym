@@ -21,7 +21,10 @@ namespace PtoVta.Infraestructura.Repositorios.Ventas
         {
             using (IDbConnection cn = new SqlConnection(this.CadenaConexion))
             {
-                string sqlAgregaCliente = @"INSERT INTO PC_CUSTOMER
+                cn.Open();
+                using (var transaccion = cn.BeginTransaction())
+                {
+                    string sqlAgregaCliente = @"INSERT INTO PC_CUSTOMER
                                                         (CUSTIDSS
                                                         ,DIAPAGID
                                                         ,TERMIDSUM
@@ -81,38 +84,61 @@ namespace PtoVta.Infraestructura.Repositorios.Ventas
                                                         ,@TOTCURRBAL
                                                         ,@AFFECT)";
 
-                var filasAfectadas = cn.Execute(sqlAgregaCliente, new
-                {
-                    CUSTIDSS = pCliente.CodigoCliente
-                    ,DIAPAGID = pCliente.CodigoDiaDePago
-                    ,TERMIDSUM = pCliente.CodigoCondicionPagoDocumentoGenerado
-                    ,CUSTID = pCliente.CodigoCliente
-                    ,TAXREGNBR = pCliente.Ruc
-                    ,CUSTNAME = pCliente.NombresORazonSocial
-                    ,ADDR1 = pCliente.DireccionPrimero.Ubicacion
-                    ,ADDR2 = pCliente.DireccionSegundo.Ubicacion
-                    ,PHONE = pCliente.Telefono
-                    ,FAX = pCliente.Fax
-                    ,CUSTZONEID = pCliente.CodigoZonaCliente
-                    ,COUNTRYID = pCliente.CodigoPais
-                    ,STATEID = pCliente.CodigoDepartamento
-                    ,CITYID = pCliente.CodigoDistrito
-                    ,CUSTCLASSID = pCliente.CodigoTipoCliente
-                    ,TAXID1 = pCliente.CodigoImpuestoIgv
-                    ,TAXID2 = pCliente.CodigoImpuestoIsc
-                    ,CURYTYPEID = pCliente.CodigoClaseTipoCambio
-                    ,TERMIDDOC = pCliente.CodigoCondicionPagoTicket
-                    ,DATEORIG = pCliente.FechaNacimiento
-                    ,DATEPROC = pCliente.FechaInscripcion
-                    ,DAYGRACE = pCliente.DiasDeGracia
-                    ,CURYID =   pCliente.CodigoMoneda
-                    ,SALESPERID = pCliente.CodigoVendedor
-                    ,USERID = pCliente.CodigoUsuarioDeSistema
-                    ,CUSTSTATUSID = pCliente.CodigoEstadoDeCliente
-                    ,MTOTOTLIMIT = pCliente.MontoLimiteCredito
-                    ,TOTCURRBAL = pCliente.Deuda
-                    ,AFFECT = pCliente.EsAfecto
-                });
+                    var filasAfectadasAgregaCliente = cn.Execute(sqlAgregaCliente, new
+                    {
+                        CUSTIDSS = pCliente.CodigoCliente,
+                        DIAPAGID = pCliente.CodigoDiaDePago,
+                        TERMIDSUM = pCliente.CodigoCondicionPagoDocumentoGenerado,
+                        CUSTID = pCliente.CodigoCliente,
+                        TAXREGNBR = pCliente.Ruc,
+                        CUSTNAME = pCliente.NombresORazonSocial,
+                        ADDR1 = pCliente.DireccionPrimero.Ubicacion,
+                        ADDR2 = pCliente.DireccionSegundo.Ubicacion,
+                        PHONE = pCliente.Telefono,
+                        FAX = pCliente.Fax,
+                        CUSTZONEID = pCliente.CodigoZonaCliente,
+                        COUNTRYID = pCliente.CodigoPais,
+                        STATEID = pCliente.CodigoDepartamento,
+                        CITYID = pCliente.CodigoDistrito,
+                        CUSTCLASSID = pCliente.CodigoTipoCliente,
+                        TAXID1 = pCliente.CodigoImpuestoIgv,
+                        TAXID2 = pCliente.CodigoImpuestoIsc,
+                        CURYTYPEID = pCliente.CodigoClaseTipoCambio,
+                        TERMIDDOC = pCliente.CodigoCondicionPagoTicket,
+                        DATEORIG = pCliente.FechaNacimiento,
+                        DATEPROC = pCliente.FechaInscripcion,
+                        DAYGRACE = pCliente.DiasDeGracia,
+                        CURYID = pCliente.CodigoMoneda,
+                        SALESPERID = pCliente.CodigoVendedor,
+                        USERID = pCliente.CodigoUsuarioDeSistema,
+                        CUSTSTATUSID = pCliente.CodigoEstadoDeCliente,
+                        MTOTOTLIMIT = pCliente.MontoLimiteCredito,
+                        TOTCURRBAL = pCliente.Deuda,
+                        AFFECT = pCliente.EsAfecto
+                    }, transaction: transaccion);
+
+                    //Venta con Vales
+                    if (pCliente.ClientePlacas != null && pCliente.ClientePlacas.Any())
+                    {
+                        foreach (var clientePlaca in pCliente.ClientePlacas)
+                        {
+                            string sqlAgregaClientePlaca = @"INSERT INTO PC_OP_CUSTBADGE
+                                                                    (CUSTIDSS
+                                                                    ,BADGE)
+                                                            VALUES	(@CUSTIDSS
+                                                                    ,@BADGE)";
+
+                            var filasAfectadasAgregaClientePlaca = cn.Execute(sqlAgregaClientePlaca, new
+                            {
+                                CUSTIDSS = clientePlaca.CodigoCliente,
+                                BADGE = clientePlaca.DescripcionPlaca
+                            }, transaction: transaccion);
+                        }
+                    }
+
+                    transaccion.Commit();
+                }
+
             }
         }
 
@@ -185,6 +211,13 @@ namespace PtoVta.Infraestructura.Repositorios.Ventas
                                                                 FROM	PC_CUSTOMER (NOLOCK)
                                                                 WHERE	RTRIM(TAXREGNBR)	= @TAXREGNBR);
 
+                                    SELECT	CUSTIDSS	AS CodigoCliente
+                                            ,BADGE		AS DescripcionPlaca
+                                    FROM	PC_OP_CUSTBADGE (NOLOCK)
+                                    WHERE	CUSTIDSS IN	(   SELECT	CUSTIDSS
+                                                            FROM	PC_CUSTOMER (NOLOCK)
+                                                            WHERE	RTRIM(TAXREGNBR)	= @TAXREGNBR);
+
                                     SELECT	 DOCUMENTFREEID AS NumeroDocumentoLibre
                                             ,DATEPROCEINI	AS FechaProcesoInicial 
                                             ,DATEPROCEFIN	AS FechaProcesoFinal 
@@ -196,7 +229,20 @@ namespace PtoVta.Infraestructura.Repositorios.Ventas
                                     WHERE	SITEID			= @SITEID
                                             AND	CUSTIDSS	IN	(	SELECT  CUSTIDSS
                                                                     FROM	PC_CUSTOMER (NOLOCK)
-                                                                    WHERE	RTRIM(TAXREGNBR)	= @TAXREGNBR)";
+                                                                    WHERE	RTRIM(TAXREGNBR)	= @TAXREGNBR);
+                                                                    
+                                    SELECT	PORCENTLIMITED		AS PorcentajeLimite
+                                            ,CREDLIMITED		AS MontoLimite
+                                            ,CURRBAL			AS Deuda
+                                            ,PORCENTSURPLUS		AS PorcentajeExcede
+                                            ,MTOSURPLUS			AS MontoExcedente
+                                            ,CUSTIDSS			AS CodigoCliente
+                                            ,SITEID				AS CodigoAlmacen
+                                            ,USERID				AS CodigoUsuarioDeSistema
+                                    FROM	PC_OP_CUST_LIMIT (NOLOCK)
+                                    WHERE	CUSTIDSS IN	(SELECT	CUSTIDSS
+                                                        FROM	PC_CUSTOMER (NOLOCK)
+                                                        WHERE	RTRIM(TAXREGNBR)	= @TAXREGNBR)";
 
                 var resultado = cn.QueryMultiple(cadenaSQL,
                                     new { TAXREGNBR = pClienteRUC, SITEID = pCodigoAlmacen });
@@ -205,11 +251,14 @@ namespace PtoVta.Infraestructura.Repositorios.Ventas
                 var condicionPagoDocumentoGenerado = resultado.Read<CondicionPago>().FirstOrDefault();
                 var condicionPagoTicket = resultado.Read<CondicionPago>().FirstOrDefault();
                 var diasDePago = resultado.Read<DiaDePago>().FirstOrDefault();
+                var placas = resultado.Read<ClientePlaca>().ToList();
                 var documentosLibre = resultado.Read<DocumentoLibre>().ToList();
+                var limitesCredito = resultado.Read<ClienteLimiteCredito>().ToList();
 
                 if (cliente != null)
                 {
-                    return MapeoCliente(cliente, condicionPagoDocumentoGenerado, condicionPagoTicket, diasDePago, documentosLibre);
+                    return MapeoCliente(cliente, condicionPagoDocumentoGenerado, condicionPagoTicket,
+                                        diasDePago, placas, documentosLibre, limitesCredito);
                 }
                 else
                     return null;
@@ -262,20 +311,62 @@ namespace PtoVta.Infraestructura.Repositorios.Ventas
 
                 var cliente = cn.QueryFirstOrDefault<Cliente>(cadenaSQL,
                                             new { CUSTIDSS = pCodigoCliente });
-
                 if (cliente != null)
                 {
                     return cliente;
                 }
                 else
                     return null;
-
             }
         }
 
 
+        public override IEnumerable<Cliente> ObtenerTodos()
+        {
+            using (IDbConnection cn = new SqlConnection(this.CadenaConexion))
+            {
+                string cadenaSQL = @"SELECT	CUSTIDSS		AS CodigoCliente
+                                            ,''				AS CodigoContable
+                                            ,TAXREGNBR		AS Ruc
+                                            ,CUSTNAME		AS NombresORazonSocial
+                                            ,PHONE			AS Telefono
+                                            ,FAX			AS Fax
+                                            ,DATEORIG		AS FechaNacimiento
+                                            ,DATEPROC		AS FechaInscripcion
+                                            ,DAYGRACE		AS DiasDeGracia
+                                            ,MTOTOTLIMIT	AS MontoLimiteCredito
+                                            ,TOTCURRBAL		AS Deuda
+                                            ,AFFECT			AS EsAfecto
+                                            ,USER9			AS ControlarSaldoDispo
+                                            ,CURYID			AS CodigoMoneda
+                                            ,CURYTYPEID		AS CodigoClaseTipoCambio
+                                            ,CUSTCLASSID	AS CodigoTipoCliente
+                                            ,CUSTZONEID		AS CodigoZonaCliente
+                                            ,DIAPAGID		AS CodigoDiaDePago
+                                            ,SALESPERID		AS CodigoVendedor
+                                            ,TAXID1			AS CodigoImpuestoIgv
+                                            ,TAXID2			AS CodigoImpuestoIsc
+                                            ,TERMIDSUM		AS CodigoCondicionPagoDocumentoGenerado
+                                            ,TERMIDDOC		AS CodigoCondicionPagoTicket
+                                            ,CUSTSTATUSID	AS CodigoEstadoDeCliente
+                                            ,USERID			AS CodigoUsuarioDeSistema
+                                    FROM	PC_CUSTOMER (NOLOCK)
+                                    ORDER BY CUSTNAME";
+
+                var clientesConsultados = cn.Query<Cliente>(cadenaSQL).ToList();
+                if (clientesConsultados != null && clientesConsultados.Any())
+                {
+                    return clientesConsultados;
+                }
+                else
+                    return null;
+            }
+        }
+
         private Cliente MapeoCliente(Cliente pCliente, CondicionPago pCondicionPagoDocumentoGenerado, CondicionPago pCondicionPagoTicket,
-                                        DiaDePago pDiaDePago, List<DocumentoLibre> pDocumentosLibre)
+                DiaDePago pDiaDePago, List<ClientePlaca> pClientePlacas, List<DocumentoLibre> pDocumentosLibre,
+                List<ClienteLimiteCredito> pClienteLimitesCredito)
+
         {
             var cliente = new Cliente();
             cliente = pCliente;
@@ -284,13 +375,31 @@ namespace PtoVta.Infraestructura.Repositorios.Ventas
             cliente.EstablecerCondicionPagoTicketDeCliente(pCondicionPagoTicket);
             cliente.EstablecerDiaDePagoDeCliente(pDiaDePago);
 
-            if (pDocumentosLibre != null)
+            if (pClientePlacas != null && pClientePlacas.Any())
+            {
+                foreach (var clientePlaca in pClientePlacas)
+                {
+                    cliente.AgregarNuevoClientePlaca(clientePlaca.DescripcionPlaca);
+                }
+            }
+
+            if (pDocumentosLibre != null && pDocumentosLibre.Any())
             {
                 foreach (var documentoLibre in pDocumentosLibre)
                 {
                     cliente.AgregarNuevoDocumentoLibre(documentoLibre.NumeroDocumentoLibre, documentoLibre.FechaProcesoInicial,
                                                         documentoLibre.FechaProcesoFinal, documentoLibre.TotalLibre,
                                                         documentoLibre.CodigoAlmacen, documentoLibre.CodigoUsuarioDeSistema);
+                }
+            }
+
+            if (pClienteLimitesCredito != null && pClienteLimitesCredito.Any())
+            {
+                foreach (var limiteCredito in pClienteLimitesCredito)
+                {
+                    cliente.AgregarNuevoClienteLimiteCredito(limiteCredito.PorcentajeLimite, limiteCredito.MontoLimite,
+                            limiteCredito.Deuda, limiteCredito.PorcentajeExcede, limiteCredito.MontoExcedente,
+                            limiteCredito.CodigoAlmacen, limiteCredito.CodigoUsuarioDeSistema);
                 }
             }
 

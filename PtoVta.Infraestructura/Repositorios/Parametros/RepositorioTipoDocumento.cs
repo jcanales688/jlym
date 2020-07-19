@@ -39,7 +39,7 @@ namespace PtoVta.Infraestructura.Repositorios.Parametros
             }
         }
 
-        public TipoDocumento ObtenerCorrelativoDocumento(string pCodigoAlmacen, string pCodigoConfiguracionPuntoVenta,
+        public TipoDocumento ObtenerCorrelativoDocumento(string pCodigoAlmacen, string pCodigoPuntoDeVenta,
                                                         string pCodigoTipoDocumento, string pTipoDeVenta, int pEstado)
         {
             using (IDbConnection cn = new SqlConnection(this.CadenaConexion))
@@ -56,7 +56,7 @@ namespace PtoVta.Infraestructura.Repositorios.Parametros
                                             ,EXONERADO	AS Estado
                                             ,DOCTYPEID	AS CodigoTipoDocumento
                                             ,SITEID		AS CodigoAlmacen
-                                            ,''			AS CodigoConfiguracionPuntoVenta
+                                            ,''			AS CodigoPuntoDeVenta
                                     FROM	PC_OP_DOCSERIES (NOLOCK)
                                     WHERE	DOCTYPEID	= @DOCTYPEID
                                             AND SITEID	= @SITEID
@@ -68,7 +68,7 @@ namespace PtoVta.Infraestructura.Repositorios.Parametros
                                     new
                                     {
                                         SITEID = pCodigoAlmacen,
-                                        USER1 = pCodigoConfiguracionPuntoVenta,
+                                        USER1 = pCodigoPuntoDeVenta,
                                         DOCTYPEID = pCodigoTipoDocumento,
                                         USER2 = pTipoDeVenta,
                                         EXONERADO = pEstado
@@ -91,7 +91,7 @@ namespace PtoVta.Infraestructura.Repositorios.Parametros
             //     from cd in ctd.CorrelativosDocumento
             //     where ctd.Id == cd.TipoDocumentoId
             //           && cd.AlmacenId == pCodigoAlmacen
-            //           && cd.ConfiguracionPuntoVentaId == pCodigoConfiguracionPuntoVenta
+            //           && cd.ConfiguracionPuntoVentaId == pCodigoPuntoDeVenta
             //           && cd.TipoDocumentoId == pCodigoTipoDocumento
             //           && cd.TipoDeVenta == pTipoDeVenta
             //           && cd.Estado == pEstado
@@ -134,7 +134,7 @@ namespace PtoVta.Infraestructura.Repositorios.Parametros
                 {
                     tipoDocumento.AgregarNuevoCorrelativoDocumento(correlativoDocumento.Serie, correlativoDocumento.Correlativo,
                                                     correlativoDocumento.TipoDeVenta, correlativoDocumento.Estado,
-                                                    correlativoDocumento.CodigoAlmacen, correlativoDocumento.CodigoConfiguracionPuntoVenta);
+                                                    correlativoDocumento.CodigoAlmacen, correlativoDocumento.CodigoPuntoDeVenta);
                 }
             }
 

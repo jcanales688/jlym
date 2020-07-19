@@ -66,7 +66,7 @@ namespace PtoVta.Dominio.Agregados.Ventas
 
         //Propiedades nativas
         public DateTime FechaProcesoVentas { get; set; }                //prop param busqueda
-        public string CodigoConfiguracionPuntoVenta { get; set; }             //prop param busqueda
+        public string CodigoPuntoDeVenta { get; set; }             //prop param busqueda
         // public Guid ConfiguracionPuntoVentaId { get; set; }             //prop param busqueda
         public Nullable<DateTime> FechaCierreZeta { get; set; }
         public decimal TotalCierreZeta { get; set; }                    //prop nativa

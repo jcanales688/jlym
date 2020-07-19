@@ -7,6 +7,6 @@ namespace PtoVta.Dominio.Agregados.Ventas
     public interface IRepositorioPedidoRetail: IRepositorio<PedidoRetail>
     {
         PedidoRetail ObtenerPorNumeroPedido(int pCorrelativo);
-        IEnumerable<PedidoRetail> ObtenerTodos(string pCodigoConfiguracionPuntoVenta);
+        IEnumerable<PedidoRetail> ObtenerTodos(string pCodigoPuntoDeVenta);
     }
 }

@@ -220,7 +220,7 @@ namespace PtoVta.Dominio.Agregados.Ventas
         public string CodigoClaseTipoCambio { get; private set; }
 
         // SALESPOINT	UD_PTOVTA
-        public string CodigoConfiguracionPuntoVenta { get; private set; }                  
+        public string CodigoPuntoDeVenta { get; private set; }                  
 
         // IDESTADO	char
         public string CodigoEstado { get; private set; }        
@@ -329,7 +329,7 @@ namespace PtoVta.Dominio.Agregados.Ventas
                 CodigoAlmacen = this.CodigoAlmacen,
                 CodigoMoneda = this.CodigoMoneda,
                 CodigoEstadoDocumento = this.CodigoEstadoDocumento,    
-                CodigoConfiguracionPuntoVenta = this.CodigoConfiguracionPuntoVenta,
+                CodigoPuntoDeVenta = this.CodigoPuntoDeVenta,
                 CodigoUsuarioDeSistema = this.CodigoUsuarioDeSistema                                          
             };
 
@@ -480,12 +480,12 @@ namespace PtoVta.Dominio.Agregados.Ventas
         }
                                         
         //ConfiguracionPuntoVenta
-        public void EstablecerReferenciaConfiguracionPuntoVentaDeVenta(string pCodigoConfiguracionPuntoVenta)
+        public void EstablecerReferenciaConfiguracionPuntoVentaDeVenta(string pCodigoPuntoDeVenta)
         {
-            if (!string.IsNullOrEmpty(pCodigoConfiguracionPuntoVenta))
+            if (!string.IsNullOrEmpty(pCodigoPuntoDeVenta))
             {
 
-                this.CodigoConfiguracionPuntoVenta = pCodigoConfiguracionPuntoVenta;
+                this.CodigoPuntoDeVenta = pCodigoPuntoDeVenta;
                 // this.ConfiguracionPuntoVenta = null;
             }
         }  

@@ -5,7 +5,7 @@ namespace PtoVta.Aplicacion.DTO.Ventas
 {
     public class VentaConValeDTO
     {
-        public decimal NumeroDocumento { get; set; }
+        public string NumeroDocumento { get; set; }
         public decimal NumeroVale { get; set; }
         public DateTime FechaProceso { get; set; }
         public decimal MontoVale { get; set; }

@@ -22,7 +22,7 @@ namespace PtoVta.Dominio.Agregados.Ventas
             string pCodigoAlmacen, string pCodigoMoneda, string pCodigoCondicionPago,
             string pCodigoVendedor, string pCodigoUsuarioDeSistema, string pCodigoImpuestoIgv,
             string pCodigoImpuestoIsc, string pCodigoCliente, string pCodigoClaseTipoCambio,
-            string pCodigoTarjetaPromocion, string pCodigoConfiguracionPuntoVenta, string pCodigoTipoNegocio)
+            string pCodigoTarjetaPromocion, string pCodigoPuntoDeVenta, string pCodigoTipoNegocio)
         {
             var nuevoPedidoRetail = new PedidoRetail();
 
@@ -76,7 +76,7 @@ namespace PtoVta.Dominio.Agregados.Ventas
             nuevoPedidoRetail.EstablecerReferenciaClienteDeVenta(pCodigoCliente);
             nuevoPedidoRetail.EstablecerReferenciaClaseTipoCambioDeVenta(pCodigoClaseTipoCambio);
             nuevoPedidoRetail.EstablecerReferenciaTarjetaPromocionDeVenta(pCodigoTarjetaPromocion);
-            nuevoPedidoRetail.EstablecerReferenciaConfiguracionPuntoVentaDeVenta(pCodigoConfiguracionPuntoVenta);
+            nuevoPedidoRetail.EstablecerReferenciaConfiguracionPuntoVentaDeVenta(pCodigoPuntoDeVenta);
             nuevoPedidoRetail.EstablecerReferenciaTipoNegocioDeVenta(pCodigoTipoNegocio);
 
             return nuevoPedidoRetail;
