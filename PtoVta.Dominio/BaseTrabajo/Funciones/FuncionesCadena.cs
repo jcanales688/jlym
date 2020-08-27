@@ -1,6 +1,6 @@
 using System;
 
-namespace PtoVta.Infraestructura.Transversales.Comun
+namespace PtoVta.Dominio.BaseTrabajo.Funciones
 {
     public static class FuncionesCadena
     {

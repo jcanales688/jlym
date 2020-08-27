@@ -47,6 +47,13 @@ namespace PtoVta.Aplicacion.GestionPedidos
         
         public ResultadoServicio<ResultadoPedidoEESSGrabadoDTO> AgregarNuevoPedidoEESS(PedidoEESSDTO pPedidoEESSDTO)
         {
+            var pedidoEESSExistente =_IRepositorioPedidoEESS.ObtenerPorNumeroPedido(pPedidoEESSDTO.Correlativo);
+            if (pedidoEESSExistente != null)
+            {                
+                LogFactory.CrearLog().LogWarning(Mensajes.advertencia_PedidoEESSYaRegistrado);
+                throw new ArgumentException(Mensajes.advertencia_PedidoEESSYaRegistrado);
+            }  
+
             var nuevoPedidoEESS = CrearNuevoPedidoEESS(pPedidoEESSDTO);
 
             GrabarTransaccionNuevoPedidoEESS(nuevoPedidoEESS);
@@ -58,14 +65,22 @@ namespace PtoVta.Aplicacion.GestionPedidos
             }
             else
             {
-                LogFactory.CrearLog().LogWarning(Mensajes.advertencia_FalloCreacionNuevaVentaEnVenta);
-                return null;
+                LogFactory.CrearLog().LogWarning(Mensajes.advertencia_FalloCreacionNuevoPedidoEESS);
+                return new ResultadoServicio<ResultadoPedidoEESSGrabadoDTO>(6, Mensajes.advertencia_FalloCreacionNuevoPedidoEESS,
+                                string.Empty, nuevoPedidoEESS.ProyectadoComo<ResultadoPedidoEESSGrabadoDTO>(), null);
             }
         }
 
-        public ResultadoServicio<ResultadoPedidoRetailGrabadoDTO> AgregarNuevoPedidoRetail(PedidoRetailDTO pPedidoEESSDTO)
+        public ResultadoServicio<ResultadoPedidoRetailGrabadoDTO> AgregarNuevoPedidoRetail(PedidoRetailDTO pPedidoRetailDTO)
         {
-            var nuevoPedidoRetail = CrearNuevoPedidoRetail(pPedidoEESSDTO);
+            var pedidoRetailExistente =_IRepositorioPedidoRetail.ObtenerPorNumeroPedido(pPedidoRetailDTO.Correlativo);
+            if (pedidoRetailExistente != null)
+            {                
+                LogFactory.CrearLog().LogWarning(Mensajes.advertencia_PedidoRetailYaRegistrado);
+                throw new ArgumentException(Mensajes.advertencia_PedidoRetailYaRegistrado);
+            }  
+
+            var nuevoPedidoRetail = CrearNuevoPedidoRetail(pPedidoRetailDTO);
 
             GrabarTransaccionNuevoPedidoRetail(nuevoPedidoRetail);
                                                         
@@ -76,8 +91,9 @@ namespace PtoVta.Aplicacion.GestionPedidos
             }
             else
             {
-                LogFactory.CrearLog().LogWarning(Mensajes.advertencia_FalloCreacionNuevaVentaEnVenta);
-                return null;
+                LogFactory.CrearLog().LogWarning(Mensajes.advertencia_FalloCreacionNuevoPedidoRetail);
+                return new ResultadoServicio<ResultadoPedidoRetailGrabadoDTO>(6, Mensajes.advertencia_FalloCreacionNuevoPedidoRetail,
+                                string.Empty, nuevoPedidoRetail.ProyectadoComo<ResultadoPedidoRetailGrabadoDTO>(), null);
             }
         }
 
@@ -163,18 +179,16 @@ namespace PtoVta.Aplicacion.GestionPedidos
                         if (articulo == null)
                         {
                             LogFactory.CrearLog().LogWarning(Mensajes.advertencia_ArticuloAsociadoAVentaDetalleNoExiste);
-                            return null;
+                            throw new ArgumentException(Mensajes.advertencia_ArticuloAsociadoAVentaDetalleNoExiste); 
                         }
 
-                        var detalleDePedido = nuevoPedido.AgregarNuevoPedidoRetailDetalle(pedidoDetalle.NumeroDocumento, pedidoDetalle.Secuencia, pedidoDetalle.FechaDocumento,
-                                                    pedidoDetalle.FechaProceso, pedidoDetalle.Periodo, pedidoDetalle.NumeroTurno,
-                                                    pedidoDetalle.PorcentajeImpuestoIgv, pedidoDetalle.PorcentajeImpuestoIsc, pedidoDetalle.TotalNacional,
-                                                    pedidoDetalle.TotalExtranjera, pedidoDetalle.ImpuestoNacional, pedidoDetalle.ImpuestoExtranjera,
-                                                    pedidoDetalle.EsInventariable, pedidoDetalle.EnInventarioFisico, pedidoDetalle.Precio,
-                                                    pedidoDetalle.PrecioVenta, pedidoDetalle.CostoEstandarNacional, pedidoDetalle.CostoEstandarExtranjera,
-                                                    pedidoDetalle.CodigoArticuloAlterno, pedidoDetalle.DescripcionArticulo, pedidoDetalle.Cantidad,
-                                                    pedidoDetalle.EsFormula, pedidoDetalle.NumeroPeaje, pedidoDetalle.CodigoArticulo,
-                                                    pedidoDetalle.CodigoUnidadDeMedida);
+                        var detalleDePedido = nuevoPedido.AgregarNuevoPedidoRetailDetalle(pedidoDetalle.Secuencia, pedidoDetalle.NumeroTurno, pedidoDetalle.PorcentajeImpuestoIgv, 
+                                                pedidoDetalle.PorcentajeImpuestoIsc, pedidoDetalle.TotalNacional, pedidoDetalle.TotalExtranjera, 
+                                                pedidoDetalle.ImpuestoNacional, pedidoDetalle.ImpuestoExtranjera,pedidoDetalle.EsInventariable, 
+                                                pedidoDetalle.EnInventarioFisico, pedidoDetalle.Precio,pedidoDetalle.PrecioVenta, 
+                                                pedidoDetalle.CostoEstandarNacional, pedidoDetalle.CostoEstandarExtranjera,pedidoDetalle.CodigoArticuloAlterno, 
+                                                pedidoDetalle.DescripcionArticulo, pedidoDetalle.Cantidad,pedidoDetalle.EsFormula, 
+                                                pedidoDetalle.NumeroPeaje, pedidoDetalle.CodigoArticulo, pedidoDetalle.CodigoUnidadDeMedida);
                     }
                 }
 
@@ -187,14 +201,14 @@ namespace PtoVta.Aplicacion.GestionPedidos
                         if (moneda == null)
                         {
                             LogFactory.CrearLog().LogWarning(Mensajes.advertencia_MonedaAsociadoAPagoVentaConTarjetaNoExiste);
-                            return null;
+                            throw new ArgumentException(Mensajes.advertencia_MonedaAsociadoAPagoVentaConTarjetaNoExiste); 
                         }
 
                         var tarjeta = _IRepositorioTarjeta.ObtenerPorCodigo(pedidoConTarjeta.CodigoTarjeta);
                         if (tarjeta == null)
                         {
                             LogFactory.CrearLog().LogWarning(Mensajes.advertencia_TarjetaAsociadoAPagoVentaConTarjetaNoExiste);
-                            return null;
+                            throw new ArgumentException(Mensajes.advertencia_TarjetaAsociadoAPagoVentaConTarjetaNoExiste); 
                         }
 
                         var pedidoPagaTarjeta = nuevoPedido.AgregarNuevoPedidoRetailConTarjeta(pedidoConTarjeta.Secuencia, pedidoConTarjeta.NumeroTarjeta, pedidoConTarjeta.TotalTarjetaNacional,
@@ -216,7 +230,16 @@ namespace PtoVta.Aplicacion.GestionPedidos
             }
             catch (Exception ex)
             {
-                LogFactory.CrearLog().LogWarning(ex.Message);
+                string detallesAsicionales = string.Empty;                
+                string cadenaExcepcion = ex.Message;
+
+                if(ex.InnerException != null)
+                {
+                    detallesAsicionales = " .Detalles Interno: " + ex.InnerException != null && ex.InnerException.InnerException != null ?
+                                    ex.InnerException.InnerException.Message : "Ver Detalles.";                        
+                }
+
+                LogFactory.CrearLog().LogWarning(cadenaExcepcion + detallesAsicionales);                
                 throw;
             }
         }
@@ -260,21 +283,18 @@ namespace PtoVta.Aplicacion.GestionPedidos
                         if (articulo == null)
                         {
                             LogFactory.CrearLog().LogWarning(Mensajes.advertencia_ArticuloAsociadoAVentaDetalleNoExiste);
-                            return null;
+                            throw new ArgumentException(Mensajes.advertencia_ArticuloAsociadoAVentaDetalleNoExiste); 
                         }
 
-                        var detalleDePedido = nuevoPedido.AgregarNuevoPedidoEESSDetalle(pedidoDetalle.Secuencia, pedidoDetalle.NumeroDocumento, pedidoDetalle.FechaDocumento,    
-                                        pedidoDetalle.FechaProceso, pedidoDetalle.Periodo, pedidoDetalle.ProcesadoCierreZ,        
-                                        pedidoDetalle.ProcesadoCierreX, pedidoDetalle.NumeroTurno, pedidoDetalle.NumeroCara,          
-                                        pedidoDetalle.NumeroTransaccionCombustible, pedidoDetalle.PorcentajeDescuentoPrimero, pedidoDetalle.PorcentajeDescuentoSegundo,        
-                                        pedidoDetalle.PorcentajeDescuentoNacional, pedidoDetalle.PorcentajeDescuentoExtranjera, pedidoDetalle.PorcentajeImpuestoIgv,        
-                                        pedidoDetalle.PorcentajeImpuestoIsc, pedidoDetalle.TotalNacional, pedidoDetalle.TotalExtranjera,        
-                                        pedidoDetalle.ImpuestoNacional, pedidoDetalle.ImpuestoExtranjera, pedidoDetalle.EsInventariable,        
-                                        pedidoDetalle.EnInventarioFisico, pedidoDetalle.Precio, pedidoDetalle.PrecioVenta,        
-                                        pedidoDetalle.CostoEstandarNacional, pedidoDetalle.CostoEstandarExtranjera, pedidoDetalle.DescripcionArticulo,        
-                                        pedidoDetalle.Cantidad, pedidoDetalle.EsFormula, pedidoDetalle.EsArticuloCombustible,        
-                                        pedidoDetalle.NumeroPeaje, pedidoDetalle.CodigoArticulo, pedidoDetalle.CodigoUnidadDeMedida, 
-                                        pedidoDetalle.CodigoArticuloAlterno);
+                        var detalleDePedido = nuevoPedido.AgregarNuevoPedidoEESSDetalle(pedidoDetalle.Secuencia,pedidoDetalle.NumeroTurno, pedidoDetalle.NumeroTransaccionCombustible, 
+                                                                pedidoDetalle.PorcentajeDescuentoPrimero, pedidoDetalle.PorcentajeDescuentoSegundo, pedidoDetalle.PorcentajeDescuentoNacional, 
+                                                                pedidoDetalle.PorcentajeDescuentoExtranjera, pedidoDetalle.PorcentajeImpuestoIgv, pedidoDetalle.PorcentajeImpuestoIsc, 
+                                                                pedidoDetalle.TotalNacional, pedidoDetalle.TotalExtranjera,  pedidoDetalle.ImpuestoNacional, 
+                                                                pedidoDetalle.ImpuestoExtranjera, pedidoDetalle.EsInventariable, pedidoDetalle.EnInventarioFisico, 
+                                                                pedidoDetalle.Precio, pedidoDetalle.PrecioVenta, pedidoDetalle.CostoEstandarNacional, 
+                                                                pedidoDetalle.CostoEstandarExtranjera, pedidoDetalle.DescripcionArticulo, pedidoDetalle.Cantidad, 
+                                                                pedidoDetalle.EsFormula, pedidoDetalle.EsArticuloCombustible, pedidoDetalle.NumeroPeaje, 
+                                                                pedidoDetalle.CodigoArticulo, pedidoDetalle.CodigoUnidadDeMedida, pedidoDetalle.CodigoArticuloAlterno);
                     }
                 }
 
@@ -291,7 +311,16 @@ namespace PtoVta.Aplicacion.GestionPedidos
             }
             catch (Exception ex)
             {
-                LogFactory.CrearLog().LogWarning(ex.Message);
+                string detallesAsicionales = string.Empty;                
+                string cadenaExcepcion = ex.Message;
+
+                if(ex.InnerException != null)
+                {
+                    detallesAsicionales = " .Detalles Interno: " + ex.InnerException != null && ex.InnerException.InnerException != null ?
+                                    ex.InnerException.InnerException.Message : "Ver Detalles.";                        
+                }
+
+                LogFactory.CrearLog().LogWarning(cadenaExcepcion + detallesAsicionales);                
                 throw;
             }
         }  
@@ -304,19 +333,31 @@ namespace PtoVta.Aplicacion.GestionPedidos
                 if (pPedidoEESS == null)
                     throw new ArgumentException(Mensajes.advertencia_NoSePuedeGrabarPedidoEESSNulo);
 
-                using (TransactionScope ambito = new TransactionScope())
-                {
+                // using (TransactionScope ambito = new TransactionScope(TransactionScopeOption.Suppress,
+                //                                                         new TransactionOptions
+                //                                                         {
+                //                                                             IsolationLevel = IsolationLevel.ReadCommitted,
+                //                                                             Timeout = TransactionManager.MaximumTimeout,
+                //                                                         },
+                //                                                         TransactionScopeAsyncFlowOption.Enabled))
+                // {
                     GrabarPedidoEESS(pPedidoEESS);
 
-                    ambito.Complete();
-                }
+                //     ambito.Complete();
+                // }
             }
             catch (Exception ex)
             {
-                string cadenaExcepcion = ex.Message +
-                    ".Detalles Interno: " + ex.InnerException != null && ex.InnerException.InnerException != null ?
-                                    ex.InnerException.InnerException.Message : "Ver Detalles.";
-                LogFactory.CrearLog().LogWarning(cadenaExcepcion);                
+                string detallesAsicionales = string.Empty;                
+                string cadenaExcepcion = ex.Message;
+
+                if(ex.InnerException != null)
+                {
+                    detallesAsicionales = " .Detalles Interno: " + ex.InnerException != null && ex.InnerException.InnerException != null ?
+                                    ex.InnerException.InnerException.Message : "Ver Detalles.";                        
+                }
+
+                LogFactory.CrearLog().LogWarning(cadenaExcepcion + detallesAsicionales);                
                 throw;
             }
 
@@ -329,19 +370,25 @@ namespace PtoVta.Aplicacion.GestionPedidos
                 if (pPedidoRetail == null)
                     throw new ArgumentException(Mensajes.advertencia_NoSePuedeGrabarPedidoRetailNulo);
 
-                using (TransactionScope ambito = new TransactionScope())
-                {
+                // using (TransactionScope ambito = new TransactionScope())
+                // {
                     GrabarPedidoRetail(pPedidoRetail);
 
-                    ambito.Complete();
-                }
+                //     ambito.Complete();
+                // }
             }
             catch (Exception ex)
             {
-                string cadenaExcepcion = ex.Message +
-                    ".Detalles Interno: " + ex.InnerException != null && ex.InnerException.InnerException != null ?
-                                    ex.InnerException.InnerException.Message : "Ver Detalles.";
-                LogFactory.CrearLog().LogWarning(cadenaExcepcion);                
+                string detallesAsicionales = string.Empty;                
+                string cadenaExcepcion = ex.Message;
+
+                if(ex.InnerException != null)
+                {
+                    detallesAsicionales = " .Detalles Interno: " + ex.InnerException != null && ex.InnerException.InnerException != null ?
+                                    ex.InnerException.InnerException.Message : "Ver Detalles.";                        
+                }
+
+                LogFactory.CrearLog().LogWarning(cadenaExcepcion + detallesAsicionales);                
                 throw;
             }
 

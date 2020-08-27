@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using PtoVta.Dominio.BaseTrabajo;
+using static PtoVta.Dominio.BaseTrabajo.Enumeradores.AmbientePuntoDeVenta;
 using static PtoVta.Dominio.BaseTrabajo.Globales.GlobalDominio;
 
 namespace PtoVta.Dominio.Agregados.Inventarios
@@ -34,6 +35,7 @@ namespace PtoVta.Dominio.Agregados.Inventarios
         public string UsuarioSistema { get; set; }
         public bool ParaVentaManualEnPlaya { get; set; }
         public bool EditarPrecio { get; set; }
+        public string PermitirStockNegativo { get; set; }
         public byte[] Imagen { get; set; }
 
         public bool EsHabilitado
@@ -140,7 +142,7 @@ namespace PtoVta.Dominio.Agregados.Inventarios
                 CostoPromedioExtranjera = pCostoPromedioExtranjera,
                 CostoReposicionNacional = pCostoReposicionNacional,
                 CostoReposicionExtranjera = pCostoReposicionExtranjera,
-                CostoRepoNacionalUltimoInv = pCostoRepoNacionalUltimoInv,
+                CostoRepoNacionalUltimoInv = pCostoRepoNacionalUltimoInv,   
                 CostoRepoExtranjeraUltimoInv = pCostoRepoExtranjeraUltimoInv,
                 Precio = pPrecio,
                 CodContableInventariable = pCodContableInventariable,
@@ -290,39 +292,35 @@ namespace PtoVta.Dominio.Agregados.Inventarios
 
 
         public void RecalcularStock(int pPermitirStockNegativo, int pMovAlmacenVentaIngresoOSalida,
-            decimal pCantidadMovAlmacen)
+            decimal pCantidadArticuloVenta)
         {
             var nuevoStock = 0M;
 
-            //Solo si es Articulo inventariable
+            //Si Inventariable
             if (this.EsInventariable)
             {
-                //si es movimiento de salida de inventario por venta 
-                if (pMovAlmacenVentaIngresoOSalida == 0)
+                //Si Movimiento Es Salida
+                if (pMovAlmacenVentaIngresoOSalida == EnumTipoMovimiento.Salida)
                 {
-                    nuevoStock = this.ArticuloDetalle.StockActual - pCantidadMovAlmacen;
+                    nuevoStock = this.ArticuloDetalle.StockActual - pCantidadArticuloVenta;
 
-                    //validar stock actual vs cantidad movimiento Almacen 
+                    //Si Stock es Negativo
                     if (nuevoStock < 0)
                     {
-                        //No se premite stock negativo
-                        if (pPermitirStockNegativo == 0)
+                        if (Convert.ToInt32(this.PermitirStockNegativo) == EnumStockMovimiento.NoPermiteStockNegativo)
                         {
                             throw new ArgumentException(string.Format(Mensajes.excepcion_CantidadVentaExcedeStockDisponibleArticulo,
                                             this.ArticuloDetalle.CodigoArticulo));
                         }
                     }
-
-
-                }
-                //si es movimiento de entrada
+                }                
                 else
                 {
-                    nuevoStock = this.ArticuloDetalle.StockActual + pCantidadMovAlmacen;
+                    //Si Movimiento Es Entrada
+                    nuevoStock = this.ArticuloDetalle.StockActual + pCantidadArticuloVenta;
                 }
 
                 this.ArticuloDetalle.StockActual = nuevoStock;
-
             }
         }
 
@@ -331,7 +329,7 @@ namespace PtoVta.Dominio.Agregados.Inventarios
             if (!string.IsNullOrEmpty(pCodigoMarcaArticulo))
             {
                 //relacion
-                this.CodigoMarcaArticulo = pCodigoMarcaArticulo;
+                this.CodigoMarcaArticulo = pCodigoMarcaArticulo.Trim();
                 // this.MarcaArticulo = null;
             }
         }
@@ -341,7 +339,7 @@ namespace PtoVta.Dominio.Agregados.Inventarios
             if (!string.IsNullOrEmpty(pCodigoImpuestoIsc))
             {
                 //relacion
-                this.CodigoImpuestoIsc = pCodigoImpuestoIsc;
+                this.CodigoImpuestoIsc = pCodigoImpuestoIsc.Trim();
                 // this.ImpuestoIsc = null;
             }
         }
@@ -351,7 +349,7 @@ namespace PtoVta.Dominio.Agregados.Inventarios
             if (!string.IsNullOrEmpty(pCodigoImpuestoIgv))
             {
                 //relacion
-                this.CodigoImpuestoIgv = pCodigoImpuestoIgv;
+                this.CodigoImpuestoIgv = pCodigoImpuestoIgv.Trim();
                 // this.ImpuestoIgv = null;
             }
         }
@@ -363,7 +361,7 @@ namespace PtoVta.Dominio.Agregados.Inventarios
             if (!string.IsNullOrEmpty(pCodigoCategoriaArticulo))
             {
                 //relacion
-                this.CodigoCategoriaArticulo = pCodigoCategoriaArticulo;
+                this.CodigoCategoriaArticulo = pCodigoCategoriaArticulo.Trim();
                 // this.CategoriaArticulo = null;
             }
         }
@@ -373,7 +371,7 @@ namespace PtoVta.Dominio.Agregados.Inventarios
             if (!string.IsNullOrEmpty(pCodigoSubCategoriaArticulo))
             {
                 //relacion
-                this.CodigoSubCategoriaArticulo = pCodigoSubCategoriaArticulo;
+                this.CodigoSubCategoriaArticulo = pCodigoSubCategoriaArticulo.Trim();
                 // this.SubCategoriaArticulo = null;
             }
         }
@@ -383,7 +381,7 @@ namespace PtoVta.Dominio.Agregados.Inventarios
             if (!string.IsNullOrEmpty(pCodigoTipoInventario))
             {
                 //relacion
-                this.CodigoTipoInventario = pCodigoTipoInventario;
+                this.CodigoTipoInventario = pCodigoTipoInventario.Trim();
                 // this.TipoInventario = null;
             }
         }
@@ -394,7 +392,7 @@ namespace PtoVta.Dominio.Agregados.Inventarios
             if (!string.IsNullOrEmpty(pCodigoUnidadDeMedida))
             {
                 //relacion
-                this.CodigoUnidadDeMedida = pCodigoUnidadDeMedida;
+                this.CodigoUnidadDeMedida = pCodigoUnidadDeMedida.Trim();
                 // this.UnidadDeMedida = null;
             }
         }

@@ -6,8 +6,8 @@ namespace PtoVta.Dominio.Agregados.Inventarios
 {
     public interface IServicioDominioMovimientosAlmacen
     {
-        int MovimientoAlmacenIngresoOSalida(string pCodigoTipoDocumentoNotaCredito, TipoDocumento tipoDocumento, 
-                                                    TipoMovimientoAlmacen tipoMovAlmacenVentas);
+        int MovimientoAlmacenIngresoOSalida(string pCodigoTipoDocumentoDeVenta, string pCodigoTipoDocumentoNotaCredito, 
+                                                TipoMovimientoAlmacen tipoMovAlmacenVentas);
 
         void InicializarArticuloKardexHistorico(Articulo pArticulo,
                             int pAnioHistorico, decimal pCantidadFinal00, decimal pCantidadFinal01,

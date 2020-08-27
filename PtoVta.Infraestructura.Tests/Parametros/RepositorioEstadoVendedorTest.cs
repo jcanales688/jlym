@@ -1,6 +1,7 @@
 using System;
 using PtoVta.Dominio.Agregados.Colaborador;
-using PtoVta.Infraestructura.Repositorios.Colaborador;
+using PtoVta.Dominio.Agregados.Parametros;
+using PtoVta.Infraestructura.Repositorios.Parametros;
 using Xunit;
 
 

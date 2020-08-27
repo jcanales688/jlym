@@ -42,7 +42,7 @@ namespace PtoVta.API.Controllers
             catch (Exception ex)
             {
                 return NotFound(
-                    new ResultadoServicio<ConfiguracionPuntoVentaDTO>(0,"Configuracion de punto de venta no existe.", ex.Message, null, null)
+                    new ResultadoServicio<ConfiguracionPuntoVentaDTO>(6,"Configuracion de punto de venta no existe.", ex.Message, null, null)
                 );                
             }
         }
@@ -66,7 +66,7 @@ namespace PtoVta.API.Controllers
             catch (Exception ex)
             {
                 return NotFound(
-                    new ResultadoServicio<ConfiguracionGlobalDTO>(0,"No se pudo recuperar la configuracion global del sistema.", ex.Message, null, null)
+                    new ResultadoServicio<ConfiguracionGlobalDTO>(6,"No se pudo recuperar la configuracion global del sistema.", ex.Message, null, null)
                 );                
             }
         }                

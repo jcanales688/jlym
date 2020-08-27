@@ -4,11 +4,17 @@ using System.Data.SqlClient;
 using Dapper;
 using PtoVta.Dominio.Agregados.Configuraciones;
 using PtoVta.Infraestructura.BaseTrabajo;
+using static PtoVta.Infraestructura.BaseTrabajo.Globales.GlobalInfraestructura;
 
 namespace PtoVta.Infraestructura.Repositorios.Configuraciones
 {
     public class RepositorioConfiguracionInventario : Repositorio<ConfiguracionInventario>, IRepositorioConfiguracionInventario
     {
+       public RepositorioConfiguracionInventario(string pCadenaConexion)
+        {
+            this.CadenaConexion = pCadenaConexion;
+        }
+
         public ConfiguracionInventario Obtener()
         {
            using (IDbConnection cn = new SqlConnection(this.CadenaConexion))
@@ -26,7 +32,7 @@ namespace PtoVta.Infraestructura.Repositorios.Configuraciones
                                             ,INTYPESALES		AS CodigoTMAVentas
                                             ,IDVENDORSS			AS CodigoProveedorDefault  
                                             ,INVTIDSKUROUND		AS CodigoArticuloRedondeoInventario
-                                    FROM	PC_IN_SETUP (NOLOCK)";
+                                    FROM	" + BaseDatos.PrefijoTabla + @"IN_SETUP (NOLOCK)";
 
                 var configuracionInventario = cn.QueryFirstOrDefault<ConfiguracionInventario>(cadenaSQL);
                 if (configuracionInventario != null)

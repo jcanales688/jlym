@@ -29,5 +29,7 @@ namespace PtoVta.Aplicacion.DTO.Ventas
         public string CodigoAlmacen { get; set; }
         public string CodigoUsuarioDeSistema { get; set; }
         public string CodigoTipoDocumento { get; set; }
+        public string CodigoCliente { get; set; }
+        public string CodigoTipoDocumentoReferencia { get; set; }        
     }
 }

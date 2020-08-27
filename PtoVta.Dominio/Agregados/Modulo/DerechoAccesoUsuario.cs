@@ -46,7 +46,7 @@ namespace PtoVta.Dominio.Agregados.Modulo
             if (!string.IsNullOrEmpty(pCodigoUsuarioSistema))
             {
                 //relacion 
-                this.CodigoUsuarioSistema = pCodigoUsuarioSistema;
+                this.CodigoUsuarioSistema = pCodigoUsuarioSistema.Trim();
                 this.UsuarioSistema = null;
             }
         }

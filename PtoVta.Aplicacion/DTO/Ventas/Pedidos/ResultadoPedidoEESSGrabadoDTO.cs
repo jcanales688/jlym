@@ -6,8 +6,8 @@ namespace PtoVta.Aplicacion.DTO.Ventas
     public class ResultadoPedidoEESSGrabadoDTO
     {
         public int Correlativo { get; set; }
-        public decimal NumeroDocumento { get; set; }
-        public string ClienteRuc { get; set; }
+        public string NumeroDocumento { get; set; }
+        public string RucCliente { get; set; }
         public string ClienteNombresORazonSocial { get; set; }
         public string ClienteDireccionPrimera { get; set; }
         public decimal TotalNoAfectoNacional { get; set; }

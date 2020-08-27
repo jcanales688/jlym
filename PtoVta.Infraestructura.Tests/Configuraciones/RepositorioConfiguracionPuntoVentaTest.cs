@@ -15,6 +15,20 @@ namespace PtoVta.Infraestructura.Tests
 
         }
 
+        [Fact]
+        public void ActualizarCorrelativos_Test()
+        {            
+            var configuracionPuntoDeVentaAntes = _IRepositorioConfiguracionPuntoVenta.ObtenerPorPuntoDeVenta("PTOVTA04");
+            decimal nuevoCorrelativo = configuracionPuntoDeVentaAntes.CorrelativoMovimientoAlmacenPorVenta + 1;
+
+            configuracionPuntoDeVentaAntes.AumentarCorrelativoMovimientoAlmacenPorVenta();
+            _IRepositorioConfiguracionPuntoVenta.ActualizarCorrelativos(configuracionPuntoDeVentaAntes);
+
+            var configuracionPuntoDeVentaDespues = _IRepositorioConfiguracionPuntoVenta.ObtenerPorPuntoDeVenta("PTOVTA04");
+            
+            Assert.True(configuracionPuntoDeVentaDespues.CorrelativoMovimientoAlmacenPorVenta == nuevoCorrelativo);
+        }
+
 
         [Fact]
         public void ObtenerPorTerminalYPuntoVenta_Test()

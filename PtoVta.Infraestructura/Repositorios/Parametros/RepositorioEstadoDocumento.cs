@@ -4,6 +4,7 @@ using System.Data.SqlClient;
 using Dapper;
 using PtoVta.Dominio.Agregados.Parametros;
 using PtoVta.Infraestructura.BaseTrabajo;
+using static PtoVta.Infraestructura.BaseTrabajo.Globales.GlobalInfraestructura;
 
 namespace PtoVta.Infraestructura.Repositorios.Parametros
 {
@@ -21,7 +22,7 @@ namespace PtoVta.Infraestructura.Repositorios.Parametros
                 string cadenaSQL = @"SELECT	DOCSTATUSID		AS CodigoEstadoDocumento
                                             ,DESCR			AS DescripcionEstadoDocumento
                                             ,DOCSTATUSID	AS AbreviaturaEstadoDocumento
-                                    FROM	PC_IN_DOCSTATUS (NOLOCK)
+                                    FROM	" + BaseDatos.PrefijoTabla + @"IN_DOCSTATUS (NOLOCK)
                                     WHERE	DOCSTATUSID		= @DOCSTATUSID";
 
                 var estadoDocumento = cn.QueryFirstOrDefault<EstadoDocumento>(cadenaSQL,

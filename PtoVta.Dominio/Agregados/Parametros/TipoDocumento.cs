@@ -63,11 +63,11 @@ namespace PtoVta.Dominio.Agregados.Parametros
                                         string pTipoDeVenta, int pEstado, string pCodigoAlmacen, string pCodigoPuntoDeVenta)
         {
 
-            if (string.IsNullOrEmpty(pCodigoAlmacen)
+            if (string.IsNullOrEmpty(pCodigoAlmacen.Trim())
                 ||
                 // string.IsNullOrEmpty(pCodigoPuntoDeVenta)
                 // ||
-                string.IsNullOrEmpty(pSerie)
+                string.IsNullOrEmpty(pSerie.Trim())
                 ||
                 pCorrelativo <= 0
                 ||
@@ -76,8 +76,8 @@ namespace PtoVta.Dominio.Agregados.Parametros
                 throw new ArgumentException(Mensajes.excepcion_DatosNoValidosParaLineaCorrelativoDocumento);
 
 
-            var nuevaLineaCorrelativoDocumento = new CorrelativoDocumento(this.CodigoTipoDocumento, pCodigoAlmacen, pCodigoPuntoDeVenta,
-                                                                        pSerie, pCorrelativo, pTipoDeVenta, pEstado);
+            var nuevaLineaCorrelativoDocumento = new CorrelativoDocumento(this.CodigoTipoDocumento, pCodigoAlmacen.Trim(), pCodigoPuntoDeVenta,
+                                                                        pSerie.Trim(), pCorrelativo, pTipoDeVenta, pEstado);
 
 
             nuevaLineaCorrelativoDocumento.GenerarNuevaIdentidad();
@@ -89,7 +89,7 @@ namespace PtoVta.Dominio.Agregados.Parametros
     
 
 
-        public void ActualizaCorrelativoDocumento()
+        public void AumentarCorrelativoDocumento()
         {
             this.CorrelativosDocumento.FirstOrDefault().Correlativo++; 
         }

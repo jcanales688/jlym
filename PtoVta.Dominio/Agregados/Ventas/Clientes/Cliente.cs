@@ -13,10 +13,10 @@ namespace PtoVta.Dominio.Agregados.Ventas
     {
         bool _EsHabilitado;
 
-        HashSet<ClientePlaca> _lineasClientePlaca;        
-        HashSet<ClienteLimiteCredito> _lineasClienteLimiteCredito;
+        HashSet<ClientePlaca> _lineasClientePlaca;
+        // HashSet<ClienteLimiteCredito> _lineasClienteLimiteCredito;
         HashSet<AsignacionListaPrecioCliente> _lineasAsignacionListaPrecioCliente;
-        HashSet<DocumentoLibre> _lineasDocumentoLibre; 
+        HashSet<DocumentoLibre> _lineasDocumentoLibre;
 
         public string CodigoCliente { get; set; }
 
@@ -32,6 +32,9 @@ namespace PtoVta.Dominio.Agregados.Ventas
         public decimal Deuda { get; set; }
         public int EsAfecto { get; set; }
         public int ControlarSaldoDisponible { get; set; }
+        public string DireccionPrimeroUbicacion{ get; set; }
+        public string DireccionSegundoUbicacion{ get; set; }
+
 
         public bool EsHabilitado
         {
@@ -47,7 +50,7 @@ namespace PtoVta.Dominio.Agregados.Ventas
 
         public string CodigoMoneda { get; private set; }
         public string CodigoClaseTipoCambio { get; private set; }
-        public string  CodigoTipoCliente { get; private set; }
+        public string CodigoTipoCliente { get; private set; }
         public string CodigoZonaCliente { get; private set; }
         public string CodigoDiaDePago { get; private set; }
         public string CodigoVendedor { get; private set; }
@@ -59,8 +62,8 @@ namespace PtoVta.Dominio.Agregados.Ventas
         public string CodigoUsuarioDeSistema { get; private set; }
         public string CodigoPais { get; private set; }
         public string CodigoDepartamento { get; private set; }
-        public string CodigoDistrito { get; private set; }                
-    
+        public string CodigoDistrito { get; private set; }
+
 
         public virtual Moneda Moneda { get; private set; }
         public virtual ClaseTipoCambio ClaseTipoCambio { get; private set; }
@@ -77,12 +80,35 @@ namespace PtoVta.Dominio.Agregados.Ventas
         public virtual Pais Pais { get; private set; }
         public virtual Departamento Departamento { get; private set; }
         // public virtual Provincia Provincia { get; private set; }
-        public virtual Distrito Distrito { get; private set; }            
+        public virtual Distrito Distrito { get; private set; }
 
-        
+
         public virtual ClienteDireccion DireccionPrimero { get; set; }
         public virtual ClienteDireccion DireccionSegundo { get; set; }
 
+        public Cliente(){}
+        public Cliente(string pCodigoCliente, string pCodigoContable, string pRuc,
+                        string pNombresORazonSocial, string pTelefono, string pFax,
+                        DateTime pFechaNacimiento, DateTime pFechaInscripcion, int pDiasDeGracia,
+                        decimal pMontoLimiteCredito, decimal pDeuda, int pEsAfecto,
+                        int pControlarSaldoDisponible)
+        {
+            this.CodigoCliente = !string.IsNullOrEmpty(pCodigoCliente) ? pCodigoCliente.Trim()
+                    : throw new ArgumentException(Mensajes.advertencia_CodigoDeClienteNoPuedeSerNuloOCacio);
+            this.CodigoContable = pCodigoContable;
+            this.Ruc = pRuc;
+            this.NombresORazonSocial = !string.IsNullOrEmpty(pNombresORazonSocial) ? pNombresORazonSocial.Trim()
+                    : throw new ArgumentException(Mensajes.advertencia_NombreORazonSocialDelClienteNoPuedeSerNuloOVacio);
+            this.Telefono = pTelefono;
+            this.Fax = pFax;
+            this.FechaNacimiento = pFechaNacimiento;
+            this.FechaInscripcion = pFechaInscripcion;
+            this.DiasDeGracia = pDiasDeGracia;
+            this.MontoLimiteCredito = pMontoLimiteCredito;
+            this.Deuda = pDeuda;
+            this.EsAfecto = pEsAfecto;
+            this.ControlarSaldoDisponible = pControlarSaldoDisponible;
+        }
 
 
         public void Habilitar()
@@ -112,7 +138,10 @@ namespace PtoVta.Dominio.Agregados.Ventas
             {
                 _lineasClientePlaca = new HashSet<ClientePlaca>(value);
             }
-        }        
+        }
+
+
+        public ClienteLimiteCredito ClienteLimiteCredito { get; private set; }
 
         public virtual ICollection<AsignacionListaPrecioCliente> AsignacionListasPrecioCliente
         {
@@ -129,20 +158,20 @@ namespace PtoVta.Dominio.Agregados.Ventas
             }
         }
 
-        public virtual ICollection<ClienteLimiteCredito> ClienteLimitesCredito 
-        {
-            get
-            {
-                if (_lineasClienteLimiteCredito == null)
-                    _lineasClienteLimiteCredito = new HashSet<ClienteLimiteCredito>();
+        // public virtual ICollection<ClienteLimiteCredito> ClienteLimitesCredito
+        // {
+        //     get
+        //     {
+        //         if (_lineasClienteLimiteCredito == null)
+        //             _lineasClienteLimiteCredito = new HashSet<ClienteLimiteCredito>();
 
-                return _lineasClienteLimiteCredito;
-            }
-            set
-            {
-                _lineasClienteLimiteCredito = new HashSet<ClienteLimiteCredito>(value);
-            }
-        }
+        //         return _lineasClienteLimiteCredito;
+        //     }
+        //     set
+        //     {
+        //         _lineasClienteLimiteCredito = new HashSet<ClienteLimiteCredito>(value);
+        //     }
+        // }
 
         public virtual ICollection<DocumentoLibre> DocumentosLibre
         {
@@ -161,13 +190,13 @@ namespace PtoVta.Dominio.Agregados.Ventas
 
         public ClientePlaca AgregarNuevoClientePlaca(string pDescripcionPlaca)
         {
-            if (string.IsNullOrEmpty(pDescripcionPlaca))
+            if (string.IsNullOrEmpty(pDescripcionPlaca.Trim()))
                 throw new ArgumentException(Mensajes.excepcion_DatosNoValidosParaLineaClientePlaca);
 
             var nuevaLineaClientePlaca = new ClientePlaca()
             {
-                CodigoCliente = this.CodigoCliente,                
-                DescripcionPlaca = pDescripcionPlaca
+                CodigoCliente = this.CodigoCliente.Trim(),
+                DescripcionPlaca = pDescripcionPlaca.Trim()
             };
 
             this.ClientePlacas.Add(nuevaLineaClientePlaca);
@@ -175,14 +204,14 @@ namespace PtoVta.Dominio.Agregados.Ventas
             return nuevaLineaClientePlaca;
         }
 
-        public AsignacionListaPrecioCliente AgregarNuevaAsignacionListaPrecioCliente(DateTime pFechaCreacion, string pCodigoAlmacen, 
+        public AsignacionListaPrecioCliente AgregarNuevaAsignacionListaPrecioCliente(DateTime pFechaCreacion, string pCodigoAlmacen,
                                                                         string pCodigoListaPrecioCliente, string pCodigoUsuarioDeSistema)
         {
-            if (string.IsNullOrEmpty(pCodigoAlmacen)
+            if (string.IsNullOrEmpty(pCodigoAlmacen.Trim())
                 ||
-                string.IsNullOrEmpty(pCodigoListaPrecioCliente)
+                string.IsNullOrEmpty(pCodigoListaPrecioCliente.Trim())
                 ||
-                string.IsNullOrEmpty(pCodigoUsuarioDeSistema)
+                string.IsNullOrEmpty(pCodigoUsuarioDeSistema.Trim())
                 ||
                 pFechaCreacion == null
                 )
@@ -192,9 +221,9 @@ namespace PtoVta.Dominio.Agregados.Ventas
             var nuevaLineaAsignacionListaPrecioCliente = new AsignacionListaPrecioCliente()
             {
                 CodigoCliente = this.CodigoCliente,
-                CodigoAlmacen = pCodigoAlmacen,
-                CodigoListaPrecioCliente = pCodigoListaPrecioCliente,
-                CodigoUsuarioDeSistema = pCodigoUsuarioDeSistema,
+                CodigoAlmacen = pCodigoAlmacen.Trim(),
+                CodigoListaPrecioCliente = pCodigoListaPrecioCliente.Trim(),
+                CodigoUsuarioDeSistema = pCodigoUsuarioDeSistema.Trim(),
                 FechaCreacion = pFechaCreacion
             };
 
@@ -209,14 +238,14 @@ namespace PtoVta.Dominio.Agregados.Ventas
         }
 
 
-        public ClienteLimiteCredito AgregarNuevoClienteLimiteCredito(decimal pPorcentajeLimite, decimal pMontoLimite,
+        public void AgregarClienteLimiteCredito(decimal pPorcentajeLimite, decimal pMontoLimite,
                             decimal pDeuda, decimal pPorcentajeExcede, decimal pMontoExcedente,
-                            string pCodigoAlmacen, string pCodigoUsuarioDeSistema)
+                            string pCodigoAlmacen)
         {
-            if (string.IsNullOrEmpty(pCodigoAlmacen)
+            if (string.IsNullOrEmpty(pCodigoAlmacen.Trim())
                 ||
-                string.IsNullOrEmpty(pCodigoUsuarioDeSistema)
-                ||
+                // string.IsNullOrEmpty(pCodigoUsuarioDeSistema.Trim())
+                // ||
                 pPorcentajeLimite <= 0
                 ||
                 pMontoLimite <= 0
@@ -227,37 +256,28 @@ namespace PtoVta.Dominio.Agregados.Ventas
                 )
                 throw new ArgumentException(Mensajes.excepcion_DatosNoValidosParaLineaClienteLimiteCredito);
 
-
-
-            var nuevaLineaClienteLimiteCredito = new ClienteLimiteCredito()
+            var clienteLimiteCredito = new ClienteLimiteCredito()
             {
                 CodigoCliente = this.CodigoCliente,
-                CodigoAlmacen = pCodigoAlmacen,
-                CodigoUsuarioDeSistema   = pCodigoUsuarioDeSistema,
+                CodigoAlmacen = pCodigoAlmacen.Trim(),
+                CodigoUsuarioDeSistema = this.CodigoUsuarioDeSistema,
                 PorcentajeLimite = pPorcentajeLimite,
                 MontoLimite = pMontoLimite,
                 Deuda = pDeuda,
-                PorcentajeExcede =pPorcentajeExcede, 
+                PorcentajeExcede = pPorcentajeExcede,
                 MontoExcedente = pMontoExcedente
             };
 
-            //Establecer la identidad
-            nuevaLineaClienteLimiteCredito.GenerarNuevaIdentidad();
-
-            this.ClienteLimitesCredito.Add(nuevaLineaClienteLimiteCredito);
-
-            return nuevaLineaClienteLimiteCredito;
-
-
+            this.ClienteLimiteCredito = clienteLimiteCredito;
         }
 
 
-        public DocumentoLibre AgregarNuevoDocumentoLibre(decimal pNumeroDocumentoLibre, DateTime pFechaProcesoInicial, 
-                                DateTime pFechaProcesoFinal, decimal pTotalLibre,string pCodigoAlmacen, string pCodigoUsuarioSistema)
+        public DocumentoLibre AgregarNuevoDocumentoLibre(decimal pNumeroDocumentoLibre, DateTime pFechaProcesoInicial,
+                                DateTime pFechaProcesoFinal, decimal pTotalLibre, string pCodigoAlmacen, string pCodigoUsuarioSistema)
         {
-            if (string.IsNullOrEmpty(pCodigoAlmacen)
+            if (string.IsNullOrEmpty(pCodigoAlmacen.Trim())
                 ||
-                string.IsNullOrEmpty(pCodigoUsuarioSistema)
+                string.IsNullOrEmpty(pCodigoUsuarioSistema.Trim())
                 ||
                 pNumeroDocumentoLibre <= 0
                 ||
@@ -272,8 +292,8 @@ namespace PtoVta.Dominio.Agregados.Ventas
             var nuevaLineaDocumentoLibre = new DocumentoLibre()
             {
                 CodigoCliente = this.CodigoCliente,
-                CodigoAlmacen = pCodigoAlmacen,
-                CodigoUsuarioDeSistema = pCodigoUsuarioSistema,
+                CodigoAlmacen = pCodigoAlmacen.Trim(),
+                CodigoUsuarioDeSistema = pCodigoUsuarioSistema.Trim(),
                 NumeroDocumentoLibre = pNumeroDocumentoLibre,
                 FechaProcesoInicial = pFechaProcesoInicial,
                 FechaProcesoFinal = pFechaProcesoFinal,
@@ -307,7 +327,7 @@ namespace PtoVta.Dominio.Agregados.Ventas
         {
             if (!string.IsNullOrEmpty(pCodigoMoneda))
             {
-                this.CodigoMoneda = pCodigoMoneda;
+                this.CodigoMoneda = pCodigoMoneda.Trim();
                 this.Moneda = null;
             }
         }
@@ -316,44 +336,40 @@ namespace PtoVta.Dominio.Agregados.Ventas
         //ClaseTipoCambio
         public void EstablecerClaseTipoCambioDeCliente(ClaseTipoCambio pClaseTipoCambio)
         {
-            if (pClaseTipoCambio == null)
-            {
+            if (pClaseTipoCambio == null)            
                 throw new ArgumentException(Mensajes.excepcion_ClaseTipoCambioDeClienteEnEstadoNuloOTransitorio);
-            }
-
+            
             this.CodigoClaseTipoCambio = pClaseTipoCambio.CodigoClaseTipoCambio;
             this.ClaseTipoCambio = pClaseTipoCambio;
         }
 
         public void EstablecerReferenciaClaseTipoCambioDeCliente(string pCodigoClaseTipoCambio)
         {
-            if (!string.IsNullOrEmpty(pCodigoClaseTipoCambio))
-            {
-                this.CodigoClaseTipoCambio = pCodigoClaseTipoCambio;
-                this.ClaseTipoCambio = null;
-            }
+            if (string.IsNullOrEmpty(pCodigoClaseTipoCambio.Trim()))
+                throw new ArgumentException(Mensajes.excepcion_ClaseTipoCambioDeClienteEnEstadoNuloOTransitorio);
+
+            this.CodigoClaseTipoCambio = pCodigoClaseTipoCambio.Trim();
+            this.ClaseTipoCambio = null;            
         }
 
 
-      //TipoCliente
+        //TipoCliente
         public void EstablecerTipoClienteDeCliente(TipoCliente pTipoCliente)
         {
-            if (pTipoCliente == null)
-            {
+            if (pTipoCliente == null)            
                 throw new ArgumentException(Mensajes.excepcion_TipoClienteDeClienteEnEstadoNuloOTransitorio);
-            }
-
+            
             this.CodigoTipoCliente = pTipoCliente.CodigoTipoCliente;
             this.TipoCliente = pTipoCliente;
         }
 
         public void EstablecerReferenciaTipoClienteDeCliente(string pCodigoTipoCliente)
         {
-            if (!string.IsNullOrEmpty(pCodigoTipoCliente))
-            {
-                this.CodigoTipoCliente = pCodigoTipoCliente;
-                this.TipoCliente = null;
-            }
+            if (string.IsNullOrEmpty(pCodigoTipoCliente.Trim()))
+                throw new ArgumentException(Mensajes.excepcion_TipoClienteDeClienteEnEstadoNuloOTransitorio);            
+
+            this.CodigoTipoCliente = pCodigoTipoCliente.Trim();
+            this.TipoCliente = null;            
         }
 
         //ZonaCliente
@@ -372,34 +388,37 @@ namespace PtoVta.Dominio.Agregados.Ventas
         {
             if (!string.IsNullOrEmpty(pCodigoZonaCliente))
             {
-                this.CodigoZonaCliente = pCodigoZonaCliente;
+                this.CodigoZonaCliente = pCodigoZonaCliente.Trim();
                 this.ZonaCliente = null;
             }
         }
 
 
-      //DiaDePago
+        //DiaDePago
         public void EstablecerDiaDePagoDeCliente(DiaDePago pDiaDePago)
         {
-            if (pDiaDePago == null)
-            {
-                throw new ArgumentException(Mensajes.excepcion_DiaDePagoDeClienteEnEstadoNuloOTransitorio);
-            }
+            // if (pDiaDePago == null)
+            // {
+            //     throw new ArgumentException(Mensajes.excepcion_DiaDePagoDeClienteEnEstadoNuloOTransitorio);
+            // }
 
-            this.CodigoDiaDePago = pDiaDePago.CodigoDiaDePago;
-            this.DiaDePago = pDiaDePago;
+            if (pDiaDePago != null)
+            {
+                this.CodigoDiaDePago = pDiaDePago.CodigoDiaDePago;
+                this.DiaDePago = pDiaDePago;
+            }
         }
 
         public void EstablecerReferenciaDiaDePagoDeCliente(string pCodigoDiaDePago)
         {
             if (!string.IsNullOrEmpty(pCodigoDiaDePago))
             {
-                this.CodigoDiaDePago = pCodigoDiaDePago;
+                this.CodigoDiaDePago = pCodigoDiaDePago.Trim();
                 this.DiaDePago = null;
             }
         }
 
-        
+
 
         //Vendedor
         public void EstablecerVendedorDeCliente(Vendedor pVendedor)
@@ -417,7 +436,7 @@ namespace PtoVta.Dominio.Agregados.Ventas
         {
             if (!string.IsNullOrEmpty(pCodigoVendedor))
             {
-                this.CodigoVendedor = pCodigoVendedor;
+                this.CodigoVendedor = pCodigoVendedor.Trim();
                 this.Vendedor = null;
             }
         }
@@ -439,7 +458,7 @@ namespace PtoVta.Dominio.Agregados.Ventas
             if (!string.IsNullOrEmpty(pCodigoImpuestoIgv))
             {
 
-                this.CodigoImpuestoIgv = pCodigoImpuestoIgv;
+                this.CodigoImpuestoIgv = pCodigoImpuestoIgv.Trim();
                 this.ImpuestoIgv = null;
             }
         }
@@ -461,7 +480,7 @@ namespace PtoVta.Dominio.Agregados.Ventas
         {
             if (!string.IsNullOrEmpty(pCodigoImpuestoIsc))
             {
-                this.CodigoImpuestoIsc = pCodigoImpuestoIsc;
+                this.CodigoImpuestoIsc = pCodigoImpuestoIsc.Trim();
                 this.ImpuestoIsc = null;
             }
         }
@@ -470,10 +489,9 @@ namespace PtoVta.Dominio.Agregados.Ventas
         //CondicionPagoDocumento
         public void EstablecerCondicionPagoDocumentoGeneradoDeCliente(CondicionPago pCondicionPagoDocumentoGenerado)
         {
-            if (pCondicionPagoDocumentoGenerado == null)
-            {
+            if (pCondicionPagoDocumentoGenerado == null)            
                 throw new ArgumentException(Mensajes.excepcion_CondicionPagoDocumentoGeneradoDeClienteEnEstadoNuloOTransitorio);
-            }
+            
 
             this.CodigoCondicionPagoDocumentoGenerado = pCondicionPagoDocumentoGenerado.CodigoCondicionPago;
             this.CondicionPagoDocumentoGenerado = pCondicionPagoDocumentoGenerado;
@@ -481,20 +499,19 @@ namespace PtoVta.Dominio.Agregados.Ventas
 
         public void EstablecerReferenciaCondicionPagoDocumentoGeneradoDeCliente(string pCodigoCondicionPagoDocumentoGenerado)
         {
-            if (!string.IsNullOrEmpty(pCodigoCondicionPagoDocumentoGenerado))
-            {
-                this.CodigoCondicionPagoDocumentoGenerado = pCodigoCondicionPagoDocumentoGenerado;
-                this.CondicionPagoDocumentoGenerado = null;
-            }
+            if (string.IsNullOrEmpty(pCodigoCondicionPagoDocumentoGenerado.Trim()))
+                throw new ArgumentException(Mensajes.excepcion_CondicionPagoDocumentoGeneradoDeClienteEnEstadoNuloOTransitorio);
+
+            this.CodigoCondicionPagoDocumentoGenerado = pCodigoCondicionPagoDocumentoGenerado.Trim();
+            this.CondicionPagoDocumentoGenerado = null;            
         }
 
         //CondicionPagoTicket
         public void EstablecerCondicionPagoTicketDeCliente(CondicionPago pCondicionPagoTicket)
         {
-            if (pCondicionPagoTicket == null)
-            {
+            if (pCondicionPagoTicket == null)            
                 throw new ArgumentException(Mensajes.excepcion_CondicionPagoTicketDeClienteEnEstadoNuloOTransitorio);
-            }
+            
 
             this.CodigoCondicionPagoTicket = pCondicionPagoTicket.CodigoCondicionPago;
             this.CondicionPagoTicket = pCondicionPagoTicket;
@@ -502,54 +519,50 @@ namespace PtoVta.Dominio.Agregados.Ventas
 
         public void EstablecerReferenciaCondicionPagoTicketDeCliente(string pCodigoCondicionPagoTicket)
         {
-            if (!string.IsNullOrEmpty(pCodigoCondicionPagoTicket))
-            {
-                this.CodigoCondicionPagoTicket = pCodigoCondicionPagoTicket;
-                this.CondicionPagoTicket = null;
-            }
+            if (string.IsNullOrEmpty(pCodigoCondicionPagoTicket.Trim()))
+                throw new ArgumentException(Mensajes.excepcion_CondicionPagoTicketDeClienteEnEstadoNuloOTransitorio);
+
+            this.CodigoCondicionPagoTicket = pCodigoCondicionPagoTicket.Trim();
+            this.CondicionPagoTicket = null;            
         }
 
 
         //EstadoDeCliente
         public void EstablecerEstadoDeClienteDeCliente(EstadoDeCliente pEstadoDeCliente)
         {
-            if (pEstadoDeCliente == null)
-            {
+            if (pEstadoDeCliente == null)            
                 throw new ArgumentException(Mensajes.excepcion_EstadoDeClienteDeClienteEnEstadoNuloOTransitorio);
-            }
-
+            
             this.CodigoEstadoDeCliente = pEstadoDeCliente.CodigoEstadoDeCliente;
             this.EstadoDeCliente = pEstadoDeCliente;
         }
 
         public void EstablecerReferenciaEstadoDeClienteDeCliente(string pCodigoEstadoDeCliente)
         {
-            if (!string.IsNullOrEmpty(pCodigoEstadoDeCliente))
-            {
-                this.CodigoEstadoDeCliente= pCodigoEstadoDeCliente;
-                this.EstadoDeCliente = null;
-            }
+            if (string.IsNullOrEmpty(pCodigoEstadoDeCliente.Trim()))
+                throw new ArgumentException(Mensajes.excepcion_EstadoDeClienteDeClienteEnEstadoNuloOTransitorio);            
+            
+            this.CodigoEstadoDeCliente = pCodigoEstadoDeCliente.Trim();
+            this.EstadoDeCliente = null;            
         }
 
         //UsuarioSistema
         public void EstablecerUsuarioSistemaDeCliente(UsuarioSistema pUsuarioSistema)
         {
-            if (pUsuarioSistema == null)
-            {
+            if (pUsuarioSistema == null)            
                 throw new ArgumentException(Mensajes.excepcion_UsuarioSistemaDeClienteEnEstadoNuloOTransitorio);
-            }
-
+            
             this.CodigoUsuarioDeSistema = pUsuarioSistema.CodigoUsuarioDeSistema;
             this.UsuarioSistema = pUsuarioSistema;
         }
 
         public void EstablecerReferenciaUsuarioSistemaDeCliente(string pCodigoUsuarioDeSistema)
         {
-            if (!string.IsNullOrEmpty(pCodigoUsuarioDeSistema))
-            {
-                this.CodigoUsuarioDeSistema = pCodigoUsuarioDeSistema;
-                this.UsuarioSistema = null;
-            }
+            if (string.IsNullOrEmpty(pCodigoUsuarioDeSistema.Trim()))
+                throw new ArgumentException(Mensajes.excepcion_UsuarioSistemaDeClienteEnEstadoNuloOTransitorio);
+
+            this.CodigoUsuarioDeSistema = pCodigoUsuarioDeSistema.Trim();
+            this.UsuarioSistema = null;            
         }
 
 
@@ -569,7 +582,7 @@ namespace PtoVta.Dominio.Agregados.Ventas
         {
             if (!string.IsNullOrEmpty(pCodigoPais))
             {
-                this.CodigoPais = pCodigoPais;
+                this.CodigoPais = pCodigoPais.Trim();
                 this.Pais = null;
             }
         }
@@ -591,7 +604,7 @@ namespace PtoVta.Dominio.Agregados.Ventas
         {
             if (!string.IsNullOrEmpty(pCodigoDepartamento))
             {
-                this.CodigoDepartamento = pCodigoDepartamento;
+                this.CodigoDepartamento = pCodigoDepartamento.Trim();
                 this.Departamento = null;
             }
         }
@@ -613,31 +626,31 @@ namespace PtoVta.Dominio.Agregados.Ventas
         {
             if (!string.IsNullOrEmpty(pCodigoDistrito))
             {
-                this.CodigoDistrito = pCodigoDistrito;
+                this.CodigoDistrito = pCodigoDistrito.Trim();
                 this.Distrito = null;
             }
         }
 
-  
+
 
         public bool ValidarLimiteCredito(decimal montoVenta)
         {
             bool excedeLimiteCredito = false;
 
-            if (montoVenta > (  this.ClienteLimitesCredito.Single().MontoLimite - 
-                                this.ClienteLimitesCredito.Single().Deuda) + 
-                                this.ClienteLimitesCredito.Single().MontoExcedente)
+            if (montoVenta > (this.ClienteLimiteCredito.MontoLimite -
+                                this.ClienteLimiteCredito.Deuda) +
+                                this.ClienteLimiteCredito.MontoExcedente)
             {
                 excedeLimiteCredito = true;
             }
 
             return excedeLimiteCredito;
         }
-        
+
 
         public void ActualizarDeuda(decimal montoVenta)
         {
-            this.ClienteLimitesCredito.Single().Deuda += montoVenta; 
-        }        
+            this.ClienteLimiteCredito.Deuda += montoVenta;
+        }
     }
 }

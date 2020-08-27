@@ -4,8 +4,6 @@ namespace PtoVta.Aplicacion.DTO.Colaborador
 {
     public class VendedorDTO
     {
-        public Guid Id { get; set; }
-
         public string CodigoVendedor { get; set; }
         public string NombresVendedor { get; set; }
         public string DocumentoIdentidad { get; set; }

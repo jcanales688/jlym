@@ -4,8 +4,7 @@ namespace PtoVta.Aplicacion.DTO.Ventas
 {
     public class VentaListadoDTO
     {
-        public Guid Id { get; set; }
-        public decimal NumeroDocumento { get; set; }
+        public string NumeroDocumento { get; set; }
         public DateTime FechaDocumento { get; set; }
         public DateTime FechaProceso { get; set; }
         public string Periodo { get; set; } 
@@ -29,13 +28,13 @@ namespace PtoVta.Aplicacion.DTO.Ventas
         public decimal TotalVueltoExtranjera { get; set; }
         public decimal TotalEfectivoNacional { get; set; }
         public decimal TotalEfectivoExtranjera { get; set; }
-        public string ClienteRuc { get; set; }
+        public string RucCliente { get; set; }
         public string ClienteNombresORazonSocial { get; set; }
         public string Placa { get; set; }
         public decimal NumeroVale { get; set; }
         public decimal TipoCambio { get; set; }
-        public int ProcesadoCierreZ { get; set; }
-        public int ProcesadoCierreX { get; set; }
+        public bool ProcesadoCierreZ { get; set; }
+        public bool ProcesadoCierreX { get; set; }
         public int Kilometraje { get; set; }
 
 

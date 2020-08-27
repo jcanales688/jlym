@@ -8,6 +8,7 @@ using Dapper;
 using PtoVta.Dominio.Agregados.Inventarios;
 using PtoVta.Dominio.Agregados.Parametros;
 using PtoVta.Infraestructura.BaseTrabajo;
+using static PtoVta.Infraestructura.BaseTrabajo.Globales.GlobalInfraestructura;
 
 namespace PtoVta.Infraestructura.Repositorios.Inventarios
 {
@@ -31,7 +32,7 @@ namespace PtoVta.Infraestructura.Repositorios.Inventarios
                                             ,FAX	AS Fax
                                             ,ATTN	AS Responsable
                                             ,USERID	AS UsuarioSistemaCrea
-                                    FROM	SITE (NOLOCK)
+                                    FROM	" + BaseDatos.PrefijoTabla + @"SITE (NOLOCK)
                                     WHERE	SITEID	= @SITEID";
 
                 var almacen = cn.QueryFirstOrDefault<Almacen>(cadenaSQL,

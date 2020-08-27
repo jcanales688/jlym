@@ -5,8 +5,6 @@ namespace PtoVta.Aplicacion.DTO.Inventarios
 {
     public class ArticuloDTO
     {
-        public Guid Id { get; set; }
-
         public string CodigoArticulo { get; set; }
         public string DescripcionArticulo { get; set; }
         public decimal FactorGalon { get; set; }
@@ -23,6 +21,7 @@ namespace PtoVta.Aplicacion.DTO.Inventarios
         public string UsuarioSistema { get; set; }
         public bool ParaVentaManualEnPlaya { get; set; }               
         public bool EditarPrecio { get; set; }
+        public string PermitirStockNegativo { get; set; }
         public byte[] Imagen{get; set; }
         
 

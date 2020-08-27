@@ -4,12 +4,18 @@ using System.Data.SqlClient;
 using Dapper;
 using PtoVta.Dominio.Agregados.Configuraciones;
 using PtoVta.Infraestructura.BaseTrabajo;
-using static PtoVta.Dominio.BaseTrabajo.Globales.GlobalDominio;
+using static PtoVta.Dominio.BaseTrabajo.Enumeradores.AmbienteVenta;
+using static PtoVta.Infraestructura.BaseTrabajo.Globales.GlobalInfraestructura;
 
 namespace PtoVta.Infraestructura.Repositorios.Configuraciones
 {
     public class RepositorioConfiguracionVenta : Repositorio<ConfiguracionVenta>, IRepositorioConfiguracionVenta
     {
+       public RepositorioConfiguracionVenta(string pCadenaConexion)
+        {
+            this.CadenaConexion = pCadenaConexion;
+        }
+
         public ConfiguracionVenta Obtener()
         {
            using (IDbConnection cn = new SqlConnection(this.CadenaConexion))
@@ -34,11 +40,11 @@ namespace PtoVta.Infraestructura.Repositorios.Configuraciones
                                             ,DOCTYPEIDNCAJUSTE				AS CodigoTipoDocumentoNotaCreditoAjuste
                                             ,@CodigoCondicionPagoDefault	AS CodigoCondicionPagoDefault 
                                             ,@CodigoEstadoDocumentoDefault  AS CodigoEstadoDocumentoDefault 
-                                    FROM	PC_OP_SETUP (NOLOCK)";
+                                    FROM	" + BaseDatos.PrefijoTabla + @"OP_SETUP (NOLOCK)";
 
                 var configuracionVenta = cn.QueryFirstOrDefault<ConfiguracionVenta>(cadenaSQL,
                                                 new { 
-                                                        CodigoCondicionPagoDefault = EmunCondicionPago.CondicionPagoPagoContraentrega,
+                                                        CodigoCondicionPagoDefault = EnumCondicionPago.CodigoCondicionPagoContraentrega,
                                                         CodigoEstadoDocumentoDefault = EnumEstadoDocumento.CodigoEstadoDocumentoPendiente 
                                                     });
                 if (configuracionVenta != null)

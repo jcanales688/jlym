@@ -22,7 +22,7 @@ namespace PtoVta.Infraestructura.Tests
         [Fact]        
         public void ObtenerCorrelativoDocumento_Test()
         {
-            var tipoDocumentoYCorrelativo = _IRepositorioTipoDocumento.ObtenerCorrelativoDocumento("24", "", "03", "", 0);
+            var tipoDocumentoYCorrelativo = _IRepositorioTipoDocumento.ObtenerCorrelativoDocumento("24", "PTOVTA02", "01", "A", 0);
             
             Assert.False(tipoDocumentoYCorrelativo == null);
         }   
@@ -41,11 +41,11 @@ namespace PtoVta.Infraestructura.Tests
         {
             var numeroDocumento = 1270027413;            
             var serieDocumento = numeroDocumento.ToString().Substring(0,3);
-            var nuevoCorrelativo = 27415;
+            var nuevoCorrelativo = 27416;
             var codigoAlmacen = "24";
 
             var tipoDocumento = new TipoDocumento{CodigoTipoDocumento = "01"};
-            tipoDocumento.AgregarNuevoCorrelativoDocumento("120", 1183, "", 0, "24", "");
+            tipoDocumento.AgregarNuevoCorrelativoDocumento("120", 1184, "", 0, "24", "");
             tipoDocumento.AgregarNuevoCorrelativoDocumento("127", nuevoCorrelativo, "", 0, "24", "");
 
 

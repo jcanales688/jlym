@@ -9,6 +9,7 @@ using PtoVta.Dominio.Agregados.Parametros;
 using PtoVta.Dominio.Agregados.Ventas;
 using PtoVta.Infraestructura.BaseTrabajo;
 using static PtoVta.Dominio.BaseTrabajo.Globales.GlobalDominio;
+using static PtoVta.Infraestructura.BaseTrabajo.Globales.GlobalInfraestructura;
 
 namespace PtoVta.Infraestructura.Repositorios.Ventas
 {
@@ -27,8 +28,8 @@ namespace PtoVta.Infraestructura.Repositorios.Ventas
                 using (var transaccion = cn.BeginTransaction())
                 {
                     //Cabecera Venta
-                    string sqlAgregaVenta = @"INSERT INTO PC_VENTAS
-                                                    (NBRDOCUMENT
+                    string sqlAgregaVenta = @"INSERT INTO " + BaseDatos.PrefijoTabla + NombresTabla.TablaVentas +
+                                                    @"(NBRDOCUMENT
                                                     ,DATEDOC
                                                     ,DATEPROCESALES
                                                     ,PERPOST		
@@ -173,8 +174,8 @@ namespace PtoVta.Infraestructura.Repositorios.Ventas
                     {
                         foreach (var detalleVenta in pVenta.VentaDetalles)
                         {
-                            string sqlAgregaDetalleVenta = @"INSERT INTO PC_VENTAS_DET
-                                                            (NBRDOCUMENT
+                            string sqlAgregaDetalleVenta = @"INSERT INTO " + BaseDatos.PrefijoTabla + NombresTabla.TablaVentasDetalle +
+                                                            @"(NBRDOCUMENT
                                                             ,SEQUENCE
                                                             ,DATEDOC
                                                             ,DATEPROCESALES
@@ -267,7 +268,7 @@ namespace PtoVta.Infraestructura.Repositorios.Ventas
                     {
                         foreach (var ventaConTarjeta in pVenta.VentaConTarjetas)
                         {
-                            string sqlAgregaVentaConTarjeta = @"INSERT INTO PC_OP_SALESCARD
+                            string sqlAgregaVentaConTarjeta = @"INSERT INTO " + BaseDatos.PrefijoTabla + @"OP_SALESCARD
                                                                 (NBRDOCUMENT
                                                                 ,SEQUENCE
                                                                 ,NBRCARD
@@ -310,7 +311,7 @@ namespace PtoVta.Infraestructura.Repositorios.Ventas
                     {
                         foreach (var ventaConVale in pVenta.VentaConVales)
                         {
-                            string sqlAgregaVentaConVale = @"INSERT INTO PC_OP_BONUS
+                            string sqlAgregaVentaConVale = @"INSERT INTO " + BaseDatos.PrefijoTabla + @"OP_BONUS
                                                             (NBRDOCUMENT
                                                             ,NBRBONUS
                                                             ,DATEPROCESALES
@@ -336,12 +337,79 @@ namespace PtoVta.Infraestructura.Repositorios.Ventas
                         }
                     }
 
+                    //Movimiento Almacen
+                    if (pVenta.MovimientosAlmacen != null && pVenta.MovimientosAlmacen.Any())
+                    {
+                        foreach (var movimientoAlmacen in pVenta.MovimientosAlmacen)
+                        {
+                            string sqlAgregaMovimientoAlmacen = @"INSERT INTO " + BaseDatos.PrefijoTabla + @"INTRAMOV
+                                                            (BATNBR
+                                                            ,INTRDATE
+                                                            ,INTRDATEPROCE
+                                                            ,CURYRATE
+                                                            ,CURYDATE
+                                                            ,PERPOST
+                                                            ,SWTINOUT
+                                                            ,QTY
+                                                            ,STDCOSTPEN
+                                                            ,STDCOSTUSD
+                                                            ,COMPONENT
+                                                            ,SLSPRICE
+                                                            ,REFNBR
+                                                            ,STKFISI
+                                                            ,SITEID
+                                                            ,INVTIDSKU
+                                                            ,TYPEDOCID
+                                                            ,DOCTYPEID)
+                                                    VALUES	(@BATNBR
+                                                            ,@INTRDATE
+                                                            ,@INTRDATEPROCE
+                                                            ,@CURYRATE
+                                                            ,@CURYDATE
+                                                            ,@PERPOST
+                                                            ,@SWTINOUT
+                                                            ,@QTY
+                                                            ,@STDCOSTPEN
+                                                            ,@STDCOSTUSD
+                                                            ,@COMPONENT
+                                                            ,@SLSPRICE
+                                                            ,@REFNBR
+                                                            ,@STKFISI
+                                                            ,@SITEID
+                                                            ,@INVTIDSKU
+                                                            ,@TYPEDOCID
+                                                            ,@DOCTYPEID)";
+
+                            var filasAfectadasAgregaMovimientoAlmacen = cn.Execute(sqlAgregaMovimientoAlmacen, new
+                            {
+                                BATNBR = movimientoAlmacen.CorrelativoMovimiento,
+                                INTRDATE = movimientoAlmacen.FechaDocumento,
+                                INTRDATEPROCE = movimientoAlmacen.FechaProceso,
+                                CURYRATE = movimientoAlmacen.MontoTipoDeCambio,
+                                CURYDATE = movimientoAlmacen.FechaTipoDeCambio,
+                                PERPOST = movimientoAlmacen.Periodo,
+                                SWTINOUT = movimientoAlmacen.FlagEntradaSalida,
+                                QTY = movimientoAlmacen.Cantidad,
+                                STDCOSTPEN = movimientoAlmacen.CostoReposicionNacional,
+                                STDCOSTUSD = movimientoAlmacen.CostoReposicionExtranjera,
+                                COMPONENT = movimientoAlmacen.EsArticuloFormula,
+                                SLSPRICE = movimientoAlmacen.Precio,
+                                REFNBR = movimientoAlmacen.DocumentoReferencia,
+                                STKFISI = movimientoAlmacen.EnInventarioFisico,
+                                SITEID = movimientoAlmacen.CodigoAlmacen,
+                                INVTIDSKU = movimientoAlmacen.CodigoArticulo,
+                                TYPEDOCID = movimientoAlmacen.CodigoTipoMovimientoAlmacen,
+                                DOCTYPEID = movimientoAlmacen.CodigoTipoDocumentoReferencia
+                            }, transaction: transaccion);
+                        }
+                    }
+
                     //Documento Anticipado
-                    if(pVenta.DocumentosAnticipado != null &&  pVenta.DocumentosAnticipado.Any())
+                    if (pVenta.DocumentosAnticipado != null && pVenta.DocumentosAnticipado.Any())
                     {
                         foreach (var documentoAnticipado in pVenta.DocumentosAnticipado)
                         {
-                            string sqlAgregaDocumentoAnticipado = @"INSERT INTO PC_OP_DOCANTI
+                            string sqlAgregaDocumentoAnticipado = @"INSERT INTO " + BaseDatos.PrefijoTabla + @"OP_DOCANTI
                                                                                 (DOCTYPEID
                                                                                 ,NBRDOCUMENT
                                                                                 ,SITEID
@@ -353,20 +421,20 @@ namespace PtoVta.Infraestructura.Repositorios.Ventas
 
                             var filasAfectadasAgregaDocumentoAnticipado = cn.Execute(sqlAgregaDocumentoAnticipado, new
                             {
-                                DOCTYPEID = documentoAnticipado.CodigoTipoDocumento,                                
+                                DOCTYPEID = documentoAnticipado.CodigoTipoDocumento,
                                 NBRDOCUMENT = documentoAnticipado.NumeroDocumento,
                                 SITEID = documentoAnticipado.CodigoAlmacen,
-                                DATEPROCE = documentoAnticipado.FechaProceso                        
+                                DATEPROCE = documentoAnticipado.FechaProceso
                             }, transaction: transaccion);
                         }
                     }
 
                     //A Cuenta por Cobrar
-                    if(pVenta.CuentasPorCobrar != null && pVenta.CuentasPorCobrar.Any())
+                    if (pVenta.CuentasPorCobrar != null && pVenta.CuentasPorCobrar.Any())
                     {
                         foreach (var cuentaPorCobrar in pVenta.CuentasPorCobrar)
                         {
-                            string sqlAgregaCuentaPorCobrar = @"INSERT INTO PC_DOCUMENTOS_CC
+                            string sqlAgregaCuentaPorCobrar = @"INSERT INTO " + BaseDatos.PrefijoTabla + @"DOCUMENTOS_CC
                                                                             (DOCTYPEID
                                                                             ,NBRDOCUMENT
                                                                             ,SITEID
@@ -439,7 +507,7 @@ namespace PtoVta.Infraestructura.Repositorios.Ventas
                                 CURYRATE = cuentaPorCobrar.TipoCambio,
                                 CURYID = cuentaPorCobrar.CodigoMoneda,
                                 DIAPAGID = cuentaPorCobrar.CodigoDiaDePago,
-                                DAYGRACE = cuentaPorCobrar.DiasDeGracia, 
+                                DAYGRACE = cuentaPorCobrar.DiasDeGracia,
                                 NBRBONUS = cuentaPorCobrar.NumeroVale,
                                 USERID = cuentaPorCobrar.CodigoUsuarioDeSistema
                             }, transaction: transaccion);
@@ -457,7 +525,7 @@ namespace PtoVta.Infraestructura.Repositorios.Ventas
             using (IDbConnection cn = new SqlConnection(this.CadenaConexion))
             {
                 string cadenaSQL = @"SELECT	NBRDOCUMENT 
-                                    FROM	PC_VENTAS (NOLOCK)
+                                    FROM	" + BaseDatos.PrefijoTabla + NombresTabla.TablaVentas + @" (NOLOCK)
                                     WHERE	SITEID			= @SITEID
                                             AND DOCTYPEID	= @DOCTYPEID
                                             AND NBRDOCUMENT	= @NBRDOCUMENT";
@@ -472,7 +540,7 @@ namespace PtoVta.Infraestructura.Repositorios.Ventas
 
                 if (!string.IsNullOrEmpty(numeroDocumento))
                 {
-                    return numeroDocumento;
+                    return numeroDocumento.Trim();
                 }
                 else
                     return string.Empty;
@@ -540,7 +608,7 @@ namespace PtoVta.Infraestructura.Repositorios.Ventas
                                             ,USERID				AS CodigoUsuarioDeSistema
                                             ,TAXIGVID			AS CodigoImpuestoIgv
                                             ,TAXISCID			AS CodigoImpuestoIsc
-                                    FROM	PC_VENTAS (NOLOCK)
+                                    FROM	" + BaseDatos.PrefijoTabla + NombresTabla.TablaVentas + @" (NOLOCK)
                                     WHERE	CUSTIDSS		= @CUSTIDSS";
 
                 var ventasPorCliente = cn.Query<Venta>(cadenaSQL,
@@ -558,13 +626,13 @@ namespace PtoVta.Infraestructura.Repositorios.Ventas
             //              );
         }
 
-        public IEnumerable<Venta> ObtenerTodos(string pCodigoAlmacen, string pFechaProcesoInicio, string pFechaProcesoFin, 
+        public IEnumerable<Venta> ObtenerTodos(string pCodigoAlmacen, string pFechaProcesoInicio, string pFechaProcesoFin,
                                                 string pNumeroDocumento, string pCodigoTipoNegocio)
         {
             using (IDbConnection cn = new SqlConnection(this.CadenaConexion))
             {
-                var numeroBuscado = "%" + (string.IsNullOrEmpty(pNumeroDocumento) ? string.Empty : pNumeroDocumento.Trim()) + "%";                
-                
+                var numeroBuscado = "%" + (string.IsNullOrEmpty(pNumeroDocumento.Trim()) ? string.Empty : pNumeroDocumento.Trim()) + "%";
+
                 string cadenaSQL = @"SELECT  NBRDOCUMENT			AS NumeroDocumento
                                             ,DATEDOC			AS FechaDocumento
                                             ,DATEPROCESALES		AS FechaProceso
@@ -611,21 +679,21 @@ namespace PtoVta.Infraestructura.Repositorios.Ventas
                                             ,USERID				AS CodigoUsuarioDeSistema
                                             ,TAXIGVID			AS CodigoImpuestoIgv
                                             ,TAXISCID			AS CodigoImpuestoIsc
-                                    FROM	PC_VENTAS (NOLOCK)
+                                    FROM	" + BaseDatos.PrefijoTabla + NombresTabla.TablaVentas + @" (NOLOCK)
                                     WHERE	SITEID				= @SITEID
                                             AND DATEPROCESALES	BETWEEN @DATEPROCESALESINI AND @DATEPROCESALESFIN
                                             AND NBRDOCUMENT		LIKE @NBRDOCUMENT
                                             AND BUSINESSTYPE	= @BUSINESSTYPE
                                     ORDER BY 1, 3, 2";
 
-                var ventasConsultados = cn.Query<Venta>(cadenaSQL, new 
-                                            { 
-                                                SITEID = pCodigoAlmacen,
-                                                DATEPROCESALESINI = pFechaProcesoInicio,
-                                                DATEPROCESALESFIN = pFechaProcesoFin,
-                                                NBRDOCUMENT = numeroBuscado,
-                                                BUSINESSTYPE = pCodigoTipoNegocio
-                                            }).ToList();
+                var ventasConsultados = cn.Query<Venta>(cadenaSQL, new
+                {
+                    SITEID = pCodigoAlmacen,
+                    DATEPROCESALESINI = pFechaProcesoInicio,
+                    DATEPROCESALESFIN = pFechaProcesoFin,
+                    NBRDOCUMENT = numeroBuscado,
+                    BUSINESSTYPE = pCodigoTipoNegocio
+                }).ToList();
 
                 if (ventasConsultados != null && ventasConsultados.Any())
                 {
@@ -634,7 +702,7 @@ namespace PtoVta.Infraestructura.Repositorios.Ventas
                 else
                     return null;
             }
-        }        
+        }
 
         public IEnumerable<Venta> ObtenerPagoVentaAdelantada(string pCodigoCliente, string pCodigoAlmacen,
                                                             string pCodigoTipoDocumento, DateTime pFechaProcesoVentas)
@@ -700,12 +768,12 @@ namespace PtoVta.Infraestructura.Repositorios.Ventas
                                             ,DA.DATEPROCE			AS DocumentoAnticipadoFechaProceso
                                             ,DA.DOCTYPEID			AS DocumentoAnticipadoCodigoTipoDocumento
                                             ,DA.SITEID				AS DocumentoAnticipadoCodigoAlmacen
-                                    FROM	PC_VENTAS				 (NOLOCK) V
-                                            INNER JOIN PC_OP_DOCANTI (NOLOCK) DA ON V.SITEID			= DA.SITEID
+                                    FROM	" + BaseDatos.PrefijoTabla + NombresTabla.TablaVentas + @"	 (NOLOCK) V
+                                            INNER JOIN " + BaseDatos.PrefijoTabla + @"OP_DOCANTI (NOLOCK) DA ON V.SITEID			= DA.SITEID
                                                                                     AND V.DOCTYPEID		= DA.DOCTYPEID
                                                                                     AND V.NBRDOCUMENT	= DA.NBRDOCUMENT
-                                            INNER JOIN PC_DOCTYPE	 (NOLOCK) TD ON V.DOCTYPEID			= TD.DOCTYPEID
-                                            RIGHT JOIN PC_IN_DOCSTATUS (NOLOCK) ED ON V.DOCSTATUSID		= ED.DOCSTATUSID
+                                            INNER JOIN " + BaseDatos.PrefijoTabla + @"DOCTYPE	 (NOLOCK) TD ON V.DOCTYPEID			= TD.DOCTYPEID
+                                            RIGHT JOIN " + BaseDatos.PrefijoTabla + @"IN_DOCSTATUS (NOLOCK) ED ON V.DOCSTATUSID		= ED.DOCSTATUSID
                                     WHERE	V.SITEID				= @SITEID
                                             AND V.DOCTYPEID			= @DOCTYPEID
                                             AND V.CUSTIDSS			= @CUSTIDSS
@@ -809,9 +877,9 @@ namespace PtoVta.Infraestructura.Repositorios.Ventas
                                             ,ED.DOCSTATUSID			AS EstadoDocumentoCodigoEstadoDocumento
                                             ,ED.DESCR				AS EstadoDocumentoDescripcionEstadoDocumento
                                             ,ED.DOCSTATUSID			AS EstadoDocumentoAbreviaturaEstadoDocumento
-                                    FROM	PC_VENTAS				 (NOLOCK) V
-                                            INNER JOIN PC_DOCTYPE	 (NOLOCK) TD ON V.DOCTYPEID			= TD.DOCTYPEID
-                                            RIGHT JOIN PC_IN_DOCSTATUS (NOLOCK) ED ON V.DOCSTATUSID		= ED.DOCSTATUSID
+                                    FROM	" + BaseDatos.PrefijoTabla + NombresTabla.TablaVentas + @" (NOLOCK) V
+                                            INNER JOIN " + BaseDatos.PrefijoTabla + @"DOCTYPE	 (NOLOCK) TD ON V.DOCTYPEID			= TD.DOCTYPEID
+                                            RIGHT JOIN " + BaseDatos.PrefijoTabla + @"IN_DOCSTATUS (NOLOCK) ED ON V.DOCSTATUSID		= ED.DOCSTATUSID
                                     WHERE	V.SITEID				= @SITEID
                                             AND V.DOCTYPEID			= @DOCTYPEID
                                             AND V.CUSTIDSS			= @CUSTIDSS

@@ -4,6 +4,7 @@ using System.Data.SqlClient;
 using Dapper;
 using PtoVta.Dominio.Agregados.Parametros;
 using PtoVta.Infraestructura.BaseTrabajo;
+using static PtoVta.Infraestructura.BaseTrabajo.Globales.GlobalInfraestructura;
 
 namespace PtoVta.Infraestructura.Repositorios.Parametros
 {
@@ -28,7 +29,7 @@ namespace PtoVta.Infraestructura.Repositorios.Parametros
                                             ,STKVENDOR		AS RequiereProveedor
                                             ,STKAVERAGE		AS EnCalculoCostoPromedio
                                             ,DESCR_ABR		AS DescripcionAbreviada
-                                    FROM	PC_IN_TYPEDOC (NOLOCK)
+                                    FROM	" + BaseDatos.PrefijoTabla + @"IN_TYPEDOC (NOLOCK)
                                     WHERE	TYPEDOCID = @TYPEDOCID";
 
                 var tipoMovimientoAlmacen = cn.QueryFirstOrDefault<TipoMovimientoAlmacen>(cadenaSQL,

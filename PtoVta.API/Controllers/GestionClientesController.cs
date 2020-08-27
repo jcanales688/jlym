@@ -39,7 +39,7 @@ namespace PtoVta.API.Controllers
                 if(estadoClienteAgregado == null)
                 {
                     return BadRequest(
-                        new ResultadoServicio<ResultadoClienteGrabadoDTO>(0,"Creacion de nuevo Cliente fallo.", "", null, null)
+                        new ResultadoServicio<ResultadoClienteGrabadoDTO>(6,"Creacion de nuevo Cliente fallo.", "", null, null)
                     );
                 }
 
@@ -48,7 +48,7 @@ namespace PtoVta.API.Controllers
             catch (Exception ex)
             {
                 return BadRequest(
-                    new ResultadoServicio<ResultadoClienteGrabadoDTO>(0,"Creacion de nuevo Cliente fallo.", ex.Message, null, null)
+                    new ResultadoServicio<ResultadoClienteGrabadoDTO>(6,"Creacion de nuevo Cliente fallo.", ex.Message, null, null)
                 );    
             }
 

@@ -4,6 +4,7 @@ using System.Data.SqlClient;
 using Dapper;
 using PtoVta.Dominio.Agregados.Parametros;
 using PtoVta.Infraestructura.BaseTrabajo;
+using static PtoVta.Infraestructura.BaseTrabajo.Globales.GlobalInfraestructura;
 
 namespace PtoVta.Infraestructura.Repositorios.Parametros
 {
@@ -20,7 +21,7 @@ namespace PtoVta.Infraestructura.Repositorios.Parametros
             {
                 string cadenaSQL = @"SELECT	BUSINESSTYPE	AS CodigoTipoNegocio
                                             ,DESCRBUSINESS	AS DescripcionTipoNegocio
-                                    FROM	PC_OP_BUSINESSTYPE (NOLOCK)
+                                    FROM	" + BaseDatos.PrefijoTabla + @"OP_BUSINESSTYPE (NOLOCK)
                                     WHERE	BUSINESSTYPE	= @BUSINESSTYPE";
 
                 var tipoDeNegocio = cn.QueryFirstOrDefault<TipoNegocio>(cadenaSQL,

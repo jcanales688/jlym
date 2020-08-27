@@ -33,7 +33,7 @@ namespace PtoVta.Aplicacion.GestionParametros
             else
             {
                 mensajeValidacion = "Consulta de Categorias fallida.";
-                return new ResultadoServicio<CategoriaArticuloDTO>(7,mensajeValidacion,
+                return new ResultadoServicio<CategoriaArticuloDTO>(6,mensajeValidacion,
                         string.Empty, null,  null);                
             }
         }

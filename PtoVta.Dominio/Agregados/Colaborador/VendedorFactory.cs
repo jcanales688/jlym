@@ -22,23 +22,14 @@ namespace PtoVta.Dominio.Agregados.Colaborador
                                              VendedorDireccion pDireccionPrimero
             )
         {
-            var vendedor = new Vendedor();
-
-            vendedor.GenerarNuevaIdentidad();
-
-            vendedor.CodigoVendedor  = pCodigoVendedor;
-            vendedor.NombresVendedor = pNombresVendedor;
-            vendedor.DocumentoIdentidad = pDocumentoIdentidad;
-            vendedor.Telefono = pTelefono; 
-            vendedor.Sexo = pSexo;
-            vendedor.FechaInicio = pFechaInicio;
-            vendedor.Clave = pClave;
-            vendedor.FechaNacimiento = pFechaNacimiento;
+            var vendedor = new Vendedor(pNombresVendedor, pDocumentoIdentidad, pTelefono,
+                                        pSexo, pFechaInicio, pCodigoVendedor,
+                                        pClave, pFechaNacimiento);
 
             // Value Object
             vendedor.Direccion = pDireccionPrimero;
 
-            vendedor.Habilitar();
+            // vendedor.Habilitar();
             vendedor.EstablecerAlmacenDeVendedor(pAlmacen);
             vendedor.EstablecerEstadoVendedorDeVendedor(pEstadoVendedor);
             vendedor.EstablecerUsuarioSistemaDeVendedor(pUsuarioSistema);

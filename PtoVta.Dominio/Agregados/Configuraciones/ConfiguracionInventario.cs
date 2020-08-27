@@ -38,7 +38,7 @@ namespace PtoVta.Dominio.Agregados.Configuraciones
         {
             if (!string.IsNullOrEmpty(pCodigoTMAIngresoTransferencia))
             {
-                this.CodigoTMAIngresoTransferencia = pCodigoTMAIngresoTransferencia;
+                this.CodigoTMAIngresoTransferencia = pCodigoTMAIngresoTransferencia.Trim();
                 // this.TMAIngresoTransferencia = null;
             }
         }
@@ -47,7 +47,7 @@ namespace PtoVta.Dominio.Agregados.Configuraciones
         {
             if (!string.IsNullOrEmpty(pCodigoTMASalidaTransferencia))
             {
-                this.CodigoTMASalidaTransferencia = pCodigoTMASalidaTransferencia;
+                this.CodigoTMASalidaTransferencia = pCodigoTMASalidaTransferencia.Trim();
                 // this.TMASalidaTransferencia = null;
             }
         }
@@ -56,7 +56,7 @@ namespace PtoVta.Dominio.Agregados.Configuraciones
         {
             if (!string.IsNullOrEmpty(pCodigoTMACompraTienda))
             {
-                this.CodigoTMACompraTienda = pCodigoTMACompraTienda;
+                this.CodigoTMACompraTienda = pCodigoTMACompraTienda.Trim();
                 // this.TMACompraTienda = null;
             }
         }
@@ -65,7 +65,7 @@ namespace PtoVta.Dominio.Agregados.Configuraciones
         {
             if (!string.IsNullOrEmpty(pCodigoTMACompraPlaya))
             {
-                this.CodigoTMACompraPlaya = pCodigoTMACompraPlaya;
+                this.CodigoTMACompraPlaya = pCodigoTMACompraPlaya.Trim();
                 // this.TMACompraPlaya = null;
             }
         }
@@ -74,7 +74,7 @@ namespace PtoVta.Dominio.Agregados.Configuraciones
         {
             if (!string.IsNullOrEmpty(pCodigoTMAReversaCompraPlaya))
             {
-                this.CodigoTMAReversaCompraPlaya = pCodigoTMAReversaCompraPlaya;
+                this.CodigoTMAReversaCompraPlaya = pCodigoTMAReversaCompraPlaya.Trim();
                 // this.TMAReversaCompraPlaya = null;
             }
         }
@@ -83,7 +83,7 @@ namespace PtoVta.Dominio.Agregados.Configuraciones
         {
             if (!string.IsNullOrEmpty(pCodigoTMAReversaCompraTienda))
             {
-                this.CodigoTMAReversaCompraTienda = pCodigoTMAReversaCompraTienda;
+                this.CodigoTMAReversaCompraTienda = pCodigoTMAReversaCompraTienda.Trim();
                 // this.TMAReversaCompraTienda = null;
             }
         }
@@ -92,7 +92,7 @@ namespace PtoVta.Dominio.Agregados.Configuraciones
         {
             if (!string.IsNullOrEmpty(pCodigoTMAVentas))
             {
-                this.CodigoTMAVentas = pCodigoTMAVentas;
+                this.CodigoTMAVentas = pCodigoTMAVentas.Trim();
                 // this.TMAVentas = null;
             }
         }
@@ -101,7 +101,7 @@ namespace PtoVta.Dominio.Agregados.Configuraciones
         {
             if (!string.IsNullOrEmpty(pCodigoArticuloRedondeoInventario))
             {
-                this.CodigoArticuloRedondeoInventario = pCodigoArticuloRedondeoInventario;
+                this.CodigoArticuloRedondeoInventario = pCodigoArticuloRedondeoInventario.Trim();
                 // this.ArticuloRedondeoInventario = null;
             }
         }        

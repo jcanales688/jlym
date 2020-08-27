@@ -4,12 +4,18 @@ using System.Data.SqlClient;
 using Dapper;
 using PtoVta.Dominio.Agregados.Configuraciones;
 using PtoVta.Infraestructura.BaseTrabajo;
-using static PtoVta.Dominio.BaseTrabajo.Globales.GlobalDominio;
+using static PtoVta.Dominio.BaseTrabajo.Enumeradores.AmbientePuntoDeVenta;
+using static PtoVta.Infraestructura.BaseTrabajo.Globales.GlobalInfraestructura;
 
 namespace PtoVta.Infraestructura.Repositorios.Configuraciones
 {
     public class RepositorioConfiguracionFormatoTicket : Repositorio<ConfiguracionFormatoTicket>, IRepositorioConfiguracionFormatoTicket
     {
+       public RepositorioConfiguracionFormatoTicket(string pCadenaConexion)
+        {
+            this.CadenaConexion = pCadenaConexion;
+        }
+
         public ConfiguracionFormatoTicket Obtener()
         {
            using (IDbConnection cn = new SqlConnection(this.CadenaConexion))
@@ -39,7 +45,7 @@ namespace PtoVta.Infraestructura.Repositorios.Configuraciones
                                             ,FOOT9			AS PiePagina09
                                             ,FOOT10			AS PiePagina10
                                             ,@AnchoTicket	AS AnchoTicket
-                                    FROM	PC_OP_TICKETFORM (NOLOCK)";
+                                    FROM	" + BaseDatos.PrefijoTabla + @"OP_TICKETFORM (NOLOCK)";
 
                 var configuracionFormatoTicket = cn.QueryFirstOrDefault<ConfiguracionFormatoTicket>(cadenaSQL,
                                         new {AnchoTicket = EnumGenerales.AnchoTicket});

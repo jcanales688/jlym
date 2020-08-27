@@ -4,8 +4,10 @@ using System.Data.SqlClient;
 using System.Linq;
 using Dapper;
 using PtoVta.Dominio.Agregados.Colaborador;
+using PtoVta.Dominio.Agregados.Parametros;
 using PtoVta.Dominio.Agregados.Usuario;
 using PtoVta.Infraestructura.BaseTrabajo;
+using static PtoVta.Infraestructura.BaseTrabajo.Globales.GlobalInfraestructura;
 
 namespace PtoVta.Infraestructura.Repositorios.Colaborador
 {
@@ -20,7 +22,7 @@ namespace PtoVta.Infraestructura.Repositorios.Colaborador
         {
             using (IDbConnection cn = new SqlConnection(this.CadenaConexion))
             {
-                string sqlAgregaCliente = @"INSERT INTO OP_SALESPERSON(SALESPERID, SALESPERNAME, IDENTITYDOC, PHONE, SEX, INITIALDATE, 
+                string sqlAgregaCliente = @"INSERT INTO " + BaseDatos.PrefijoTabla + @"OP_SALESPERSON(SALESPERID, SALESPERNAME, IDENTITYDOC, PHONE, SEX, INITIALDATE,
                                                             BIRTHDATE, PASSWORD, SITEID, STATUSPERSONID, USERID, ACCESSUSERID,  ADDRESS1, ADDRESS2) 
                                                             VALUES
                                                             (@SALESPERID, @SALESPERNAME, @IDENTITYDOC, @PHONE, @SEX, @INITIALDATE, 
@@ -40,7 +42,7 @@ namespace PtoVta.Infraestructura.Repositorios.Colaborador
                     STATUSPERSONID = pVendedor.CodigoEstadoVendedor,
                     USERID = pVendedor.CodigoUsuarioSistema,
                     ACCESSUSERID = pVendedor.CodigoUsuarioSistemaAcceso,
-                    ADDRESS1 = pVendedor.Direccion.Pais,
+                    ADDRESS1 = pVendedor.Direccion.Ubicacion,
                     ADDRESS2 = pVendedor.Direccion.Departamento
                 });
             }
@@ -59,14 +61,14 @@ namespace PtoVta.Infraestructura.Repositorios.Colaborador
                                             ,USERID				AS CodigoUsuarioSistema
                                             ,ACCESSUSERID		AS CodigoUsuarioSistemaAcceso
                                             ,CASE STATUSPERSONID WHEN '01' THEN 1 ELSE 0 END AS EsHabilitado
-                                    FROM    OP_SALESPERSON  (NOLOCK)
+                                    FROM    " + BaseDatos.PrefijoTabla + @"OP_SALESPERSON  (NOLOCK)
                                     WHERE	SALESPERID	= @SALESPERID;
 
                                     SELECT	STATUSPERSONID		AS CodigoEstadoVendedor
                                             ,DESCRSTATUSPERSON	AS DescripcionEstadoVendedor
-                                    FROM	OP_STATUSPERSON (NOLOCK)
+                                    FROM	" + BaseDatos.PrefijoTabla + @"OP_STATUSPERSON (NOLOCK)
                                     WHERE	STATUSPERSONID	IN (SELECT	STATUSPERSONID
-                                                                FROM	OP_SALESPERSON (NOLOCK)
+                                                                FROM	" + BaseDatos.PrefijoTabla + @"OP_SALESPERSON (NOLOCK)
                                                                 WHERE	SALESPERID	= @SALESPERID);                                    
 
                                     SELECT	USERID		AS CodigoUsuarioDeSistema
@@ -74,9 +76,9 @@ namespace PtoVta.Infraestructura.Repositorios.Colaborador
                                             ,USERNAME	AS DescripcionUsuario
                                             ,PASSWORD	AS Contraseña
                                             ,STATUS     AS EsHabilitado
-                                    FROM	SE_USERREC (NOLOCK)
+                                    FROM	" + BaseDatos.PrefijoTabla + @"SE_USERREC (NOLOCK)
                                     WHERE	USERID	IN ( SELECT	ACCESSUSERID		
-                                                        FROM	OP_SALESPERSON
+                                                        FROM	" + BaseDatos.PrefijoTabla + @"OP_SALESPERSON
                                                         WHERE	SALESPERID	= @SALESPERID)";
 
                 var resultado = cn.QueryMultiple(cadenaSQL,
@@ -127,7 +129,7 @@ namespace PtoVta.Infraestructura.Repositorios.Colaborador
                                             ,USERID				AS CodigoUsuarioSistema
                                             ,ACCESSUSERID		AS CodigoUsuarioSistemaAcceso
                                             ,CASE STATUSPERSONID WHEN '01' THEN 1 ELSE 0 END AS EsHabilitado
-                                    FROM    PC_OP_SALESPERSON  (NOLOCK)
+                                    FROM    " + BaseDatos.PrefijoTabla + @"OP_SALESPERSON  (NOLOCK)
                                     WHERE	SALESPERID	= @SALESPERID";
 
                 var vendedor = cn.QueryFirstOrDefault<Vendedor>(cadenaSQL,

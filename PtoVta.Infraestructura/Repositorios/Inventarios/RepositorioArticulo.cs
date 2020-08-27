@@ -7,6 +7,7 @@ using System.Linq;
 using Dapper;
 using PtoVta.Dominio.Agregados.Inventarios;
 using PtoVta.Infraestructura.BaseTrabajo;
+using static PtoVta.Infraestructura.BaseTrabajo.Globales.GlobalInfraestructura;
 
 namespace PtoVta.Infraestructura.Repositorios.Inventarios
 {
@@ -21,7 +22,7 @@ namespace PtoVta.Infraestructura.Repositorios.Inventarios
         {
             using (IDbConnection cn = new SqlConnection(this.CadenaConexion))
             {
-                string sqlActualizaArticuloDetalle = @"UPDATE	PC_IN_INVENTORYDAT
+                string sqlActualizaArticuloDetalle = @"UPDATE	" + BaseDatos.PrefijoTabla + @"IN_INVENTORYDAT
                                                         SET		QTYAVAIL		= @QTYAVAIL
                                                         WHERE	SITEID			= @SITEID
                                                                 AND INVTIDSKU	= @INVTIDSKU";
@@ -80,8 +81,8 @@ namespace PtoVta.Infraestructura.Repositorios.Inventarios
                                             ,CLASSUBID		AS CodigoSubCategoriaArticulo
                                             ,INVTYPEID		AS CodigoTipoInventario
                                             ,STKUNITID		AS CodigoUnidadDeMedida
-                                            ,ICONO         AS Imagen
-                                    FROM	IN_INVENTORY (NOLOCK)
+                                            ," + CamposTabla.NombreCampoImagen + @" AS Imagen
+                                    FROM	" + BaseDatos.PrefijoTabla + @"IN_INVENTORY (NOLOCK)
                                     WHERE	CLASSID			= @CLASSID
                                             AND CLASSUBID	= @CLASSUBID;
 
@@ -104,10 +105,10 @@ namespace PtoVta.Infraestructura.Repositorios.Inventarios
                                             ,INVTIDSKU		AS CodigoArticulo
                                             ,PRECLVID		AS CodigoTipoPrecioInventario
                                             ,SITEID			AS CodigoAlmacen
-                                    FROM	IN_INVENTORYDAT (NOLOCK)
+                                    FROM	" + BaseDatos.PrefijoTabla + @"IN_INVENTORYDAT (NOLOCK)
                                     WHERE	SITEID      = @SITEID
                                             AND INVTIDSKU IN(SELECT	INVTIDSKU
-                                                        FROM	IN_INVENTORY (NOLOCK)
+                                                        FROM	" + BaseDatos.PrefijoTabla + @"IN_INVENTORY (NOLOCK)
                                                         WHERE	CLASSID			= @CLASSID
                                                                 AND CLASSUBID	= @CLASSUBID)";
 
@@ -146,6 +147,7 @@ namespace PtoVta.Infraestructura.Repositorios.Inventarios
                                             ,USERID			AS UsuarioSistema
                                             ,0				AS ParaVentaManualEnPlaya
                                             ,0				AS EditarPrecio
+                                            ,USER3          AS PermitirStockNegativo
                                             ,''				AS CodigoMarcaArticulo
                                             ,TAXIGV			AS CodigoImpuestoIsc
                                             ,TAXISC			AS CodigoImpuestoIgv
@@ -153,8 +155,9 @@ namespace PtoVta.Infraestructura.Repositorios.Inventarios
                                             ,CLASSUBID		AS CodigoSubCategoriaArticulo
                                             ,INVTYPEID		AS CodigoTipoInventario
                                             ,STKUNITID		AS CodigoUnidadDeMedida
-                                            ,IMAGEN         AS Imagen
-                                    FROM	PC_IN_INVENTORY (NOLOCK)
+                                            ," + CamposTabla.NombreCampoImagen + @" AS Imagen
+                                            ,STATUS         AS EsHabilitado
+                                    FROM	" + BaseDatos.PrefijoTabla + @"IN_INVENTORY (NOLOCK)
                                     WHERE	INVTIDSKU		= @INVTIDSKU;
 
                                     SELECT	STOCKMIN		AS StockMinimo
@@ -176,7 +179,7 @@ namespace PtoVta.Infraestructura.Repositorios.Inventarios
                                             ,INVTIDSKU		AS CodigoArticulo
                                             ,PRECLVID		AS CodigoTipoPrecioInventario
                                             ,SITEID			AS CodigoAlmacen
-                                    FROM	PC_IN_INVENTORYDAT (NOLOCK)
+                                    FROM	" + BaseDatos.PrefijoTabla + @"IN_INVENTORYDAT (NOLOCK)
                                     WHERE	INVTIDSKU           = @INVTIDSKU
                                             AND SITEID          = @SITEID;
                                             
@@ -185,7 +188,7 @@ namespace PtoVta.Infraestructura.Repositorios.Inventarios
                                             ,CLASSID		AS CodigoCategoriaArticulo
                                             ,CLASSUBID		AS CodigoSubCategoriaArticulo
                                             ,STOCKPHISICAL	AS StockFisico
-                                    FROM	PC_IN_INVENTPHISICAL (NOLOCK)
+                                    FROM	" + BaseDatos.PrefijoTabla + @"IN_INVENTPHISICAL (NOLOCK)
                                     WHERE	SITEID			= @SITEID
                                             AND INVTIDSKU	= @INVTIDSKU";
 

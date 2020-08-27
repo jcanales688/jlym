@@ -6,6 +6,7 @@ using System.Linq;
 using Dapper;
 using PtoVta.Dominio.Agregados.Parametros;
 using PtoVta.Infraestructura.BaseTrabajo;
+using static PtoVta.Infraestructura.BaseTrabajo.Globales.GlobalInfraestructura;
 
 namespace PtoVta.Infraestructura.Repositorios.Parametros
 {
@@ -23,7 +24,7 @@ namespace PtoVta.Infraestructura.Repositorios.Parametros
             {
                 string cadenaSQL = @"SELECT	CURYTYPEID	AS CodigoClaseTipoCambio
                                             ,DESCR		AS DescripcionClaseTipoCambio
-                                    FROM	PC_CURYRATETYPE (NOLOCK)
+                                    FROM	" + BaseDatos.PrefijoTabla + @"CURYRATETYPE (NOLOCK)
                                     WHERE	CURYTYPEID	= @CURYTYPEID;
 
                                     SELECT TOP 1 CURYDATE	AS FechaTipoDeCambio
@@ -33,12 +34,12 @@ namespace PtoVta.Infraestructura.Repositorios.Parametros
                                             ,CURYTYPEID	AS CodigoClaseTipoCambio
                                             ,FROMCURYID AS CodigoMonedaOrigen
                                             ,TOCURYID	AS CodigoMonedaDestino
-                                    FROM	PC_CURYRATE (NOLOCK)
+                                    FROM	" + BaseDatos.PrefijoTabla + @"CURYRATE (NOLOCK)
                                     WHERE	CURYTYPEID		= @CURYTYPEID
                                             AND FROMCURYID	= @FROMCURYID
                                             AND TOCURYID	= @TOCURYID
                                             AND CURYDATE	= (	SELECT	MAX(CURYDATE) 
-                                                                FROM	PC_CURYRATE (NOLOCK)
+                                                                FROM	" + BaseDatos.PrefijoTabla + @"CURYRATE (NOLOCK)
                                                                 WHERE	CURYTYPEID		= @CURYTYPEID
                                                                         AND CURYDATE	<= @CURYDATE)";
 
@@ -107,22 +108,45 @@ namespace PtoVta.Infraestructura.Repositorios.Parametros
 
         public ClaseTipoCambio ObtenerPorCodigo(string pCodigoClaseTipoCambio)
         {
+            string fechaActual = DateTime.Now.ToString("yyyyMMdd");
+
             using (IDbConnection cn = new SqlConnection(this.CadenaConexion))
             {
                 string cadenaSQL = @"SELECT	CURYTYPEID	AS CodigoClaseTipoCambio
                                             ,DESCR		AS DescripcionClaseTipoCambio
-                                    FROM	PC_CURYRATETYPE (NOLOCK)
-                                    WHERE	CURYTYPEID	= @CURYTYPEID";
+                                    FROM	" + BaseDatos.PrefijoTabla + @"CURYRATETYPE (NOLOCK)
+                                    WHERE	CURYTYPEID	= @CURYTYPEID;
+                                    
+                                    SELECT  CURYDATE	AS FechaTipoDeCambio
+                                            ,RATE		AS MontoTipoDeCambio
+                                            ,OPERADOR	AS Operador
+                                            ,USERID		AS UsuarioDeSistema
+                                            ,CURYTYPEID	AS CodigoClaseTipoCambio
+                                            ,FROMCURYID AS CodigoMonedaOrigen
+                                            ,TOCURYID	AS CodigoMonedaDestino
+                                    FROM	PC_CURYRATE (NOLOCK)
+                                    WHERE	CURYTYPEID		= @CURYTYPEID
+                                            AND CURYDATE	= (	SELECT	MAX(CURYDATE) 
+                                                                FROM	PC_CURYRATE (NOLOCK)
+                                                                WHERE	CURYTYPEID		= @CURYTYPEID
+                                                                        AND CURYDATE	<= @CURYDATE)";
 
-                var claseDeTipoCambio = cn.QueryFirstOrDefault<ClaseTipoCambio>(cadenaSQL,
-                                                        new { CURYTYPEID = pCodigoClaseTipoCambio });
+                var resultado = cn.QueryMultiple(cadenaSQL,
+                                    new
+                                    {
+                                        CURYDATE = fechaActual,
+                                        CURYTYPEID = pCodigoClaseTipoCambio
+                                    });
 
-                if (claseDeTipoCambio != null)
+                var claseTipoDeCambio = resultado.Read<ClaseTipoCambio>().FirstOrDefault();
+                var ultimoTipoDeCambio = resultado.Read<TipoDeCambio>().ToList();
+
+                if (claseTipoDeCambio != null)
                 {
-                    return claseDeTipoCambio;
+                    return MapeoClaseTipoCambioPorCodigo(claseTipoDeCambio, ultimoTipoDeCambio);
                 }
                 else
-                    return null;
+                    return null;                                                                        
             }
         }
 
@@ -140,5 +164,23 @@ namespace PtoVta.Infraestructura.Repositorios.Parametros
 
             return claseTipoDeCambio;
         }
+
+        private ClaseTipoCambio MapeoClaseTipoCambioPorCodigo(ClaseTipoCambio pClaseTipoCambio, List<TipoDeCambio> pTiposDeCambio)
+        {
+            var claseTipoDeCambio = new ClaseTipoCambio();
+            claseTipoDeCambio = pClaseTipoCambio;
+
+            if(pTiposDeCambio != null)
+            {
+                foreach (var tipoDeCambio in pTiposDeCambio)
+                {
+                    claseTipoDeCambio.AgregarNuevoTipoDeCambio(tipoDeCambio.FechaTipoDeCambio, tipoDeCambio.MontoTipoDeCambio,
+                                                                tipoDeCambio.Operador, tipoDeCambio.UsuarioDeSistema,
+                                                                tipoDeCambio.CodigoMonedaOrigen, tipoDeCambio.CodigoMonedaDestino);                     
+                }                   
+            }
+
+            return claseTipoDeCambio;
+        }        
     }
 }

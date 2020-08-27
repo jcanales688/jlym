@@ -34,7 +34,21 @@ namespace PtoVta.Aplicacion.DTO.Ventas
         public string CodigoUsuarioDeSistema { get; set; }
         public string CodigoPais { get; set; }
         public string CodigoDepartamento { get; set; }
-        public string CodigoDistrito { get; set; }        
+        public string CodigoDistrito { get; set; }    
+
+        public string DireccionPrimeroPais { get; set; }
+        public string DireccionPrimeroDepartamento { get; set; }
+        public string DireccionPrimeroProvincia { get; set; }
+        public string DireccionPrimeroDistrito { get; set; }
+        public string DireccionPrimeroUbicacion { get; set; }
+
+        public string DireccionSegundoPais { get; set; }
+        public string DireccionSegundoDepartamento { get; set; }
+        public string DireccionSegundoProvincia { get; set; }
+        public string DireccionSegundoDistrito { get; set; }        
+        public string DireccionSegundoUbicacion { get; set; }
+        
+        
 
         public CondicionPagoDTO CondicionPagoDocumentoGenerado { get; set; }
         public CondicionPagoDTO CondicionPagoTicket { get; set; }
@@ -42,7 +56,7 @@ namespace PtoVta.Aplicacion.DTO.Ventas
 
         public List<ClientePlacaDTO> ClientePlacas { get; set; }   
         public List<DocumentoLibreDTO> DocumentosLibre { get; set; }           
-        public List<ClienteLimiteCreditoDTO> ClienteLimitesCredito { get; set; }           
-
+        public ClienteLimiteCreditoDTO ClienteLimiteCredito { get; set; }
+    
     }
 }

@@ -7,6 +7,8 @@ using Dapper;
 using PtoVta.Dominio.Agregados.Parametros;
 using PtoVta.Dominio.Agregados.Ventas;
 using PtoVta.Infraestructura.BaseTrabajo;
+using static PtoVta.Dominio.BaseTrabajo.Enumeradores.AmbienteVenta;
+using static PtoVta.Infraestructura.BaseTrabajo.Globales.GlobalInfraestructura;
 
 namespace PtoVta.Infraestructura.Repositorios.Ventas
 {
@@ -24,7 +26,7 @@ namespace PtoVta.Infraestructura.Repositorios.Ventas
                 cn.Open();
                 using (var transaccion = cn.BeginTransaction())
                 {
-                    string sqlAgregaCliente = @"INSERT INTO PC_CUSTOMER
+                    string sqlAgregaCliente = @"INSERT INTO " + BaseDatos.PrefijoTabla + @"CUSTOMER
                                                         (CUSTIDSS
                                                         ,DIAPAGID
                                                         ,TERMIDSUM
@@ -117,12 +119,12 @@ namespace PtoVta.Infraestructura.Repositorios.Ventas
                         AFFECT = pCliente.EsAfecto
                     }, transaction: transaccion);
 
-                    //Venta con Vales
+                    //Placas
                     if (pCliente.ClientePlacas != null && pCliente.ClientePlacas.Any())
                     {
                         foreach (var clientePlaca in pCliente.ClientePlacas)
                         {
-                            string sqlAgregaClientePlaca = @"INSERT INTO PC_OP_CUSTBADGE
+                            string sqlAgregaClientePlaca = @"INSERT INTO " + BaseDatos.PrefijoTabla + @"OP_CUSTBADGE
                                                                     (CUSTIDSS
                                                                     ,BADGE)
                                                             VALUES	(@CUSTIDSS
@@ -139,6 +141,132 @@ namespace PtoVta.Infraestructura.Repositorios.Ventas
                     transaccion.Commit();
                 }
 
+            }
+        }
+
+        public override void Modificar(Cliente pCliente)
+        {
+            using (IDbConnection cn = new SqlConnection(this.CadenaConexion))
+            {
+
+                string sqlActualizaCliente = @"UPDATE	" + BaseDatos.PrefijoTabla + @"CUSTOMER
+                                                SET		DIAPAGID			= @DIAPAGID
+                                                        ,TERMIDSUM			= @TERMIDSUM
+                                                        ,CUSTNAME			= @CUSTNAME
+                                                        ,ADDR1				= @ADDR1
+                                                        ,ADDR2				= @ADDR2
+                                                        ,PHONE				= @PHONE
+                                                        ,FAX				= @FAX
+                                                        ,CUSTZONEID			= @CUSTZONEID
+                                                        ,COUNTRYID			= @COUNTRYID
+                                                        ,STATEID			= @STATEID
+                                                        ,CITYID				= @CITYID
+                                                        ,CUSTCLASSID		= @CUSTCLASSID
+                                                        ,TAXID1				= @TAXID1
+                                                        ,TAXID2				= @TAXID2
+                                                        ,CURYTYPEID			= @CURYTYPEID
+                                                        ,TERMIDDOC			= @TERMIDDOC
+                                                        ,DATEORIG			= @DATEORIG
+                                                        ,DATEPROC			= @DATEPROC
+                                                        ,DAYGRACE			= @DAYGRACE
+                                                        ,CURYID				= @CURYID
+                                                        ,SALESPERID			= @SALESPERID
+                                                        ,USERID				= @USERID
+                                                        ,CUSTSTATUSID		= @CUSTSTATUSID
+                                                        ,MTOTOTLIMIT		= @MTOTOTLIMIT
+                                                        ,TOTCURRBAL			= @TOTCURRBAL
+                                                        ,AFFECT				= @AFFECT
+                                                        --,USER1				= @USER1
+                                                        --,USER2				= @USER2
+                                                        --,USER3				= @USER3
+                                                        --,USER4				= @USER4
+                                                        --,USER5				= @USER5
+                                                        --,USER6				= @USER6
+                                                        --,USER7				= @USER7
+                                                        --,USER8				= @USER8
+                                                        --,USER9				= @USER9
+                                                WHERE	CUSTIDSS			= @CUSTIDSS";
+
+                var filasAfectadasActualizaCliente = cn.Execute(sqlActualizaCliente, new
+                {
+                    CUSTIDSS            = pCliente.CodigoCliente,
+                    DIAPAGID			= pCliente.CodigoDiaDePago,
+                    TERMIDSUM			= pCliente.CodigoCondicionPagoDocumentoGenerado,
+                    CUSTNAME			= pCliente.NombresORazonSocial,
+                    ADDR1				= pCliente.DireccionPrimero.Ubicacion,
+                    ADDR2				= pCliente.DireccionSegundo.Ubicacion,
+                    PHONE				= pCliente.Telefono,
+                    FAX					= pCliente.Fax,
+                    CUSTZONEID			= pCliente.CodigoZonaCliente,
+                    COUNTRYID			= pCliente.CodigoPais,
+                    STATEID				= pCliente.CodigoDepartamento,
+                    CITYID				= pCliente.CodigoDistrito,
+                    CUSTCLASSID			= pCliente.CodigoTipoCliente,
+                    TAXID1				= pCliente.CodigoImpuestoIgv,
+                    TAXID2				= pCliente.CodigoImpuestoIsc,
+                    CURYTYPEID			= pCliente.CodigoClaseTipoCambio,
+                    TERMIDDOC			= pCliente.CodigoCondicionPagoTicket,
+                    DATEORIG			= pCliente.FechaNacimiento,
+                    DATEPROC			= pCliente.FechaInscripcion,
+                    DAYGRACE			= pCliente.DiasDeGracia,
+                    CURYID				= pCliente.CodigoMoneda,
+                    SALESPERID			= pCliente.CodigoVendedor,
+                    USERID				= pCliente.CodigoUsuarioDeSistema,
+                    CUSTSTATUSID		= pCliente.CodigoEstadoDeCliente,
+                    MTOTOTLIMIT			= pCliente.MontoLimiteCredito,
+                    TOTCURRBAL			= pCliente.Deuda,
+                    AFFECT				= pCliente.EsAfecto
+                    // USER1				= string.Empty,
+                    // USER2				= string.Empty,
+                    // USER3				= string.Empty,
+                    // USER4				= string.Empty,
+                    // USER5				= string.Empty,
+                    // USER6				= string.Empty,
+                    // USER7				= string.Empty,
+                    // USER8				= string.Empty,
+                    // USER9				= string.Empty 
+                });
+
+                if (pCliente.ClienteLimiteCredito != null)
+                {
+                    string sqlActualizaClienteLimiteCredito = @"UPDATE	" + BaseDatos.PrefijoTabla + @"OP_CUST_LIMIT
+                                                                SET		PORCENTLIMITED		= @PORCENTLIMITED
+                                                                        ,CREDLIMITED		= @CREDLIMITED
+                                                                        ,CURRBAL			= @CURRBAL
+                                                                        ,PORCENTSURPLUS		= @PORCENTSURPLUS		
+                                                                        ,MTOSURPLUS			= @MTOSURPLUS
+                                                                        ,USERID				= @USERID
+                                                                        --,REST				= @REST
+                                                                        --,USER1				= @USER1
+                                                                        --,USER2				= @USER2
+                                                                        --,USER3				= @USER3
+                                                                        --,USER4				= @USER4
+                                                                        --,MOTIVO				= @MOTIVO
+                                                                        --,CREDLIMITEDC		= @CREDLIMITEDC
+                                                                        --,CURRBALC			= @CURRBALC
+                                                                WHERE	CUSTIDSS			= @CUSTIDSS
+                                                                        AND SITEID			= @SITEID";
+
+                    var filasAfectadasActualizaClienteLimiteCredito = cn.Execute(sqlActualizaClienteLimiteCredito, new
+                    {
+                        CUSTIDSS			= pCliente.CodigoCliente,
+                        SITEID				= pCliente.ClienteLimiteCredito.CodigoAlmacen,
+                        PORCENTLIMITED		= pCliente.ClienteLimiteCredito.PorcentajeLimite,
+                        CREDLIMITED			= pCliente.ClienteLimiteCredito.MontoLimite,
+                        CURRBAL				= pCliente.ClienteLimiteCredito.Deuda,
+                        PORCENTSURPLUS		= pCliente.ClienteLimiteCredito.PorcentajeExcede,
+                        MTOSURPLUS			= pCliente.ClienteLimiteCredito.MontoExcedente,
+                        USERID				= pCliente.ClienteLimiteCredito.CodigoUsuarioDeSistema
+                        // REST				= string.Empty,
+                        // USER1				= string.Empty,
+                        // USER2				= string.Empty,
+                        // USER3				= string.Empty,
+                        // USER4				= string.Empty,
+                        // MOTIVO				= string.Empty,
+                        // CREDLIMITEDC		= string.Empty,
+                        // CURRBALC			= string.Empty
+                    });
+                }
             }
         }
 
@@ -171,23 +299,23 @@ namespace PtoVta.Infraestructura.Repositorios.Ventas
                                             ,TERMIDDOC		AS CodigoCondicionPagoTicket
                                             ,CUSTSTATUSID	AS CodigoEstadoDeCliente
                                             ,USERID			AS CodigoUsuarioDeSistema
-                                    FROM	PC_CUSTOMER (NOLOCK)
+                                    FROM	" + BaseDatos.PrefijoTabla + @"CUSTOMER (NOLOCK)
                                     WHERE	RTRIM(TAXREGNBR)	= @TAXREGNBR;
 
                                     SELECT	TERMID		AS CodigoCondicionPago
                                             ,DUEINTRV	AS DiasPago
                                             ,DESCR		AS DescripcionCondicionPago
-                                    FROM	PC_TERMS (NOLOCK)
+                                    FROM	" + BaseDatos.PrefijoTabla + @"TERMS (NOLOCK)
                                     WHERE	TERMID IN (	SELECT  TERMIDSUM
-                                                        FROM	PC_CUSTOMER (NOLOCK)
+                                                        FROM	" + BaseDatos.PrefijoTabla + @"CUSTOMER (NOLOCK)
                                                         WHERE	RTRIM(TAXREGNBR)	= @TAXREGNBR);
 
                                     SELECT	TERMID		AS CodigoCondicionPago
                                             ,DUEINTRV	AS DiasPago
                                             ,DESCR		AS DescripcionCondicionPago
-                                    FROM	PC_TERMS (NOLOCK)
+                                    FROM	" + BaseDatos.PrefijoTabla + @"TERMS (NOLOCK)
                                     WHERE	TERMID IN (	SELECT  TERMIDDOC
-                                                        FROM	PC_CUSTOMER (NOLOCK)
+                                                        FROM	" + BaseDatos.PrefijoTabla + @"CUSTOMER (NOLOCK)
                                                         WHERE	RTRIM(TAXREGNBR)	= @TAXREGNBR);
 
                                     SELECT	 DIAPAGID		AS CodigoDiaDePago
@@ -206,16 +334,16 @@ namespace PtoVta.Infraestructura.Repositorios.Ventas
                                             ,FECCREACION	AS FechaCreacion
                                             ,FECULTACT		AS FechaUltimaActualiza
                                             ,STATUSSEM		AS EstadoSemana
-                                    FROM	PC_XDIAS_PAGO (NOLOCK)
+                                    FROM	" + BaseDatos.PrefijoTabla + @"XDIAS_PAGO (NOLOCK)
                                     WHERE	DIAPAGID	IN	(	SELECT  DIAPAGID
-                                                                FROM	PC_CUSTOMER (NOLOCK)
+                                                                FROM	" + BaseDatos.PrefijoTabla + @"CUSTOMER (NOLOCK)
                                                                 WHERE	RTRIM(TAXREGNBR)	= @TAXREGNBR);
 
                                     SELECT	CUSTIDSS	AS CodigoCliente
                                             ,BADGE		AS DescripcionPlaca
-                                    FROM	PC_OP_CUSTBADGE (NOLOCK)
+                                    FROM	" + BaseDatos.PrefijoTabla + @"OP_CUSTBADGE (NOLOCK)
                                     WHERE	CUSTIDSS IN	(   SELECT	CUSTIDSS
-                                                            FROM	PC_CUSTOMER (NOLOCK)
+                                                            FROM	" + BaseDatos.PrefijoTabla + @"CUSTOMER (NOLOCK)
                                                             WHERE	RTRIM(TAXREGNBR)	= @TAXREGNBR);
 
                                     SELECT	 DOCUMENTFREEID AS NumeroDocumentoLibre
@@ -225,10 +353,10 @@ namespace PtoVta.Infraestructura.Repositorios.Ventas
                                             ,CUSTIDSS		AS CodigoCliente 
                                             ,SITEID			AS CodigoAlmacen 
                                             ,USERID			AS CodigoUsuarioDeSistema 
-                                    FROM	PC_OP_DOCUMENTFREE (NOLOCK)
+                                    FROM	" + BaseDatos.PrefijoTabla + @"OP_DOCUMENTFREE (NOLOCK)
                                     WHERE	SITEID			= @SITEID
                                             AND	CUSTIDSS	IN	(	SELECT  CUSTIDSS
-                                                                    FROM	PC_CUSTOMER (NOLOCK)
+                                                                    FROM	" + BaseDatos.PrefijoTabla + @"CUSTOMER (NOLOCK)
                                                                     WHERE	RTRIM(TAXREGNBR)	= @TAXREGNBR);
                                                                     
                                     SELECT	PORCENTLIMITED		AS PorcentajeLimite
@@ -239,9 +367,9 @@ namespace PtoVta.Infraestructura.Repositorios.Ventas
                                             ,CUSTIDSS			AS CodigoCliente
                                             ,SITEID				AS CodigoAlmacen
                                             ,USERID				AS CodigoUsuarioDeSistema
-                                    FROM	PC_OP_CUST_LIMIT (NOLOCK)
+                                    FROM	" + BaseDatos.PrefijoTabla + @"OP_CUST_LIMIT (NOLOCK)
                                     WHERE	CUSTIDSS IN	(SELECT	CUSTIDSS
-                                                        FROM	PC_CUSTOMER (NOLOCK)
+                                                        FROM	" + BaseDatos.PrefijoTabla + @"CUSTOMER (NOLOCK)
                                                         WHERE	RTRIM(TAXREGNBR)	= @TAXREGNBR)";
 
                 var resultado = cn.QueryMultiple(cadenaSQL,
@@ -253,12 +381,12 @@ namespace PtoVta.Infraestructura.Repositorios.Ventas
                 var diasDePago = resultado.Read<DiaDePago>().FirstOrDefault();
                 var placas = resultado.Read<ClientePlaca>().ToList();
                 var documentosLibre = resultado.Read<DocumentoLibre>().ToList();
-                var limitesCredito = resultado.Read<ClienteLimiteCredito>().ToList();
+                var limiteCredito = resultado.Read<ClienteLimiteCredito>().FirstOrDefault();
 
                 if (cliente != null)
                 {
                     return MapeoCliente(cliente, condicionPagoDocumentoGenerado, condicionPagoTicket,
-                                        diasDePago, placas, documentosLibre, limitesCredito);
+                                        diasDePago, placas, documentosLibre, limiteCredito);
                 }
                 else
                     return null;
@@ -306,14 +434,48 @@ namespace PtoVta.Infraestructura.Repositorios.Ventas
                                             ,TERMIDDOC		AS CodigoCondicionPagoTicket
                                             ,CUSTSTATUSID	AS CodigoEstadoDeCliente
                                             ,USERID			AS CodigoUsuarioDeSistema
-                                    FROM	PC_CUSTOMER (NOLOCK)
-                                    WHERE	RTRIM(CUSTIDSS)		= @CUSTIDSS";
+                                            ,ADDR1          AS DireccionPrimeroUbicacion
+                                            ,ADDR2          AS DireccionSegundoUbicacion
+                                    FROM	" + BaseDatos.PrefijoTabla + @"CUSTOMER (NOLOCK)
+                                    WHERE	RTRIM(CUSTIDSS)		= @CUSTIDSS;
 
-                var cliente = cn.QueryFirstOrDefault<Cliente>(cadenaSQL,
-                                            new { CUSTIDSS = pCodigoCliente });
+                                    SELECT	TERMID		AS CodigoCondicionPago
+                                            ,DUEINTRV	AS  DiasPago
+                                            ,DESCR		AS DescripcionCondicionPago
+                                    FROM	" + BaseDatos.PrefijoTabla + @"TERMS (NOLOCK)
+                                    WHERE	TERMID IN (	SELECT	TERMIDDOC
+                                                        FROM	" + BaseDatos.PrefijoTabla + @"CUSTOMER (NOLOCK)
+                                                        WHERE	RTRIM(CUSTIDSS) = @CUSTIDSS);
+                                                        
+                                    SELECT	TAXID	AS CodigoImpuesto
+                                            ,DESCR	AS DescripcionImpuesto
+                                            ,VALUE	AS Valor 
+                                    FROM	" + BaseDatos.PrefijoTabla + @"TAXS (NOLOCK)
+                                    WHERE	TAXID IN (	SELECT	ISNULL(TAXID1, 'IV')
+                                                        FROM	" + BaseDatos.PrefijoTabla + @"CUSTOMER (NOLOCK)
+                                                        WHERE	RTRIM(CUSTIDSS) = @CUSTIDSS);
+                                                        
+                                    SELECT	PORCENTLIMITED		AS PorcentajeLimite
+                                            ,CREDLIMITED		AS MontoLimite
+                                            ,CURRBAL			AS Deuda
+                                            ,PORCENTSURPLUS		AS PorcentajeExcede
+                                            ,MTOSURPLUS			AS MontoExcedente
+                                            ,CUSTIDSS			AS CodigoCliente
+                                            ,SITEID				AS CodigoAlmacen
+                                            ,USERID				AS CodigoUsuarioDeSistema
+                                    FROM	" + BaseDatos.PrefijoTabla + @"OP_CUST_LIMIT (NOLOCK)
+                                    WHERE	CUSTIDSS        = @CUSTIDSS";
+
+                var resultado = cn.QueryMultiple(cadenaSQL, new { CUSTIDSS = pCodigoCliente });
+
+                var cliente = resultado.Read<Cliente>().FirstOrDefault();
+                var condicionPagoTicket = resultado.Read<CondicionPago>().FirstOrDefault();
+                var impuestoIgv = resultado.Read<Impuesto>().FirstOrDefault();
+                var limiteCredito = resultado.Read<ClienteLimiteCredito>().FirstOrDefault();
+
                 if (cliente != null)
                 {
-                    return cliente;
+                    return MapeoClientePorCodigo(cliente, condicionPagoTicket, impuestoIgv, limiteCredito);
                 }
                 else
                     return null;
@@ -350,7 +512,7 @@ namespace PtoVta.Infraestructura.Repositorios.Ventas
                                             ,TERMIDDOC		AS CodigoCondicionPagoTicket
                                             ,CUSTSTATUSID	AS CodigoEstadoDeCliente
                                             ,USERID			AS CodigoUsuarioDeSistema
-                                    FROM	PC_CUSTOMER (NOLOCK)
+                                    FROM	" + BaseDatos.PrefijoTabla + @"CUSTOMER (NOLOCK)
                                     ORDER BY CUSTNAME";
 
                 var clientesConsultados = cn.Query<Cliente>(cadenaSQL).ToList();
@@ -365,7 +527,7 @@ namespace PtoVta.Infraestructura.Repositorios.Ventas
 
         private Cliente MapeoCliente(Cliente pCliente, CondicionPago pCondicionPagoDocumentoGenerado, CondicionPago pCondicionPagoTicket,
                 DiaDePago pDiaDePago, List<ClientePlaca> pClientePlacas, List<DocumentoLibre> pDocumentosLibre,
-                List<ClienteLimiteCredito> pClienteLimitesCredito)
+                ClienteLimiteCredito pClienteLimiteCredito)
 
         {
             var cliente = new Cliente();
@@ -393,15 +555,41 @@ namespace PtoVta.Infraestructura.Repositorios.Ventas
                 }
             }
 
-            if (pClienteLimitesCredito != null && pClienteLimitesCredito.Any())
-            {
-                foreach (var limiteCredito in pClienteLimitesCredito)
-                {
-                    cliente.AgregarNuevoClienteLimiteCredito(limiteCredito.PorcentajeLimite, limiteCredito.MontoLimite,
-                            limiteCredito.Deuda, limiteCredito.PorcentajeExcede, limiteCredito.MontoExcedente,
-                            limiteCredito.CodigoAlmacen, limiteCredito.CodigoUsuarioDeSistema);
-                }
-            }
+            if (pClienteLimiteCredito != null)
+                cliente.AgregarClienteLimiteCredito(pClienteLimiteCredito.PorcentajeLimite, pClienteLimiteCredito.MontoLimite,
+                        pClienteLimiteCredito.Deuda, pClienteLimiteCredito.PorcentajeExcede, pClienteLimiteCredito.MontoExcedente,
+                        pClienteLimiteCredito.CodigoAlmacen);
+
+
+            return cliente;
+        }
+
+
+        private Cliente MapeoClientePorCodigo(Cliente pCliente, CondicionPago pCondicionPagoTicket,
+                                            Impuesto pImpuestoIgv, ClienteLimiteCredito pClienteLimiteCredito)
+
+        {
+            var cliente = new Cliente();
+            cliente = pCliente;
+            cliente.DireccionPrimero = new ClienteDireccion(string.Empty, 
+                                                            string.Empty, 
+                                                            string.Empty,
+                                                            string.Empty,
+                                                            pCliente.DireccionPrimeroUbicacion);
+
+            cliente.DireccionSegundo = new ClienteDireccion(string.Empty, 
+                                                            string.Empty, 
+                                                            string.Empty,
+                                                            string.Empty,
+                                                            pCliente.DireccionSegundoUbicacion);
+
+            if (pClienteLimiteCredito != null)
+                cliente.AgregarClienteLimiteCredito(pClienteLimiteCredito.PorcentajeLimite, pClienteLimiteCredito.MontoLimite,
+                        pClienteLimiteCredito.Deuda, pClienteLimiteCredito.PorcentajeExcede, pClienteLimiteCredito.MontoExcedente,
+                        pClienteLimiteCredito.CodigoAlmacen);
+
+            cliente.EstablecerCondicionPagoTicketDeCliente(pCondicionPagoTicket);
+            cliente.EstablecerImpuestoIgvDeCliente(pImpuestoIgv);
 
             return cliente;
         }

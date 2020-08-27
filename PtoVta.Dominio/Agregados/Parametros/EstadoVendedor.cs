@@ -1,7 +1,7 @@
 using System;
 using PtoVta.Dominio.BaseTrabajo;
 
-namespace PtoVta.Dominio.Agregados.Colaborador
+namespace PtoVta.Dominio.Agregados.Parametros
 {
     public class EstadoVendedor : Entidad
     {

@@ -12,6 +12,7 @@ using PtoVta.Infraestructura;
 using PtoVta.Infraestructura.Repositorios.Colaborador;
 using PtoVta.Infraestructura.Repositorios.Inventarios;
 using PtoVta.Infraestructura.Repositorios.Modulo;
+using PtoVta.Infraestructura.Repositorios.Parametros;
 using PtoVta.Infraestructura.Repositorios.Usuario;
 using PtoVta.Infraestructura.Transversales.Adaptador;
 using PtoVta.Infraestructura.Transversales.Autenticacion;
@@ -34,10 +35,10 @@ namespace PtoVta.Aplicacion.Tests
 
         public ServicioAplicacionVendedorTest()
         {
-            _IRepositorioAlmacen = new RepositorioAlmacen(ConfiguracionGlobal.CadenaConexionBd);            
-            _IRepositorioEstadoVendedor = new RepositorioEstadoVendedor(ConfiguracionGlobal.CadenaConexionBd);            
-            _IIRepositorioUsuarioSistema = new RepositorioUsuarioSistema(ConfiguracionGlobal.CadenaConexionBd);            
-            _IRepositorioVendedor = new RepositorioVendedor(ConfiguracionGlobal.CadenaConexionBd);                                                
+            _IRepositorioAlmacen = new RepositorioAlmacen(Infraestructura.ConfiguracionGlobal.CadenaConexionBd);
+            _IRepositorioEstadoVendedor = new RepositorioEstadoVendedor(Infraestructura.ConfiguracionGlobal.CadenaConexionBd);
+            _IIRepositorioUsuarioSistema = new RepositorioUsuarioSistema(Infraestructura.ConfiguracionGlobal.CadenaConexionBd);
+            _IRepositorioVendedor = new RepositorioVendedor(Infraestructura.ConfiguracionGlobal.CadenaConexionBd);                                                
 
             _IServicioAplicacionVendedor = new ServicioAplicacionVendedor(_IRepositorioAlmacen, 
                     _IRepositorioEstadoVendedor, _IIRepositorioUsuarioSistema, _IRepositorioVendedor);
@@ -51,15 +52,17 @@ namespace PtoVta.Aplicacion.Tests
         [Fact]
         public void AgregarNuevoUsuarioVendedor_Test() 
         {
+            var codigoVendedor = "90455877";
+
             var vendedorDTO = new VendedorDTO(){
-                CodigoVendedor = "10412891",
-                NombresVendedor = "AMMY ILLESCAS",
-                DocumentoIdentidad = "10412891",
+                CodigoVendedor = codigoVendedor,
+                NombresVendedor = "GABRIELA ILLESCAS",
+                DocumentoIdentidad = "10412892",
                 Telefono = "5203124",
                 Sexo="M",
                 FechaInicio = DateTime.Now,
                 FechaNacimiento = DateTime.Now,
-                Clave = "456",
+                Clave = "567",
                 DireccionPrimeroPais = "ARGENTINA",
                 DireccionPrimeroDepartamento = "BUENOS AIRES",
                 DireccionPrimeroProvincia = "ROSARIO",
@@ -74,7 +77,7 @@ namespace PtoVta.Aplicacion.Tests
             ResultadoServicio<VendedorDTO> vendedorNuevo = _IServicioAplicacionVendedor
                             .AgregarNuevoUsuarioVendedor(vendedorDTO);
 
-            Assert.False(vendedorDTO == null);
+            Assert.True(vendedorNuevo.Dato.CodigoVendedor == codigoVendedor);
         }        
     }
 }

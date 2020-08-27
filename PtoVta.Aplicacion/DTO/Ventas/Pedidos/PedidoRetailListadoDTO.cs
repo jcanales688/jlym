@@ -6,7 +6,7 @@ namespace PtoVta.Aplicacion.DTO.Ventas
     public class PedidoRetailListadoDTO
     {
          public int Correlativo { get; set; }
-        public decimal NumeroDocumento { get; set; }
+        public string NumeroDocumento { get; set; }
         public DateTime FechaDocumento { get; set; }
         public DateTime FechaProceso { get; set; }
         public string Periodo { get; set; } 
@@ -30,7 +30,7 @@ namespace PtoVta.Aplicacion.DTO.Ventas
         public decimal TotalVueltoExtranjera { get; set; }
         public decimal TotalEfectivoNacional { get; set; }
         public decimal TotalEfectivoExtranjera { get; set; }
-        public string ClienteRuc { get; set; }
+        public string RucCliente { get; set; }
         public string ClienteNombresORazonSocial { get; set; }
         public string Placa { get; set; }
         public decimal NumeroVale { get; set; }

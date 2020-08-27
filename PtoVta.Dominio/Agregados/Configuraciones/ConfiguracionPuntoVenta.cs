@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using PtoVta.Dominio.Agregados.Parametros;
 using PtoVta.Dominio.Agregados.Ventas;
 using PtoVta.Dominio.BaseTrabajo;
+using PtoVta.Dominio.BaseTrabajo.Funciones;
 using static PtoVta.Dominio.BaseTrabajo.Globales.GlobalDominio;
 
 namespace PtoVta.Dominio.Agregados.Configuraciones
@@ -153,7 +154,7 @@ namespace PtoVta.Dominio.Agregados.Configuraciones
             if (!string.IsNullOrEmpty(pCodigoMonedaCaja))
             {
                 //relacion
-                this.CodigoMonedaCaja = pCodigoMonedaCaja;
+                this.CodigoMonedaCaja = pCodigoMonedaCaja.Trim();
                 this.MonedaCaja = null;
             }
         }
@@ -175,7 +176,7 @@ namespace PtoVta.Dominio.Agregados.Configuraciones
             if (!string.IsNullOrEmpty(pCodigoTipoNegocio))
             {
                 //relacion
-                this.CodigoTipoNegocio = pCodigoTipoNegocio;
+                this.CodigoTipoNegocio = pCodigoTipoNegocio.Trim();
                 this.TipoNegocio = null;
             }
         }
@@ -197,7 +198,7 @@ namespace PtoVta.Dominio.Agregados.Configuraciones
             if (!string.IsNullOrEmpty(pCodigoAlmacenPuntoVenta))
             {
                 //relacion
-                this.CodigoAlmacenPuntoVenta = pCodigoAlmacenPuntoVenta;
+                this.CodigoAlmacenPuntoVenta = pCodigoAlmacenPuntoVenta.Trim();
                 this.AlmacenPuntoVenta = null;
             }
         }
@@ -219,7 +220,7 @@ namespace PtoVta.Dominio.Agregados.Configuraciones
             if (!string.IsNullOrEmpty(pCodigoTipoImpresora))
             {
                 //relacion
-                this.CodigoTipoImpresora = pCodigoTipoImpresora;
+                this.CodigoTipoImpresora = pCodigoTipoImpresora.Trim();
                 this.TipoImpresora = null;
             }
         }
@@ -243,7 +244,7 @@ namespace PtoVta.Dominio.Agregados.Configuraciones
             if (!string.IsNullOrEmpty(pCodigoEstadoDocumentoDefault))
             {
                 //relacion
-                this.CodigoEstadoDocumentoDefault = pCodigoEstadoDocumentoDefault;
+                this.CodigoEstadoDocumentoDefault = pCodigoEstadoDocumentoDefault.Trim();
                 this.EstadoDocumentoDefault = null;
             }
         }
@@ -266,7 +267,7 @@ namespace PtoVta.Dominio.Agregados.Configuraciones
             if (!string.IsNullOrEmpty(pCodigoTipoPagoDefault))
             {
                 //relacion
-                this.CodigoTipoPagoDefault = pCodigoTipoPagoDefault;
+                this.CodigoTipoPagoDefault = pCodigoTipoPagoDefault.Trim();
                 this.TipoPagoDefault = null;
             }
         }
@@ -290,9 +291,22 @@ namespace PtoVta.Dominio.Agregados.Configuraciones
             if (!string.IsNullOrEmpty(pCodigoEstadoDocumentoAnulado))
             {
                 //relacion
-                this.CodigoEstadoDocumentoAnulado = pCodigoEstadoDocumentoAnulado;
+                this.CodigoEstadoDocumentoAnulado = pCodigoEstadoDocumentoAnulado.Trim();
                 this.EstadoDocumentoAnulado = null;
             }
         }
+
+        public void AumentarCorrelativoMovimientoAlmacenPorVenta()
+        {
+            this.CorrelativoMovimientoAlmacenPorVenta++; 
+        }
+
+        public void AumentarSerieCorrelativoTickFactura(){
+             this.SerieCorrelativoTickFactura = FuncionesNegocio.AumentarCorrelativoDocumentoFormateado(this.SerieCorrelativoTickFactura);   
+        }
+
+        public void AumentarSerieCorrelativoTickBoleta(){
+            this.SerieCorrelativoTickBoleta = FuncionesNegocio.AumentarCorrelativoDocumentoFormateado(this.SerieCorrelativoTickBoleta);   
+        }        
     }
 }

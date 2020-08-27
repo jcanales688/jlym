@@ -52,7 +52,7 @@ namespace PtoVta.Dominio.Agregados.Configuraciones
         {
             if (!string.IsNullOrEmpty(pCodigoCategoriaFuel))
             {
-                this.CodigoCategoriaFuel = pCodigoCategoriaFuel;
+                this.CodigoCategoriaFuel = pCodigoCategoriaFuel.Trim();
                 // this.CategoriaFuel = null;
             }
         }
@@ -62,7 +62,7 @@ namespace PtoVta.Dominio.Agregados.Configuraciones
         {
             if (!string.IsNullOrEmpty(pCodigoCategoriaLubricantes))
             {
-                this.CodigoCategoriaLubricantes = pCodigoCategoriaLubricantes;
+                this.CodigoCategoriaLubricantes = pCodigoCategoriaLubricantes.Trim();
                 // this.CategoriaLubricantes = null;
             }
         }
@@ -72,7 +72,7 @@ namespace PtoVta.Dominio.Agregados.Configuraciones
         {
             if (!string.IsNullOrEmpty(pCodigoTipoClienteEfectivo))
             {
-                this.CodigoTipoClienteEfectivo = pCodigoTipoClienteEfectivo;
+                this.CodigoTipoClienteEfectivo = pCodigoTipoClienteEfectivo.Trim();
                 // this.TipoClienteEfectivo = null;
             }
         }
@@ -82,7 +82,7 @@ namespace PtoVta.Dominio.Agregados.Configuraciones
         {
             if (!string.IsNullOrEmpty(pCodigoTipoClienteAdelanto))
             {
-                this.CodigoTipoClienteAdelanto = pCodigoTipoClienteAdelanto;
+                this.CodigoTipoClienteAdelanto = pCodigoTipoClienteAdelanto.Trim();
                 // this.TipoClienteAdelanto = null;
             }
         }
@@ -92,7 +92,7 @@ namespace PtoVta.Dominio.Agregados.Configuraciones
         {
             if (!string.IsNullOrEmpty(pCodigoTipoClienteCreditoLocal))
             {
-                this.CodigoTipoClienteCreditoLocal = pCodigoTipoClienteCreditoLocal;
+                this.CodigoTipoClienteCreditoLocal = pCodigoTipoClienteCreditoLocal.Trim();
                 // this.TipoClienteCreditoLocal = null;
             }
         }
@@ -102,7 +102,7 @@ namespace PtoVta.Dominio.Agregados.Configuraciones
         {
             if (!string.IsNullOrEmpty(pCodigoTipoClienteCreditoCorporativo))
             {
-                this.CodigoTipoClienteCreditoCorporativo = pCodigoTipoClienteCreditoCorporativo;
+                this.CodigoTipoClienteCreditoCorporativo = pCodigoTipoClienteCreditoCorporativo.Trim();
                 // this.TipoClienteCreditoCorporativo = null;
             }
         }
@@ -112,7 +112,7 @@ namespace PtoVta.Dominio.Agregados.Configuraciones
         {
             if (!string.IsNullOrEmpty(pCodigoTipoClienteOtros))
             {
-                this.CodigoTipoClienteOtros = pCodigoTipoClienteOtros;
+                this.CodigoTipoClienteOtros = pCodigoTipoClienteOtros.Trim();
                 // this.TipoClienteOtros = null;
             }
         }
@@ -122,7 +122,7 @@ namespace PtoVta.Dominio.Agregados.Configuraciones
         {
             if (!string.IsNullOrEmpty(pCodigoTipoDocumentoTicket))
             {
-                this.CodigoTipoDocumentoTicket = pCodigoTipoDocumentoTicket;
+                this.CodigoTipoDocumentoTicket = pCodigoTipoDocumentoTicket.Trim();
                 // this.TipoDocumentoTicket = null;
             }
         }
@@ -132,7 +132,7 @@ namespace PtoVta.Dominio.Agregados.Configuraciones
         {
             if (!string.IsNullOrEmpty(pCodigoTipoDocumentoFactura))
             {
-                this.CodigoTipoDocumentoFactura = pCodigoTipoDocumentoFactura;
+                this.CodigoTipoDocumentoFactura = pCodigoTipoDocumentoFactura.Trim();
                 // this.TipoDocumentoFactura = null;
             }
         }
@@ -142,7 +142,7 @@ namespace PtoVta.Dominio.Agregados.Configuraciones
         {
             if (!string.IsNullOrEmpty(pCodigoTipoDocumentoBoleta))
             {
-                this.CodigoTipoDocumentoBoleta = pCodigoTipoDocumentoBoleta;
+                this.CodigoTipoDocumentoBoleta = pCodigoTipoDocumentoBoleta.Trim();
                 // this.TipoDocumentoBoleta = null;
             }
         }
@@ -152,7 +152,7 @@ namespace PtoVta.Dominio.Agregados.Configuraciones
         {
             if (!string.IsNullOrEmpty(pCodigoTipoDocumentoNotaCredito))
             {
-                this.CodigoTipoDocumentoNotaCredito = pCodigoTipoDocumentoNotaCredito;
+                this.CodigoTipoDocumentoNotaCredito = pCodigoTipoDocumentoNotaCredito.Trim();
                 // this.TipoDocumentoNotaCred = null;
             }
         }
@@ -162,7 +162,7 @@ namespace PtoVta.Dominio.Agregados.Configuraciones
         {
             if (!string.IsNullOrEmpty(pCodigoTipoDocumentoNotaDebito))
             {
-                this.CodigoTipoDocumentoNotaDebito = pCodigoTipoDocumentoNotaDebito;
+                this.CodigoTipoDocumentoNotaDebito = pCodigoTipoDocumentoNotaDebito.Trim();
                 // this.TipoDocumentoNotaDeb = null;
             }
         }
@@ -172,7 +172,7 @@ namespace PtoVta.Dominio.Agregados.Configuraciones
         {
             if (!string.IsNullOrEmpty(pCodigoTipoDocumentoNotaCreditoAjuste))
             {
-                this.CodigoTipoDocumentoNotaCreditoAjuste = pCodigoTipoDocumentoNotaCreditoAjuste;
+                this.CodigoTipoDocumentoNotaCreditoAjuste = pCodigoTipoDocumentoNotaCreditoAjuste.Trim();
                 // this.TipoDocumentoNotaCredAjuste = null;
             }
         }
@@ -182,7 +182,7 @@ namespace PtoVta.Dominio.Agregados.Configuraciones
         {
             if (!string.IsNullOrEmpty(pCodigoCondicionPagoDefault))
             {
-                this.CodigoCondicionPagoDefault = pCodigoCondicionPagoDefault;
+                this.CodigoCondicionPagoDefault = pCodigoCondicionPagoDefault.Trim();
                 // this.CondicionPagoDefault = null;
             }
         }
@@ -193,7 +193,7 @@ namespace PtoVta.Dominio.Agregados.Configuraciones
         {
             if (!string.IsNullOrEmpty(pCodigoEstadoDocumentoDefault))
             {
-                this.CodigoEstadoDocumentoDefault = pCodigoEstadoDocumentoDefault;
+                this.CodigoEstadoDocumentoDefault = pCodigoEstadoDocumentoDefault.Trim();
                 // this.EstadoDocumentoDefault = null;
             }
         }        

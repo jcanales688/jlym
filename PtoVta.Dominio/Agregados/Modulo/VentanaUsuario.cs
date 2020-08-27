@@ -40,7 +40,7 @@ namespace PtoVta.Dominio.Agregados.Modulo
             string pCodigoUsuarioSistema)
         {
 
-            if (string.IsNullOrEmpty(pCodigoUsuarioSistema)
+            if (string.IsNullOrEmpty(pCodigoUsuarioSistema.Trim())
                
                     ||
 
@@ -67,7 +67,7 @@ namespace PtoVta.Dominio.Agregados.Modulo
             var nuevaLineaDerechoAccesoUsuario = new DerechoAccesoUsuario()
             {
                 CodigoVentanaUsuario = this.CodigoVentanaUsuario,
-                CodigoUsuarioSistema = pCodigoUsuarioSistema,
+                CodigoUsuarioSistema = pCodigoUsuarioSistema.Trim(),
                 DerechoConsultar = pDerechoConsultar,
                 DerechoInsertar = pDerechoInsertar,
                 DerechoActualizar = pDerechoActualizar,

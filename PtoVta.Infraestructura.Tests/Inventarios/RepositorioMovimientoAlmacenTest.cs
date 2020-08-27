@@ -23,19 +23,19 @@ namespace PtoVta.Infraestructura.Tests
         {   
             var movimientoAlmacen = new MovimientoAlmacen
             {
-                CorrelativoMovimiento = "777",
+                CorrelativoMovimiento = "780",
                 FechaDocumento = DateTime.Now,
                 FechaProceso = DateTime.Now,
                 MontoTipoDeCambio = 3.56M,
                 FechaTipoDeCambio = DateTime.Now,
-                Periodo = "202006",
+                Periodo = "202007",
                 FlagEntradaSalida = 1,
                 Cantidad = 7777.00M,
                 CostoReposicionExtranjera = 13.78M,
                 CostoReposicionNacional = 35.77M,
                 EsArticuloFormula = true,
                 Precio = 5.80M,
-                DocumentoReferencia = "JL20000005",
+                DocumentoReferencia = "FER20000006",
                 EnInventarioFisico = 1
             };
 
@@ -48,7 +48,7 @@ namespace PtoVta.Infraestructura.Tests
 
 
 
-            Assert.True(movimientoAlmacen.CorrelativoMovimiento == "777");
+            Assert.True(movimientoAlmacen.CorrelativoMovimiento == "780");
         }
     }
 }

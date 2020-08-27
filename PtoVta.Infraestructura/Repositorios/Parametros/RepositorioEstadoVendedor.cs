@@ -3,10 +3,11 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using Dapper;
-using PtoVta.Dominio.Agregados.Colaborador;
+using PtoVta.Dominio.Agregados.Parametros;
 using PtoVta.Infraestructura.BaseTrabajo;
+using static PtoVta.Infraestructura.BaseTrabajo.Globales.GlobalInfraestructura;
 
-namespace PtoVta.Infraestructura.Repositorios.Colaborador
+namespace PtoVta.Infraestructura.Repositorios.Parametros
 {
     public class RepositorioEstadoVendedor : Repositorio<EstadoVendedor>, IRepositorioEstadoVendedor
     {
@@ -21,7 +22,7 @@ namespace PtoVta.Infraestructura.Repositorios.Colaborador
             {
                 string cadenaSQL = @"SELECT	STATUSPERSONID		AS CodigoEstadoVendedor
                                             ,DESCRSTATUSPERSON	AS DescripcionEstadoVendedor
-                                    FROM	OP_STATUSPERSON (NOLOCK)
+                                    FROM	" + BaseDatos.PrefijoTabla + @"OP_STATUSPERSON (NOLOCK)
                                     WHERE	STATUSPERSONID = @STATUSPERSONID";
 
                 var estadoVendedor = cn.QueryFirstOrDefault<EstadoVendedor>(cadenaSQL,

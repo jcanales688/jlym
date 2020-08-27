@@ -18,12 +18,13 @@ namespace PtoVta.Dominio.Agregados.Inventarios
         public string Periodo { get; set; }
         public int FlagEntradaSalida { get; set; }
         public decimal Cantidad { get; set; }
-        public Nullable<decimal> CostoReposicionExtranjera { get; set; }
-        public Nullable<decimal> CostoReposicionNacional { get; set; }
+        public decimal CostoReposicionExtranjera { get; set; }
+        public decimal CostoReposicionNacional { get; set; }
         public bool EsArticuloFormula { get; set; }
         public decimal Precio { get; set; }
         public string DocumentoReferencia { get; set; }
         public int EnInventarioFisico { get; set; }
+
 
         public bool EsHabilitado
         {
@@ -40,10 +41,10 @@ namespace PtoVta.Dominio.Agregados.Inventarios
 
 
 
-        public string CodigoAlmacen { get; private set; }
-        public string CodigoArticulo { get; private set; }
-        public string CodigoTipoMovimientoAlmacen { get; private set; }
-        public string CodigoTipoDocumento { get; private set; }
+        public string CodigoAlmacen { get; set; }
+        public string CodigoArticulo { get; set; }
+        public string CodigoTipoMovimientoAlmacen { get; set; }
+        public string CodigoTipoDocumentoReferencia { get; set; }
 
         public virtual Almacen Almacen { get; private set; }
         public virtual Articulo Articulo { get; private set; }
@@ -68,10 +69,7 @@ namespace PtoVta.Dominio.Agregados.Inventarios
         public void EstablecerAlmacenDeMovimientoAlmacen(Almacen pAlmacen)
         {
             if (pAlmacen == null)
-            {
                 throw new ArgumentException(Mensajes.excepcion_AlmacenDeMovimientoAlmacenNuloOTransitorio);
-
-            }
 
             //relacion
             this.CodigoAlmacen = pAlmacen.CodigoAlmacen;
@@ -83,7 +81,7 @@ namespace PtoVta.Dominio.Agregados.Inventarios
             if (!string.IsNullOrEmpty(pCodigoAlmacen))
             {
                 //relacion
-                this.CodigoAlmacen = pCodigoAlmacen;
+                this.CodigoAlmacen = pCodigoAlmacen.Trim();
                 this.Almacen = null;
             }
         }
@@ -91,10 +89,7 @@ namespace PtoVta.Dominio.Agregados.Inventarios
         public void EstablecerArticuloDeMovimientoAlmacen(Articulo pArticulo)
         {
             if (pArticulo == null)
-            {
                 throw new ArgumentException(Mensajes.excepcion_ArticuloDeMovimientoAlmacenNuloOTransitorio);
-
-            }
 
             //relacion
             this.CodigoArticulo = pArticulo.CodigoArticulo;
@@ -106,7 +101,7 @@ namespace PtoVta.Dominio.Agregados.Inventarios
             if (!string.IsNullOrEmpty(pCodigoArticulo))
             {
                 //relacion
-                this.CodigoArticulo = pCodigoArticulo;
+                this.CodigoArticulo = pCodigoArticulo.Trim();
                 this.Articulo = null;
             }
         }
@@ -114,10 +109,7 @@ namespace PtoVta.Dominio.Agregados.Inventarios
         public void EstablecerTipoMovimientoAlmacenDeMovimientoAlmacen(TipoMovimientoAlmacen pTipoMovimientoAlmacen)
         {
             if (pTipoMovimientoAlmacen == null)
-            {
                 throw new ArgumentException(Mensajes.excepcion_TipoMovimientoAlmacenDeMovimientoAlmacenNuloOTransitorio);
-
-            }
 
             //relacion
             this.CodigoTipoMovimientoAlmacen = pTipoMovimientoAlmacen.CodigoTipoMovimientoAlmacen;
@@ -129,7 +121,7 @@ namespace PtoVta.Dominio.Agregados.Inventarios
             if (!string.IsNullOrEmpty(pCodigoTipoMovimientoAlmacen))
             {
                 //relacion
-                this.CodigoTipoMovimientoAlmacen = pCodigoTipoMovimientoAlmacen;
+                this.CodigoTipoMovimientoAlmacen = pCodigoTipoMovimientoAlmacen.Trim();
                 this.TipoMovimientoAlmacen = null;
             }
         }
@@ -137,13 +129,11 @@ namespace PtoVta.Dominio.Agregados.Inventarios
         public void EstablecerTipoDocumentoDeMovimientoAlmacen(TipoDocumento pTipoDocumento)
         {
             if (pTipoDocumento == null)
-            {
                 throw new ArgumentException(Mensajes.excepcion_TipoDocumentoDeMovimientoAlmacenNuloOTransitorio);
 
-            }
 
             //relacion
-            this.CodigoTipoDocumento = pTipoDocumento.CodigoTipoDocumento;
+            this.CodigoTipoDocumentoReferencia = pTipoDocumento.CodigoTipoDocumento;
             this.TipoDocumento = pTipoDocumento;
 
             //Quitado para no consumir funcionalidades comunes desde el Dominio. Dominio - Libre. 2015-03-29
@@ -156,7 +146,7 @@ namespace PtoVta.Dominio.Agregados.Inventarios
             if (!string.IsNullOrEmpty(pCodigoTipoDocumento))
             {
                 //relacion
-                this.CodigoTipoDocumento = pCodigoTipoDocumento;
+                this.CodigoTipoDocumentoReferencia = pCodigoTipoDocumento.Trim();
                 this.TipoDocumento = null;
             }
         }      

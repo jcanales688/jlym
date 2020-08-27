@@ -6,6 +6,7 @@ using System.Linq;
 using Dapper;
 using PtoVta.Dominio.Agregados.Ventas;
 using PtoVta.Infraestructura.BaseTrabajo;
+using static PtoVta.Infraestructura.BaseTrabajo.Globales.GlobalInfraestructura;
 
 namespace PtoVta.Infraestructura.Repositorios.Ventas
 {
@@ -24,7 +25,7 @@ namespace PtoVta.Infraestructura.Repositorios.Ventas
                 using (var transaccion = cn.BeginTransaction())
                 {
                     //Cabecera Pedido
-                    string sqlAgregaPedidoEESS = @"INSERT INTO PC_TMP_OP_SALES
+                    string sqlAgregaPedidoEESS = @"INSERT INTO " + BaseDatos.PrefijoTabla + @"TMP_OP_SALES
                                                         (CORRNBR
                                                         ,NBRSIDE
                                                         ,NBRDOCUMENT
@@ -237,7 +238,7 @@ namespace PtoVta.Infraestructura.Repositorios.Ventas
                     {
                         foreach (var detallePedido in pPedidoEESS.PedidoEESSDetalles)
                         {
-                            string sqlAgregaDetallePedido = @"INSERT INTO PC_TMP_OP_SALESDET
+                            string sqlAgregaDetallePedido = @"INSERT INTO " + BaseDatos.PrefijoTabla + @"TMP_OP_SALESDET
                                                                             (CORRNBR
                                                                             ,SEQUENCE
                                                                             ,NBRDOCUMENT
@@ -374,7 +375,7 @@ namespace PtoVta.Infraestructura.Repositorios.Ventas
                     {
                         foreach (var pedidoConVale in pPedidoEESS.PedidoEESSConVales)
                         {
-                            string sqlAgregaPedidoConVale = @"INSERT INTO PC_TMP_OP_BONUS
+                            string sqlAgregaPedidoConVale = @"INSERT INTO " + BaseDatos.PrefijoTabla + @"TMP_OP_BONUS
                                                                             (CORRNBR
                                                                             ,NBRBONUS
                                                                             ,CUSTIDSS
@@ -470,7 +471,7 @@ namespace PtoVta.Infraestructura.Repositorios.Ventas
                                             PROMOTIONCARDID AS CodigoTarjetaPromocion,
                                             CARDID AS CodigoTarjeta,
                                             CURYIDCARD AS CodigoMonedaTarjeta
-                                    FROM	PC_TMP_OP_SALES (NOLOCK)
+                                    FROM	" + BaseDatos.PrefijoTabla + @"TMP_OP_SALES (NOLOCK)
                                     WHERE	CORRNBR = @CORRNBR;
 
                                     SELECT	CORRNBR AS Correlativo,
@@ -514,18 +515,18 @@ namespace PtoVta.Infraestructura.Repositorios.Ventas
                                             STKUNITID AS CodigoUnidadDeMedida,
                                             USERID AS CodigoUsuarioDeSistema,
                                             INVTIDALTER AS CodigoArticuloAlterno
-                                    FROM	PC_TMP_OP_SALESDET (NOLOCK)
+                                    FROM	" + BaseDatos.PrefijoTabla + @"TMP_OP_SALESDET (NOLOCK)
                                     WHERE	CORRNBR IN (SELECT	CORRNBR
-                                                        FROM	PC_TMP_OP_SALES (NOLOCK)
+                                                        FROM	" + BaseDatos.PrefijoTabla + @"TMP_OP_SALES (NOLOCK)
                                                         WHERE	CORRNBR = @CORRNBR);
 
                                     SELECT	CORRNBR AS Correlativo,
                                             NBRBONUS AS NumeroVale,
                                             CUSTIDSS AS CodigoCliente,
                                             SITEID AS CodigoAlmacen
-                                    FROM	PC_TMP_OP_BONUS (NOLOCK)
+                                    FROM	" + BaseDatos.PrefijoTabla + @"TMP_OP_BONUS (NOLOCK)
                                     WHERE	CORRNBR IN (SELECT	CORRNBR
-                                                        FROM	PC_TMP_OP_SALES (NOLOCK)
+                                                        FROM	" + BaseDatos.PrefijoTabla + @"TMP_OP_SALES (NOLOCK)
                                                         WHERE	CORRNBR = @CORRNBR)";
 
                 var resultado = cn.QueryMultiple(cadenaSQL,
@@ -615,7 +616,7 @@ namespace PtoVta.Infraestructura.Repositorios.Ventas
                                             PROMOTIONCARDID AS CodigoTarjetaPromocion,
                                             CARDID AS CodigoTarjeta,
                                             CURYIDCARD AS CodigoMonedaTarjeta
-                                    FROM	PC_TMP_OP_SALES (NOLOCK)
+                                    FROM	" + BaseDatos.PrefijoTabla + @"TMP_OP_SALES (NOLOCK)
                                     WHERE	SALESPOINT = @SALESPOINT
                                     ORDER BY 1";
 
@@ -638,36 +639,30 @@ namespace PtoVta.Infraestructura.Repositorios.Ventas
 
 
         private PedidoEESS MapeoPedidoEESS(PedidoEESS pPedidoEESS, List<PedidoEESSDetalle> pPedidoEESSDetalles, 
-                                                List<PedidoEESSConVale> pPedidoEESSConVale)
+                                                List<PedidoEESSConVale> pPedidoEESSConVales)
         {
             var nuevoPedidoEESS = new PedidoEESS();
             nuevoPedidoEESS = pPedidoEESS;
             
             if(pPedidoEESSDetalles != null && pPedidoEESSDetalles.Any())
             {
-                var lista = nuevoPedidoEESS.PedidoEESSDetalles as List<PedidoEESSDetalle>;
-                lista.AddRange(pPedidoEESSDetalles);
-
-                // foreach (var detallePedido in pPedidoEESSDetalles)
-                // {                            
-                //     nuevoPedidoEESS.AgregarNuevoPedidoEESSDetalle(detallePedido.Secuencia, detallePedido.NumeroDocumento, detallePedido.FechaDocumento,    
-                //                     detallePedido.FechaProceso, detallePedido.Periodo, detallePedido.ProcesadoCierreZ,        
-                //                     detallePedido.ProcesadoCierreX, detallePedido.NumeroTurno, detallePedido.NumeroCara,          
-                //                     detallePedido.NumeroTransaccionCombustible, detallePedido.PorcentajeDescuentoPrimero, detallePedido.PorcentajeDescuentoSegundo,        
-                //                     detallePedido.PorcentajeDescuentoNacional, detallePedido.PorcentajeDescuentoExtranjera, detallePedido.PorcentajeImpuestoIgv,        
-                //                     detallePedido.PorcentajeImpuestoIsc, detallePedido.TotalNacional, detallePedido.TotalExtranjera,        
-                //                     detallePedido.ImpuestoNacional, detallePedido.ImpuestoExtranjera, detallePedido.EsInventariable,        
-                //                     detallePedido.EnInventarioFisico, detallePedido.Precio, detallePedido.PrecioVenta,        
-                //                     detallePedido.CostoEstandarNacional, detallePedido.CostoEstandarExtranjera, detallePedido.DescripcionArticulo,        
-                //                     detallePedido.Cantidad, detallePedido.EsFormula, detallePedido.EsArticuloCombustible,        
-                //                     detallePedido.NumeroPeaje, detallePedido.CodigoArticulo, detallePedido.CodigoUnidadDeMedida, 
-                //                     detallePedido.CodigoArticuloAlterno);
-                // }
+                foreach (var detallePedido in pPedidoEESSDetalles)
+                {                            
+                    nuevoPedidoEESS.AgregarNuevoPedidoEESSDetalle(detallePedido.Secuencia,detallePedido.NumeroTurno, detallePedido.NumeroTransaccionCombustible, 
+                                    detallePedido.PorcentajeDescuentoPrimero, detallePedido.PorcentajeDescuentoSegundo, detallePedido.PorcentajeDescuentoNacional, 
+                                    detallePedido.PorcentajeDescuentoExtranjera, detallePedido.PorcentajeImpuestoIgv, detallePedido.PorcentajeImpuestoIsc, 
+                                    detallePedido.TotalNacional, detallePedido.TotalExtranjera,  detallePedido.ImpuestoNacional, 
+                                    detallePedido.ImpuestoExtranjera, detallePedido.EsInventariable, detallePedido.EnInventarioFisico, 
+                                    detallePedido.Precio, detallePedido.PrecioVenta, detallePedido.CostoEstandarNacional, 
+                                    detallePedido.CostoEstandarExtranjera, detallePedido.DescripcionArticulo, detallePedido.Cantidad, 
+                                    detallePedido.EsFormula, detallePedido.EsArticuloCombustible, detallePedido.NumeroPeaje, 
+                                    detallePedido.CodigoArticulo, detallePedido.CodigoUnidadDeMedida, detallePedido.CodigoArticuloAlterno);
+                }
             }
 
-            if(pPedidoEESSConVale != null && pPedidoEESSConVale.Any())
+            if(pPedidoEESSConVales != null && pPedidoEESSConVales.Any())
             {
-                foreach (var pedidoConVale in pPedidoEESSConVale)
+                foreach (var pedidoConVale in pPedidoEESSConVales)
                 {
                     nuevoPedidoEESS.AgregarNuevoPedidoEESSConVale(pedidoConVale.NumeroVale);
                 }

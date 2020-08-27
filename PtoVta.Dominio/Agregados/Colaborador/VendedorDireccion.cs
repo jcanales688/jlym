@@ -1,4 +1,6 @@
+using System;
 using PtoVta.Dominio.BaseTrabajo;
+using static PtoVta.Dominio.BaseTrabajo.Globales.GlobalDominio;
 
 namespace PtoVta.Dominio.Agregados.Colaborador
 {
@@ -19,7 +21,8 @@ namespace PtoVta.Dominio.Agregados.Colaborador
             this.Departamento = pDepartamento;
             this.Provincia = pProvincia;
             this.Distrito = pDistrito;
-            this.Ubicacion = pUbicacion;
+            this.Ubicacion = !string.IsNullOrEmpty(pUbicacion) ? pUbicacion.Trim()
+                                : throw new ArgumentException(Mensajes.advertencia_UbicacionDeDireccionNoPuedeSerNuloOVacio);
         }
 
 

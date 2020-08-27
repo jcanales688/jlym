@@ -5,10 +5,10 @@ namespace PtoVta.Dominio.Agregados.Ventas
 {
     public static class PedidoEESSFactory
     {
-        public static PedidoEESS CrearPedidoEESS(int pCorrelativo,string pNumeroCara, string pNumeroDocumento,
+        public static PedidoEESS CrearPedidoEESS(int pCorrelativo, string pNumeroCara, string pNumeroDocumento,
             bool pAfectaInventario, DateTime pFechaDocumento, DateTime pFechaProceso,
             string pPeriodo, decimal pTotalNacional, decimal pTotalExtranjera,
-            decimal pSubTotalNacional, decimal pSubTotalExtranjera,decimal pImpuestoIgvNacional,
+            decimal pSubTotalNacional, decimal pSubTotalExtranjera, decimal pImpuestoIgvNacional,
             decimal pImpuestoIgvExtranjera, decimal pImpuestoIscNacional, decimal pImpuestoIscExtranjera,
             decimal pTotalNoAfectoNacional, decimal pTotalNoAfectoExtranjera, decimal pPorcentajeDescuentoPrimero,
             decimal pPorcentajeDescuentoSegundo, decimal pTotalDescuentoNacional, decimal pTotalDescuentoExtranjera,
@@ -24,61 +24,28 @@ namespace PtoVta.Dominio.Agregados.Ventas
             string pCodigoTipoDocumento, string pCodigoTipoPago, string pCodigoAlmacen,
             string pCodigoMoneda, string pCodigoEstadoDocumento, string pCodigoCondicionPago,
             string pCodigoVendedor, string pCodigoUsuarioDeSistema, string pCodigoImpuestoIgv,
-            string pCodigoImpuestoIsc, string pCodigoCliente, string pCodigoClaseTipoCambio,  
-            string pCodigoPuntoDeVenta, string pCodigoEstado, string pCodigoMonedaCredito, 
+            string pCodigoImpuestoIsc, string pCodigoCliente, string pCodigoClaseTipoCambio,
+            string pCodigoPuntoDeVenta, string pCodigoEstado, string pCodigoMonedaCredito,
             string pCodigoClaseTipoCambioClienteCredito, string pCodigoTarjetaPromocion, string pCodigoTarjeta,
             string pCodigoMonedaTarjeta)
         {
-            var nuevoPedidoEESS = new PedidoEESS();
+            var nuevoPedidoEESS = new PedidoEESS(pCorrelativo, pNumeroCara, pNumeroDocumento,
+                                pAfectaInventario, pFechaDocumento, pFechaProceso,
+                                pPeriodo, pTotalNacional, pTotalExtranjera,
+                                pSubTotalNacional, pSubTotalExtranjera, pImpuestoIgvNacional,
+                                pImpuestoIgvExtranjera, pImpuestoIscNacional, pImpuestoIscExtranjera,
+                                pTotalNoAfectoNacional, pTotalNoAfectoExtranjera, pPorcentajeDescuentoPrimero,
+                                pPorcentajeDescuentoSegundo, pTotalDescuentoNacional, pTotalDescuentoExtranjera,
+                                pTotalVueltoNacional, pTotalVueltoExtranjera, pTotalEfectivoNacional,
+                                pTotalEfectivoExtranjera, pRucCliente, pNombreCompletoCliente,
+                                pPlaca, pNumeroVale, pTipoCambio,
+                                pProcesadoCierreZ, pProcesadoCierreX, pNumeroPuntos,
+                                pNombreTerminal, pKilometraje, pDireccionCliente,
+                                pTipoCliente, pDescripcionTipoCliente, pDescripcionEstado,
+                                pTipoCambioClienteCredito, pDiasDeGraciaClienteCredito, pLimiteCreditoClienteCredito,
+                                pDeudaClienteClienteCredito, pPlusCreditoClienteCredito, pAfecto,
+                                pNumeroTarjeta, pPagoTarjeta, pDescripcionTarjeta);
 
-            nuevoPedidoEESS.Correlativo = pCorrelativo;
-            nuevoPedidoEESS.NumeroCara = pNumeroCara;  
-            nuevoPedidoEESS.NumeroDocumento = pNumeroDocumento;
-            nuevoPedidoEESS.AfectaInventario = pAfectaInventario;
-            nuevoPedidoEESS.FechaDocumento = pFechaDocumento;    
-            nuevoPedidoEESS.FechaProceso = pFechaProceso;
-            nuevoPedidoEESS.Periodo = pPeriodo;
-            nuevoPedidoEESS.TotalNacional = pTotalNacional;
-            nuevoPedidoEESS.TotalExtranjera = pTotalExtranjera;
-            nuevoPedidoEESS.SubTotalNacional = pSubTotalNacional;
-            nuevoPedidoEESS.SubTotalExtranjera = pSubTotalExtranjera;
-            nuevoPedidoEESS.ImpuestoIgvNacional = pImpuestoIgvNacional;
-            nuevoPedidoEESS.ImpuestoIgvExtranjera = pImpuestoIgvExtranjera;
-            nuevoPedidoEESS.ImpuestoIscNacional = pImpuestoIscNacional;
-            nuevoPedidoEESS.ImpuestoIscExtranjera = pImpuestoIscExtranjera;
-            nuevoPedidoEESS.TotalNoAfectoNacional = pTotalNoAfectoNacional;
-            nuevoPedidoEESS.TotalNoAfectoExtranjera = pTotalNoAfectoExtranjera;
-            nuevoPedidoEESS.PorcentajeDescuentoPrimero = pPorcentajeDescuentoPrimero;
-            nuevoPedidoEESS.PorcentajeDescuentoSegundo = pPorcentajeDescuentoSegundo;
-            nuevoPedidoEESS.TotalDescuentoNacional = pTotalDescuentoNacional;
-            nuevoPedidoEESS.TotalDescuentoExtranjera = pTotalDescuentoExtranjera;
-            nuevoPedidoEESS.TotalVueltoNacional = pTotalVueltoNacional;
-            nuevoPedidoEESS.TotalVueltoExtranjera= pTotalVueltoExtranjera;
-            nuevoPedidoEESS.TotalEfectivoNacional = pTotalEfectivoNacional;
-            nuevoPedidoEESS.TotalEfectivoExtranjera = pTotalEfectivoExtranjera;
-            nuevoPedidoEESS.RucCliente = pRucCliente;
-            nuevoPedidoEESS.NombreCompletoCliente = pNombreCompletoCliente;
-            nuevoPedidoEESS.Placa = pPlaca;
-            nuevoPedidoEESS.NumeroVale = pNumeroVale;
-            nuevoPedidoEESS.TipoCambio = pTipoCambio;
-            nuevoPedidoEESS.ProcesadoCierreZ = pProcesadoCierreZ;
-            nuevoPedidoEESS.ProcesadoCierreX = pProcesadoCierreX;
-            nuevoPedidoEESS.NumeroPuntos = pNumeroPuntos;
-            nuevoPedidoEESS.NombreTerminal = pNombreTerminal;
-            nuevoPedidoEESS.Kilometraje = pKilometraje;
-            nuevoPedidoEESS.DireccionCliente = pDireccionCliente;
-            nuevoPedidoEESS.TipoCliente = pTipoCliente;
-            nuevoPedidoEESS.DescripcionTipoCliente = pDescripcionTipoCliente;
-            nuevoPedidoEESS.DescripcionEstado = pDescripcionEstado;
-            nuevoPedidoEESS.TipoCambioClienteCredito = pTipoCambioClienteCredito;
-            nuevoPedidoEESS.DiasDeGraciaClienteCredito = pDiasDeGraciaClienteCredito;
-            nuevoPedidoEESS.LimiteCreditoClienteCredito = pLimiteCreditoClienteCredito;
-            nuevoPedidoEESS.DeudaClienteClienteCredito = pDeudaClienteClienteCredito;
-            nuevoPedidoEESS.PlusCreditoClienteCredito = pPlusCreditoClienteCredito;
-            nuevoPedidoEESS.Afecto = pAfecto;
-            nuevoPedidoEESS.NumeroTarjeta = pNumeroTarjeta;
-            nuevoPedidoEESS.PagoTarjeta = pPagoTarjeta;
-            nuevoPedidoEESS.DescripcionTarjeta = pDescripcionTarjeta;
 
             nuevoPedidoEESS.EstablecerReferenciaTipoDocumentoDeVenta(pCodigoTipoDocumento);
             nuevoPedidoEESS.EstablecerReferenciaTipoPagoDeVenta(pCodigoTipoPago);

@@ -6,6 +6,7 @@ using System.Linq;
 using Dapper;
 using PtoVta.Dominio.Agregados.Parametros;
 using PtoVta.Infraestructura.BaseTrabajo;
+using static PtoVta.Infraestructura.BaseTrabajo.Globales.GlobalInfraestructura;
 
 namespace PtoVta.Infraestructura.Repositorios.Parametros
 {
@@ -25,8 +26,8 @@ namespace PtoVta.Infraestructura.Repositorios.Parametros
                                             ,INVTIDSOLOMON		AS CodigoContable
                                             ,DESCRSPANISH		AS Comentario
                                             ,BUSINESSTYPE		AS CodigoTipoNegocio
-                                            ,ICONO              AS Imagen
-                                    FROM	IN_CATEGORY		(NOLOCK) 
+                                            ," + CamposTabla.NombreCampoImagen + @"  AS Imagen
+                                    FROM	" + BaseDatos.PrefijoTabla + @"IN_CATEGORY		(NOLOCK) 
                                     WHERE	BUSINESSTYPE		= @BUSINESSTYPE
                                         
                                     SELECT	CLASSUBID			AS CodigoSubCategoriaArticulo
@@ -35,10 +36,10 @@ namespace PtoVta.Infraestructura.Repositorios.Parametros
                                             ,CLASSID			AS CodigoCategoriaArticulo
                                             ,TYPEDOCFISIN		AS CodigoTipoMovInvFisIngreso
                                             ,TYPEDOCFISOUT		AS CodigoTipoMovInvFisSalida
-                                            ,ICONO              AS Imagen                                            
-                                    FROM	IN_SUBCATEGORY	(NOLOCK) 
+                                            ," + CamposTabla.NombreCampoImagen + @"  AS Imagen                                            
+                                    FROM	" + BaseDatos.PrefijoTabla + @"IN_SUBCATEGORY	(NOLOCK) 
                                     WHERE	CLASSID				IN(SELECT	CLASSID				
-                                                                    FROM	IN_CATEGORY		(NOLOCK) 
+                                                                    FROM	" + BaseDatos.PrefijoTabla + @"IN_CATEGORY		(NOLOCK) 
                                                                     WHERE	BUSINESSTYPE		= @BUSINESSTYPE)";
 
                 var resultado = cn.QueryMultiple(cadenaSQL,

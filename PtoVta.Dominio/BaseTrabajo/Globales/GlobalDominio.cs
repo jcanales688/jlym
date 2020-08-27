@@ -4,48 +4,6 @@ namespace PtoVta.Dominio.BaseTrabajo.Globales
 {
     public class GlobalDominio
     {
-        public struct EnumMoneda
-        {
-            public const string CodigoMonedaBase = "PEN";
-            public const string CodigoMonedaExtranjera = "USD";
-        }
-
-        public struct EnumEstadoDocumento
-        {
-            public const string CodigoEstadoDocumentoPorDefecto = "OK";    
-            public const string CodigoEstadoDocumentoAnulado = "AN";    
-            public const string CodigoEstadoDocumentoPendiente = "PE";    
-        }
-
-        public struct EnumTipoPago
-        {
-            public const string TipoPagoPorDefecto = "01";    
-        }
-
-        public struct EnumTipoNegocio
-        {
-            public const string TipoNegocioDesactivado = "0";    
-            public const string TipoNegocioEESS = "1";    
-            public const string TipoNegocioRetail = "2";                
-            public const string TipoNegocioOficina = "3";                
-        }
-        
-        public struct EnumModoTipoVenta
-        {
-            public const string ModoTipoVentaManual = "M";
-            public const string ModoTipoVentaAutomatico = "A";
-        }
-
-        public struct EmunCondicionPago
-        {
-            public const string CondicionPagoPagoContraentrega = "00";
-        }
-
-        public struct EnumGenerales
-        {
-            public const int AnchoTicket = 40;
-        }
-
         public struct Mensajes
         {
             public const string advertencia_AdvertenciaVentaOTipoDocumentoInvalido = "Advertencia Venta O Tipo Documento Invalido";
@@ -241,8 +199,106 @@ namespace PtoVta.Dominio.BaseTrabajo.Globales
             public const string advertencia_ConsultaConfiguracionVentaFallo = "Consulta Configuracion Venta Fallo";
             public const string advertencia_ConsultaConfiguracionInventarioFallo = "Consulta Configuracion Inventario Fallo";
             public const string advertencia_ConsultaConfiguracionFormatoTicketFallo = "Consulta Configuracion Formato de Ticket Fallo";
+            public const string advertencia_RucYClienteYaRegistrado = "Ruc y Cliente ya registrados.";
+            public const string advertencia_PedidoEESSYaRegistrado = "Pedido de EESS ya se encuentra registrado.";
+            public const string advertencia_PedidoRetailYaRegistrado = "Pedido de Retail ya se encuentra registrado.";
+            public const string advertencia_ConfiguracionGlobalInvalido = "No se obtubo la configuracion global del sistema.";
+            public const string advertencia_NoSeObtuvoResultadoDeConsultaConfiguracionPuntoDeVenta = "No se obtuvo resultado de la configuracion del punto de venta.";
+            public const string advertencia_ArticuloNoExiste = "Articulo buscado no existe.";
+            public const string excepcion_DatosNoValidosParaLineaListaPrecioInventarioDetalle = "Datos no validos para linea Lista Precio Inventario Detalle";
+            public const string excepcion_TipoPrecioInventarioDeListaPrecioInventarioEnEstadoNuloOTransitorio = "Tipo Precio Inventario de Lista Precio Inventario en estado nulo o transitorio";
+            public const string excepcion_UsuarioSistemaCreaDeListaPrecioInventarioEnEstadoNuloOTransitorio = "Usuario  Sistema crea de Lista Precio Inventario en estado nulo o transitorio";
+            public const string excepcion_UsuarioSistemaApruebaDeListaPrecioInventarioEnEstadoNuloOTransitorio = "Usuario Sistema Aprueba de Lista Precio Inventario en estado nulo o transitorio";
+            public const string excepcion_AlmacenDeListaPrecioInventarioEnEstadoNuloOTransitorio = "Almacen de Lista Precio Inventario en estado nulo o transitorio";
+            public const string excepcion_AlmacenOrigenDeListaPrecioInventarioEnEstadoNuloOTransitorio = "Almacen origen de Lista Precio Inventario en estado nulo o transitorio";
+            public const string excepcion_ArticuloDeListaPrecioInventarioDetalleEnEstadoNuloOTransitorio = "Articulo de Lista Precio Inventario detalle en estado nulo o transitorio";
+            public const string excepcion_ArticuloNoExisteEnServicioDominioListaPrecios = "Articulo no existe en ServicioDominioListaPrecios";
+            public const string excepcion_ArticuloNoHabilitadoEnServicioDominioListaPrecios = "Articulo no habilitado en ServicioDominioListaPrecios";
+            public const string excepcion_DatosNoValidosParaLineaListaPrecioClienteDetalle = "Datos no validos para linea Lista Precio Cliente Detalle";
+            public const string excepcion_MonedaDeListaPrecioClienteNuloOTransitorio = "Moneda de Lista Precio Cliente nulo o transitorio";
+            public const string excepcion_UsuarioSistemaCreaDeListaPrecioClienteNuloOTransitorio = "Usuario Sistema crea de Lista Precio Cliente nulo o transitorio";
+            public const string excepcion_UsuarioSistemaApruebaDeListaPrecioClienteNuloOTransitorio = "Usuario Sistema aprueba de Lista Precio Cliente nulo o transitorio";
+            public const string excepcion_AlmacenDeListaPrecioClienteNuloOTransitorio = "Almacen de Lista Precio Cliente nulo o transitorio";
+            public const string excepcion_AlmacenOrigenDeListaPrecioClienteNuloOTransitorio = "Almacen origen De Lista Precio Cliente nulo o transitorio";
+            public const string excepcion_AlmacenDeListaPrecioClienteDetalleNuloOTransitorio = "Almacen de Lista Precio Cliente Detalle nulo o transitorio";
+            public const string excepcion_ArticuloDeListaPrecioClienteDetalleNuloOTransitorio = "Articulo de Lista Precio Cliente Detalle nulo o transitorio";
+            public const string excepcion_AlmacenDeAsignacionListaPrecioClienteNuloOTransitorio = "AlmacenDeAsignacionListaPrecioClienteNuloOTransitorio";
+            public const string excepcion_ClienteDeAsignacionListaPrecioClienteNuloOTransitorio = "Cliente de Asignacion a Lista Precio Cliente nulo o transitorio";
+            public const string excepcion_ListaPrecioClienteDeAsignacionListaPrecioClienteNuloOTransitorio = "Lista Precio Cliente De Asignacion a Lista Precio Cliente nulo o transitorio";
+            public const string excepcion_UsuarioSistemaDeAsignacionListaPrecioClienteNuloOTransitorio = "Usuario Sistema de Asignacion a Lista Precio Cliente nulo o transitorio";
+            public const string advertencia_ExitosaCreacionNuevoCliente = "Creacion de nuevo Cliente se realizo exitosamente";
+            public const string advertencia_ConsultaClientePorRUCExitosa = "Consulta de cliente por RUC exitosa.";
+            public const string advertencia_CodigoDeClienteNoPuedeSerNuloOCacio = "Codigo de cliente no puede ser nulo o vacio.";
+            public const string advertencia_RUCDeClienteNoPuedeSerNuloOVacio = "RUC de cliente no puede ser nulo o vacio.";
+            public const string advertencia_NombreORazonSocialDelClienteNoPuedeSerNuloOVacio = "Nombre o Razon Social del cliente no puede ser nulo o vacio.";
+            public const string advertencia_VendedorACrearYaExiste = "Vendedor a crear ya existe.";
+            public const string advertencia_SecuenciaDeLineaPedidoEESSDetalleInvalido = "Secuencia de Linea Pedido EESS Detalle Invalido";
+            public const string advertencia_NumeroTurnoDeLineaPedidoEESSDetalleInvalido = "Numero Turno de Linea Pedido EESS Detalle Invalido";
+            public const string advertencia_TotalNacionalDeLineaPedidoEESSDetalleInvalido = "Total Nacional de Linea Pedido EESS Detalle Invalido";
+            public const string advertencia_PrecioVentaDeLineaPedidoEESSDetalleInvalido = "Precio Venta de Linea Pedido EESS Detalle Invalido";
+            public const string advertencia_CantidadDeLineaPedidoEESSDetalleInvalido = "Cantidad de Linea Pedido EESS Detalle Invalido";
+            public const string advertencia_CodigoUnidadDeMedidaDeLineaPedidoEESSDetalleInvalido = "Codigo Unidad De Medida de Linea Pedido EESS Detalle Invalido";
+            public const string advertencia_NumeroValeDeLineaPedidoEESSConValeInvalido = "Numero Vale de Linea Pedido EESS Con Vale Invalido";
+            public const string advertencia_CodigoTipoDocumentoDePedidoEESSInvalido = "Codigo Tipo Documento de Pedido EESS Invalido";
+            public const string advertencia_CodigoTipoPagoDePedidoEESSInvalido = "Codigo Tipo Pago de Pedido EESS Invalido";
+            public const string advertencia_CodigoAlmacenDePedidoEESSInvalido = "Codigo Almacen de Pedido EESS Invalido";
+            public const string advertencia_CodigoMonedaDePedidoEESSInvalido = "Codigo Moneda de Pedido EESS Invalido";
+            public const string advertencia_CodigoEstadoDocumentoDePedidoEESSInvalido = "Codigo Estado Documento de Pedido EESS Invalido";
+            public const string advertencia_CodigoCondicionPagoDePedidoEESSInvalido = "Codigo Condicion Pago de Pedido EESS Invalido";
+            public const string advertencia_CodigoVendedorDePedidoEESSInvalido = "Codigo Vendedor de Pedido EESS Invalido";
+            public const string advertencia_CodigoUsuarioDeSistemaDePedidoEESSInvalido = "Codigo Usuario de Sistema de Pedido EESS Invalido";
+            public const string advertencia_CodigoImpuestoIgvDePedidoEESSInvalido = "Codigo Impuesto Igv de Pedido EESS Invalido";
+            public const string advertencia_CodigoImpuestoIscDePedidoEESSInvalido = "Codigo Impuesto Isc de Pedido EESS Invalido";
+            public const string advertencia_CodigoClienteDePedidoEESSInvalido = "Codigo Cliente de Pedido EESS Invalido";
+            public const string advertencia_CodigoClaseTipoCambioDePedidoEESSInvalido = "Codigo Clase Tipo Cambio de Pedido EESS Invalido";
+            public const string advertencia_CodigoPuntoDeVentaDePedidoEESSInvalido = "Codigo Punto de Venta de Pedido EESS Invalido";
+            public const string advertencia_CodigoEstadoDePedidoEESSInvalido = "Codigo Estado de Pedido EESS Invalido";
+            public const string advertencia_CodigoMonedaCreditoDePedidoEESSInvalido = "Codigo Moneda Credito de Pedido EESS Invalido";
+            public const string advertencia_CodigoClaseTipoCambioClienteCreditoDePedidoEESSInvalido = "Codigo Clase Tipo Cambio Cliente Credito de Pedido EESS Invalido";
+            public const string advertencia_CodigoTarjetaPromocionDePedidoEESSInvalido = "Codigo Tarjeta Promocion de Pedido EESS Invalido";
+            public const string advertencia_CodigoTarjetaDePedidoEESSInvalido = "Codigo Tarjeta de Pedido EESS Invalido";
+            public const string advertencia_CodigoMonedaTarjetaDePedidoEESSInvalido = "Codigo Moneda Tarjeta de Pedido EESS Invalido";
+            public const string advertencia_DebeAsignarseUnNumeroDeCaraALaTransaccion  = "Debe asignarse un numero de cara a la transaccion.";          
+            public const string advertencia_DebeAsignarseUnPeriodoALaTransaccion = "Debe asignarse un periodo a la transaccion.";
+            public const string advertencia_TotalTransaccionInvalida = "Total transaccion invalida.";
+            public const string advertencia_SubTotalTransaccionInvalida = "SubTotal transaccion invalida.";
+            public const string advertencia_ImpuestoTransaccionInvalida = "Impuesto transaccion invalida.";
 
-
+            public const string advertencia_SecuenciaDeLineaPedidoRetailDetalleInvalido = "Secuencia de Linea Pedido Retail Detalle Invalido";            
+            public const string advertencia_NumeroTurnoDeLineaPedidoRetailDetallenvalido = "Numero Turno de Linea Pedido Retail Detalle Invalido";
+            public const string advertencia_TotalNacionalDeLineaPedidoRetailDetalleInvalido = "Total Nacional de Linea Pedido Retail Detalle Invalido";           
+            public const string advertencia_PrecioVentaDeLineaPedidoRetailDetalleInvalido = "Precio Venta de Linea Pedido Retail Detalle Invalido";            
+            public const string advertencia_CantidadDeLineaPedidoRetailDetalleInvalido = "Cantidad de Linea Pedido Retail Detalle Invalido";           
+            public const string advertencia_CodigoUnidadDeMedidaDeLineaPedidoRetailDetalleInvalido = "Codigo Unidad De Medida de Linea Pedido Retail Detalle Invalido";
+            public const string advertencia_NumeroValeDeLineaPedidoRetailConValeInvalido = "Numero Vale de Linea Pedido Retail Con Vale Invalido";            
+            public const string advertencia_SecuenciaDeLineaPedidoRetailConTarjetaInvalido = "Secuencia de Linea Pedido Retail con Tarjeta Invalido";           
+            public const string advertencia_NumeroTarjetaDeLineaPedidoRetailConTarjetaInvalido = "Numero Tarjeta de Linea Pedido Retail Con Tarjeta Invalido";
+            public const string advertencia_TotalTarjetaNacionalDeLineaPedidoRetailConTarjetaInvalido = "Total Tarjeta de Linea Pedido Retail Con Tarjeta Invalido";
+            public const string advertencia_CodigoTarjetaDeLineaPedidoRetailConTarjetaInvalido = "Codigo Tarjeta de Linea Pedido Retail Con Tarjeta Invalido";
+            public const string advertencia_CodigoTipoDocumentoDePedidoRetailInvalido = "Codigo Tipo Documento de Pedido Retail Invalido";
+            public const string advertencia_CodigoTipoPagoDePedidoRetailInvalido = "Codigo Tipo Pago de Pedido Retail Invalido";
+            public const string advertencia_CodigoAlmacenDePedidoRetailInvalido = "Codigo Almacen de Pedido Retail Invalido";
+            public const string advertencia_CodigoMonedaDePedidoRetailInvalido = "Codigo Moneda de Pedido Retail Invalido";
+            public const string advertencia_CodigoCondicionPagoDePedidoRetailInvalido = "Codigo Condicion Pago de Pedido Retail Invalido";
+            public const string advertencia_CodigoVendedorDePedidoRetailInvalido = "Codigo Vendedor de Pedido Retail Invalido";
+            public const string advertencia_CodigoUsuarioDeSistemaDePedidoRetailInvalido = "Codigo Usuario de Sistema de Pedido Retail Invalido";
+            public const string advertencia_CodigoImpuestoIgvDePedidoRetailInvalido = "Codigo Impuesto Igv de Pedido Retail Invalido";           
+            public const string advertencia_CodigoClaseTipoCambioDePedidoRetailInvalido = "Codigo Clase Tipo Cambio de Pedido Retail Invalido";           
+            public const string advertencia_CodigoPuntoDeVentaDePedidoRetailInvalido = "Codigo Punto de Venta de Pedido Retail Invalido";
+            public const string advertencia_CodigoTipoNegocioDePedidoRetailInvalido = "Codigo Tipo de Negocio de Pedido Retail Invalido";
+            public const string advertencia_FalloCreacionNuevoPedidoEESS = "Fallo Creacion Nueva Pedido En Pedido EESS";
+            public const string advertencia_FalloCreacionNuevoPedidoRetail = "Fallo Creacion Nueva Pedido En Pedido Retail";
+            public const string advertencia_CodigoVendedorNoPuedeSerNuloOVacio = "Codigo de Vendedor no puede ser nulo o vacio.";
+            public const string advertencia_NombresVendedorNoPuedeSerNuloOVacio = "Nombres de Vendedor no puede ser nulo o vacio.";
+            public const string advertencia_DocumentoIdentidadNoPuedeSerNuloOVacio = "Documento Identidad de Vendedor no puede ser nulo o vacio.";
+            public const string advertencia_SexoNoPuedeSerNuloOVacio = "Sexo de Vendedor no puede ser nulo o vacio.";
+            public const string advertencia_ClaveNoPuedeSerNuloOVacio = "Clave de Vendedor no puede ser nulo o vacio.";
+            public const string advertencia_UbicacionDeDireccionNoPuedeSerNuloOVacio = "Ubicacion de Direccion de Vendedor no puede ser nulo o vacio.";
+            public const string advertencia_CodigoClienteDeLineaPedidoEESSConValeInvalido = "Codigo Cliente De Linea Pedido EESS Con Vale Invalido.";
+            public const string advertencia_CodigoClienteDeLineaPedidoRetailConValeInvalido = "Codigo Cliente De Linea Pedido Retail Con Vale Invalido.";
+            public const string advertencia_NoSeObtuvoResultadoDeVentaAPersistir = "No se obtuvo resultado De Venta a Persistir";
+            public const string advertencia_NoSeObtuvoResultadoDeConsultaClienteAPersistir = "No Se Obtuvo Resultado De Consulta Cliente A Persistir";
+            public const string excepcion_DatosNoValidosParaLineaMovimientoAlmacen = "Datos no validos para Linea Movimientos de Almacen";
         }
 
     }

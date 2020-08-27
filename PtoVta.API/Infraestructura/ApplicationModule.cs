@@ -1,19 +1,27 @@
 using System;
 using Autofac;
+using PtoVta.Aplicacion.BaseTrabajo;
+using PtoVta.Aplicacion.GestionClientes;
 using PtoVta.Aplicacion.GestionColaborador;
+using PtoVta.Aplicacion.GestionConfiguraciones;
 using PtoVta.Aplicacion.GestionInventarios;
 using PtoVta.Aplicacion.GestionParametros;
+using PtoVta.Aplicacion.GestionPedidos;
 using PtoVta.Aplicacion.GestionUsuario;
 using PtoVta.Dominio.Agregados.Colaborador;
+using PtoVta.Dominio.Agregados.Configuraciones;
 using PtoVta.Dominio.Agregados.Inventarios;
 using PtoVta.Dominio.Agregados.Modulo;
 using PtoVta.Dominio.Agregados.Parametros;
 using PtoVta.Dominio.Agregados.Usuario;
+using PtoVta.Dominio.Agregados.Ventas;
 using PtoVta.Infraestructura.Repositorios.Colaborador;
+using PtoVta.Infraestructura.Repositorios.Configuraciones;
 using PtoVta.Infraestructura.Repositorios.Inventarios;
 using PtoVta.Infraestructura.Repositorios.Modulo;
 using PtoVta.Infraestructura.Repositorios.Parametros;
 using PtoVta.Infraestructura.Repositorios.Usuario;
+using PtoVta.Infraestructura.Repositorios.Ventas;
 using PtoVta.Infraestructura.Transversales.Adaptador;
 using PtoVta.Infraestructura.Transversales.Autenticacion;
 using PtoVta.Infraestructura.Transversales.Log;
@@ -49,7 +57,7 @@ namespace PtoVta.API.Infraestructura
 
                 builder.Register(c => new RepositorioEstadoVendedor(QueriesConnectionString))
                     .As<IRepositorioEstadoVendedor>()
-                    .InstancePerLifetimeScope();       
+                    .InstancePerLifetimeScope();        
 
                 builder.Register(c => new RepositorioArticulo(QueriesConnectionString))
                     .As<IRepositorioArticulo>()
@@ -61,7 +69,56 @@ namespace PtoVta.API.Infraestructura
 
                 builder.Register(c => new RepositorioCategoriaArticulo(QueriesConnectionString))
                     .As<IRepositorioCategoriaArticulo>()
-                    .InstancePerLifetimeScope();                                                                                                                        
+                    .InstancePerLifetimeScope();  
+
+                builder.Register(c => new RepositorioCliente(QueriesConnectionString))
+                    .As<IRepositorioCliente>()
+                    .InstancePerLifetimeScope();                      
+
+                builder.Register(c => new RepositorioConfiguracionPuntoVenta(QueriesConnectionString))
+                                    .As<IRepositorioConfiguracionPuntoVenta>()
+                                    .InstancePerLifetimeScope();   
+
+                builder.Register(c => new RepositorioConfiguracionFormatoTicket(QueriesConnectionString))
+                    .As<IRepositorioConfiguracionFormatoTicket>()
+                    .InstancePerLifetimeScope();    
+
+                builder.Register(c => new RepositorioConfiguracionGeneral(QueriesConnectionString))
+                    .As<IRepositorioConfiguracionGeneral>()
+                    .InstancePerLifetimeScope();    
+
+                builder.Register(c => new RepositorioConfiguracionInventario(QueriesConnectionString))
+                    .As<IRepositorioConfiguracionInventario>()
+                    .InstancePerLifetimeScope();                                                                                           
+                                                                                                                                          
+                builder.Register(c => new RepositorioConfiguracionVenta(QueriesConnectionString))
+                    .As<IRepositorioConfiguracionVenta>()
+                    .InstancePerLifetimeScope();  
+
+                builder.Register(c => new RepositorioListaPrecioCliente(QueriesConnectionString))
+                    .As<IRepositorioListaPrecioCliente>()
+                    .InstancePerLifetimeScope(); 
+
+                builder.Register(c => new RepositorioListaPrecioInventario(QueriesConnectionString))
+                    .As<IRepositorioListaPrecioInventario>()
+                    .InstancePerLifetimeScope(); 
+
+                builder.Register(c => new RepositorioPedidoEESS(QueriesConnectionString))
+                    .As<IRepositorioPedidoEESS>()
+                    .InstancePerLifetimeScope(); 
+
+                builder.Register(c => new RepositorioPedidoRetail(QueriesConnectionString))
+                    .As<IRepositorioPedidoRetail>()
+                    .InstancePerLifetimeScope(); 
+
+                builder.Register(c => new RepositorioMoneda(QueriesConnectionString))
+                    .As<IRepositorioMoneda>()
+                    .InstancePerLifetimeScope(); 
+
+                builder.Register(c => new RepositorioTarjeta(QueriesConnectionString))
+                    .As<IRepositorioTarjeta>()
+                    .InstancePerLifetimeScope();                                                                                 
+                                                        
 
                 // builder.RegisterType<RepositorioVendedor>()
                 //     .As<IRepositorioVendedor>()
@@ -75,6 +132,10 @@ namespace PtoVta.API.Infraestructura
                 //     .As<IRepositorioUsuarioSistema>()
                 //     .InstancePerLifetimeScope();
 
+                builder.RegisterType<ConfiguracionGlobalUnificado>()
+                    .As<IConfiguracionGlobalUnificado>()
+                    .InstancePerLifetimeScope();
+                                    
                 builder.RegisterType<ServicioDominioValidarUsuarioVendedor>()
                     .As<IServicioDominioValidarUsuarioVendedor>()
                     .InstancePerLifetimeScope();
@@ -82,6 +143,10 @@ namespace PtoVta.API.Infraestructura
                 builder.RegisterType<ServicioDominioValidarUsuarioSistema>()
                     .As<IServicioDominioValidarUsuarioSistema>()
                     .InstancePerLifetimeScope();
+
+                builder.RegisterType<ServicioDominioListaPrecios>()
+                    .As<IServicioDominioListaPrecios>()
+                    .InstancePerLifetimeScope();                    
 
                builder.RegisterType<ServicioAplicacionInicioSession>()
                     .As<IServicioAplicacionInicioSession>()
@@ -99,6 +164,19 @@ namespace PtoVta.API.Infraestructura
                     .As<IServicioAplicacionParametros>()
                     .InstancePerLifetimeScope();                                         
 
+               builder.RegisterType<ServicioAplicacionCliente>()
+                    .As<IServicioAplicacionCliente>()
+                    .InstancePerLifetimeScope();
+
+               builder.RegisterType<ServicioAplicacionConfiguracion>()
+                    .As<IServicioAplicacionConfiguracion>()
+                    .InstancePerLifetimeScope();    
+
+               builder.RegisterType<ServicioAplicacionPedidos>()
+                    .As<IServicioAplicacionPedidos>()
+                    .InstancePerLifetimeScope();                                
+
+                                                                                                            
                builder.RegisterType<AutenticacionWindows>()
                     .As<IAutenticacion>()
                     .InstancePerLifetimeScope();    

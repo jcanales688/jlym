@@ -43,7 +43,7 @@ namespace PtoVta.API.Controllers
             catch (Exception ex)
             {
                 return NotFound(
-                    new ResultadoServicio<CategoriaArticuloDTO>(0, "Problemas al recuperar las Categorias.", ex.Message, null, null)
+                    new ResultadoServicio<CategoriaArticuloDTO>(6, "Problemas al recuperar las Categorias.", ex.Message, null, null)
                 );
             }
         }

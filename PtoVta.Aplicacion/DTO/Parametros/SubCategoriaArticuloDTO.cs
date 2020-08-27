@@ -5,8 +5,6 @@ namespace PtoVta.Aplicacion.DTO.Parametros
 {
     public class SubCategoriaArticuloDTO
     {
-        public Guid Id { get; set; }
-
         public string CodigoSubCategoriaArticulo { get; set; }
         public string DescripcionSubCategoriaArticulo { get; set; }
         public decimal PorcentajeDiferencia { get; set; }

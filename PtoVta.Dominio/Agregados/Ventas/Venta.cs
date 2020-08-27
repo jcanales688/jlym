@@ -1,12 +1,14 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using PtoVta.Dominio.Agregados.Colaborador;
 using PtoVta.Dominio.Agregados.Configuraciones;
 using PtoVta.Dominio.Agregados.CuentasPorCobrar;
+using PtoVta.Dominio.Agregados.Inventarios;
 using PtoVta.Dominio.Agregados.Parametros;
 using PtoVta.Dominio.Agregados.Usuario;
 using PtoVta.Dominio.BaseTrabajo;
-using static PtoVta.Dominio.BaseTrabajo.Enumeradores.EstadosVenta;
+using static PtoVta.Dominio.BaseTrabajo.Enumeradores.AmbienteVenta;
 using static PtoVta.Dominio.BaseTrabajo.Globales.GlobalDominio;
 
 namespace PtoVta.Dominio.Agregados.Ventas
@@ -18,6 +20,7 @@ namespace PtoVta.Dominio.Agregados.Ventas
         HashSet<VentaDetalle> _lineasVentaDetalle;
         HashSet<VentaConTarjeta> _lineasVentaConTarjeta;
         HashSet<VentaConVale> _lineasVentaConVale;
+        HashSet<MovimientoAlmacen> _lineasMovimientoAlmacen;
 
         HashSet<DocumentoAnticipado> _lineasDocumentoAnticipado;
         HashSet<CuentaPorCobrar> _lineasCuentaPorCobrar;
@@ -103,160 +106,6 @@ namespace PtoVta.Dominio.Agregados.Ventas
         public virtual Impuesto ImpuestoIgv { get; private set; }
         public virtual Impuesto ImpuestoIsc { get; private set; }
 
-
-        public void CalcularTotalVenta()
-        {
-            //int cantItem = 0;
-            decimal sumTotalNacional = 0;
-            decimal sumTotalExtranjera = 0;
-            decimal sumSubTotalNacional = 0;
-            decimal sumSubTotalExtranjera = 0;
-            decimal sumTotalImpuestoNacional = 0;
-            decimal sumTotalImpuestoExtranjera = 0;
-
-            //Por cada fila de detalle
-            foreach (var linea in this.VentaDetalles)
-            {
-                var cantidad = linea.Cantidad;
-                var precio = linea.PrecioVenta;
-                var tipoDeCambio = this.TipoCambio; //Se asume que se determino el tipo de cambio de conversion en la capa de aplicacion o presentacion  
-
-                //Total
-                var totalNacional = cantidad * precio;
-                var totalExtranjera = Math.Round(totalNacional / tipoDeCambio, 4); //4  : es valor por defecto .- determiar el valor de redondeo real
-
-                //SubTotal
-                var subTotalNacional = totalNacional - ((totalNacional * this.ImpuestoIgv.Valor) / 100);
-                var subTotalExtranjera = totalExtranjera - ((totalExtranjera * this.ImpuestoIgv.Valor) / 100);
-
-                //Total impuesto
-                var totalImpuestoNacional = (totalNacional * this.ImpuestoIgv.Valor) / 100;
-                var totalImpuestoExtranjera = (totalExtranjera * this.ImpuestoIgv.Valor) / 100;
-
-                //Asignacion valores Detalle
-                linea.PrecioVenta = precio;
-                linea.PorcentajeImpuestoIgv = this.ImpuestoIgv.Valor;
-                linea.TotalNacional = totalNacional;
-                linea.TotalExtranjera = totalExtranjera;
-                linea.ImpuestoNacional = totalImpuestoNacional;
-                linea.ImpuestoExtranjera = totalImpuestoExtranjera;
-
-                //Calculo Totales Cabecera
-                sumTotalNacional = sumTotalNacional + totalNacional;
-                sumTotalExtranjera = sumTotalExtranjera + totalExtranjera;
-                sumSubTotalNacional += subTotalNacional;
-                sumSubTotalExtranjera += subTotalExtranjera;
-                sumTotalImpuestoNacional = sumTotalImpuestoNacional + totalImpuestoNacional;
-                sumTotalImpuestoExtranjera = sumTotalImpuestoExtranjera + totalImpuestoExtranjera;
-
-                //Num fila
-                //cantItem++;
-            }
-
-            //Asignacion valores Cabecera
-            //ventaDTO.TipoCambio = pTipodeDeCambio;
-            this.TotalNacional = sumTotalNacional;
-            this.TotalExtranjera = sumTotalExtranjera;
-            this.SubTotalNacional = sumSubTotalNacional;
-            this.SubTotalExtranjera = sumSubTotalExtranjera;
-            this.ImpuestoIgvNacional = sumTotalImpuestoNacional;
-            this.ImpuestoIgvExtranjera = sumTotalImpuestoExtranjera;
-
-            this.ValorVenta = this.SubTotalNacional; //Invenstigar la formula de obtencion valor de venta
-        }
-
-
-
-        //este metodo no va: No se utiliza
-        public void IdentificarTipoPagoVenta()
-        {
-            //Determinamos el Tipo de pago
-            //Verificar si es solo pago en efectivo en doble moneda
-            //y/o existe pago con tarjeta
-            //o Ambos
-
-            //Solo si es tipo de pago venta adelantado
-            if (this.TipoPago.CodigoTipoPago == VentaTipoPago.VentaContadoAdelantado) { return; }  //antes: 14
-
-            if (TotalEfectivoNacional + TotalEfectivoExtranjera > 0)
-            {
-                this.TipoPago.CodigoTipoPago = VentaTipoPago.VentaEfectivo;      //Efectivo; antes: 1
-            }
-
-            if (this.VentaConTarjetas != null)
-            {
-                if (this.VentaConTarjetas.Count > 0)
-                {
-                    if (this.TipoPago.CodigoTipoPago == VentaTipoPago.VentaEfectivo) //antes: 1
-                    {
-                        this.TipoPago.CodigoTipoPago = VentaTipoPago.VentaOtros;  //Otros; antes: 0
-                    }
-                    else
-                    {
-                        this.TipoPago.CodigoTipoPago = VentaTipoPago.VentaTarjeta; //Tarjetas; antes 2
-                        
-                    }
-                }
-            }
-
-
-        }
-
-        
-        public void ValidarPagoEnEfectivo(decimal pTotalVueltoNacional, decimal pTotalVueltoExtranjera,
-                                                string pCodigoMonedaVuelto, string pCodigoMonedaBase)
-        {
-            //Validaciones Previas ante de dar vuelto
-            if (pCodigoMonedaVuelto == pCodigoMonedaBase)
-            {
-                if (TotalNacional > TotalEfectivoNacional)
-                {
-                    throw new ArgumentException(Mensajes.excepcion_MontoNacionalPagadoInsuficiente);
-                }
-
-                TotalVueltoNacional = pTotalVueltoNacional;
-                TotalVueltoExtranjera = 0;
-            }
-            else
-            {
-                if (TotalExtranjera > TotalEfectivoExtranjera)
-                {
-                    throw new ArgumentException(Mensajes.excepcion_MontoExtranjeraPagadoInsuficiente);
-                }
-
-                TotalVueltoExtranjera = pTotalVueltoExtranjera;
-                TotalVueltoNacional = 0;
-            }
-
-
-
-        }
-
-
-
-        public void CalcularTotalPagoConTarjeta(decimal pTotalEfectivoPagoNacional,
-                                            decimal pTotalEfectivoPagoExtranjera, 
-                                            string pCodigoMonedaBase)
-        {
-            //Obtener totales desde tarjeta
-            if (this.TipoPago.CodigoTipoPago == VentaTipoPago.VentaOtros || 
-                    this.TipoPago.CodigoTipoPago == VentaTipoPago.VentaTarjeta) //antes: .. 0 || .. 2
-            {
-                foreach (var pagoTarjeta in this.VentaConTarjetas)
-                {
-                    if (pagoTarjeta.CodigoMoneda == pCodigoMonedaBase)
-                    {
-                        pTotalEfectivoPagoNacional = pTotalEfectivoPagoNacional + pagoTarjeta.TotalTarjetaNacional;
-                    }
-                    else
-                    {
-                        pTotalEfectivoPagoExtranjera = pTotalEfectivoPagoExtranjera + pagoTarjeta.TotalTarjetaExtranjera;
-                    }
-                }
-            }
-        }
-
-
         public void Habilitar()
         {
             if (!EsHabilitado)
@@ -321,6 +170,22 @@ namespace PtoVta.Dominio.Agregados.Ventas
         }
 
 
+        public virtual ICollection<MovimientoAlmacen> MovimientosAlmacen
+        {   get
+            {
+                if (_lineasMovimientoAlmacen == null)
+                    _lineasMovimientoAlmacen = new HashSet<MovimientoAlmacen>();
+
+                return _lineasMovimientoAlmacen;
+            }
+
+            set
+            {
+                _lineasMovimientoAlmacen = new HashSet<MovimientoAlmacen>(value);
+            }
+        }
+
+
         public virtual ICollection<DocumentoAnticipado> DocumentosAnticipado
         {
             get
@@ -369,17 +234,17 @@ namespace PtoVta.Dominio.Agregados.Ventas
             //Validaciones
 
 
-            if (string.IsNullOrEmpty(pCodigoArticulo)
+            if (string.IsNullOrEmpty(pCodigoArticulo.Trim())
                 ||
                 pSecuencia <= 0
                 ||
-                String.IsNullOrEmpty(pNumeroCara)
-                ||
+                // String.IsNullOrEmpty(pNumeroCara)
+                // ||
                 pNumeroTurno < 0
                 ||
                 pPorcentajeImpuestoIgv <= 0
-                ||
-                pTotalNacional <= 0
+                // ||
+                // pTotalNacional <= 0    //QUITADO TEMPORALMENTE PARA CALCULAR TOTALES EN EL SERVIDOR ***
                 //||
                 //pImpuestoNacional <= 0 //No hay calculo de impuesto a nivel de detalle por ahora
                 ||
@@ -397,7 +262,7 @@ namespace PtoVta.Dominio.Agregados.Ventas
             var nuevaLineaVentaDetalle = new VentaDetalle()
             {
                 VentaId = this.Id,
-                CodigoArticulo = pCodigoArticulo,
+                CodigoArticulo = pCodigoArticulo.Trim(),
                 CodigoArticuloAlterno = pCodigoArticuloAlterno,
                 CodigoMoneda = this.CodigoMoneda,
                 CodigoEstadoDocumento = this.CodigoEstadoDocumento,
@@ -429,8 +294,8 @@ namespace PtoVta.Dominio.Agregados.Ventas
                 EnInventarioFisico = pEnInventarioFisico
             };
 
-            //Establecer la identidad
-            nuevaLineaVentaDetalle.GenerarNuevaIdentidad();
+            //Calcula Totales
+            nuevaLineaVentaDetalle.CalcularTotales(this.TipoCambio, this.ImpuestoIgv.Valor);
 
             this.VentaDetalles.Add(nuevaLineaVentaDetalle);
 
@@ -442,9 +307,9 @@ namespace PtoVta.Dominio.Agregados.Ventas
                     decimal pTotalTarjetaExtranjera, string pCodigoMoneda, string pCodigoTarjeta)
         {
 
-            if (string.IsNullOrEmpty(pCodigoMoneda)
+            if (string.IsNullOrEmpty(pCodigoMoneda.Trim())
                 ||
-                string.IsNullOrEmpty(pCodigoTarjeta))
+                string.IsNullOrEmpty(pCodigoTarjeta.Trim()))
                 throw new ArgumentException(Mensajes.excepcion_DatosNoValidosParaLineaVentaConTarjeta);
 
 
@@ -455,8 +320,8 @@ namespace PtoVta.Dominio.Agregados.Ventas
                 CodigoAlmacen = this.CodigoAlmacen,
                 CodigoTipoDocumento = this.CodigoTipoDocumento,
                 FechaProceso = this.FechaProceso,
-                CodigoMoneda = pCodigoMoneda,
-                CodigoTarjeta = pCodigoTarjeta,        
+                CodigoMoneda = pCodigoMoneda.Trim(),
+                CodigoTarjeta = pCodigoTarjeta.Trim(),        
                 Secuencia = pSecuencia,
                 NumeroTarjeta = pNumeroTarjeta,
                 TotalTarjetaNacional = pTotalTarjetaNacional,
@@ -498,6 +363,47 @@ namespace PtoVta.Dominio.Agregados.Ventas
         }
 
 
+        public MovimientoAlmacen AgregarNuevoMovimientoAlmacen(string pCorrelativoMovimiento, DateTime pFechaTipoDeCambio, 
+                                                                int pFlagEntradaSalida, decimal pCantidad, 
+                                                                decimal pCostoReposicionExtranjera, decimal pCostoReposicionNacional, 
+                                                                bool pEsArticuloFormula, decimal pPrecio,
+                                                                int pEnInventarioFisico, string pCodigoArticulo, 
+                                                                string pCodigoTipoMovimientoAlmacen)
+        {
+            if (string.IsNullOrEmpty(pCorrelativoMovimiento))
+                throw new ArgumentException(Mensajes.excepcion_DatosNoValidosParaLineaMovimientoAlmacen);
+
+
+            var nuevaLineaMovimientoAlmacen = new MovimientoAlmacen()
+            {
+                CorrelativoMovimiento = pCorrelativoMovimiento, 
+                FechaDocumento = this.FechaDocumento, 
+                FechaProceso = this.FechaProceso, 
+                MontoTipoDeCambio = this.TipoCambio, 
+                FechaTipoDeCambio = pFechaTipoDeCambio, 
+                Periodo = this.Periodo, 
+                FlagEntradaSalida = pFlagEntradaSalida, 
+                Cantidad = pCantidad, 
+                CostoReposicionExtranjera = pCostoReposicionExtranjera, 
+                CostoReposicionNacional = pCostoReposicionNacional, 
+                EsArticuloFormula =  pEsArticuloFormula, 
+                Precio = pPrecio,
+                DocumentoReferencia =  this.NumeroDocumento, 
+                EnInventarioFisico = pEnInventarioFisico,
+
+                CodigoAlmacen = this.CodigoAlmacen,
+                CodigoArticulo = pCodigoArticulo,
+                CodigoTipoMovimientoAlmacen = pCodigoTipoMovimientoAlmacen,
+                CodigoTipoDocumentoReferencia = this.CodigoTipoDocumento 
+            };
+
+            nuevaLineaMovimientoAlmacen.GenerarNuevaIdentidad();
+
+            this.MovimientosAlmacen.Add(nuevaLineaMovimientoAlmacen);
+
+            return nuevaLineaMovimientoAlmacen;
+        }
+
 
         //nueva innovavion de Agregado - Realacion 1 a 0, 1
         public DocumentoAnticipado AgregarNuevoDocumentoAnticipado()
@@ -524,16 +430,16 @@ namespace PtoVta.Dominio.Agregados.Ventas
                                     int pDiasDeGracia, decimal pNumeroVale, string pCodigoEstadoDocumento, 
                                     string pCodigoDiaDePago, string pCodigoTipoDocumentoReferencia)
         {
-            if (string.IsNullOrEmpty(pCodigoEstadoDocumento)
+            if (string.IsNullOrEmpty(pCodigoEstadoDocumento.Trim())
                 ||
-                string.IsNullOrEmpty(pCodigoDiaDePago)
+                string.IsNullOrEmpty(pCodigoDiaDePago.Trim())
                 ||
                 pReferencia <= 0)
                     throw new ArgumentException(Mensajes.excepcion_DatosNoValidosParaLineaCuentaPorCobrar);
 
 
             var nuevaLineaCuentaPorCobrar = new CuentaPorCobrar(this.NumeroDocumento, this.CodigoMoneda, this.CodigoClaseTipoCambio,
-                                pCodigoEstadoDocumento, pCodigoDiaDePago, this.CodigoAlmacen,
+                                pCodigoEstadoDocumento.Trim(), pCodigoDiaDePago.Trim(), this.CodigoAlmacen,
                                 this.CodigoUsuarioDeSistema, this.CodigoTipoDocumento, this.CodigoCliente, 
                                 pCodigoTipoDocumentoReferencia, pReferencia,DateTime.Now, 
                                 this.FechaProceso, pFechaVencimiento,this.TotalNacional, 
@@ -546,6 +452,158 @@ namespace PtoVta.Dominio.Agregados.Ventas
             this.CuentasPorCobrar.Add(nuevaLineaCuentaPorCobrar);
 
             return nuevaLineaCuentaPorCobrar;
+        }
+
+        public void CalcularTotalVenta()
+        {
+            this.ImpuestoIgvNacional = Math.Round(this.VentaDetalles.Sum(w => w.ImpuestoNacional), 4);
+            this.ImpuestoIgvExtranjera = Math.Round(this.VentaDetalles.Sum(w => w.ImpuestoExtranjera), 4);            
+            this.TotalNacional = Math.Round(this.VentaDetalles.Sum(w => w.TotalNacional), 4);
+            this.TotalExtranjera = Math.Round(this.VentaDetalles.Sum(w => w.TotalExtranjera), 4);
+            this.SubTotalNacional = Math.Round(this.TotalNacional - this.ImpuestoIgvNacional, 4);
+            this.SubTotalExtranjera = Math.Round(this.TotalExtranjera - this.ImpuestoIgvExtranjera, 4);            
+
+            this.ValorVenta = this.SubTotalNacional; 
+        }
+
+    //    public void CalcularTotalVenta()
+    //     {
+    //         //int cantItem = 0;
+    //         decimal sumTotalNacional = 0;
+    //         decimal sumTotalExtranjera = 0;
+    //         decimal sumSubTotalNacional = 0;
+    //         decimal sumSubTotalExtranjera = 0;
+    //         decimal sumTotalImpuestoNacional = 0;
+    //         decimal sumTotalImpuestoExtranjera = 0;
+
+    //         //Por cada fila de detalle
+    //         foreach (var linea in this.VentaDetalles)
+    //         {
+    //             var cantidad = linea.Cantidad;
+    //             var precio = linea.PrecioVenta;
+    //             var tipoDeCambio = this.TipoCambio; //Se asume que se determino el tipo de cambio de conversion en la capa de aplicacion o presentacion  
+
+    //             //Total
+    //             var totalNacional = cantidad * precio;
+    //             var totalExtranjera = Math.Round(totalNacional / tipoDeCambio, 4); //4  : es valor por defecto .- determiar el valor de redondeo real
+
+    //             //SubTotal
+    //             var subTotalNacional = totalNacional - ((totalNacional * this.ImpuestoIgv.Valor) / 100);
+    //             var subTotalExtranjera = totalExtranjera - ((totalExtranjera * this.ImpuestoIgv.Valor) / 100);
+
+    //             //Total impuesto
+    //             var totalImpuestoNacional = (totalNacional * this.ImpuestoIgv.Valor) / 100;
+    //             var totalImpuestoExtranjera = (totalExtranjera * this.ImpuestoIgv.Valor) / 100;
+
+    //             //Asignacion valores Detalle
+    //             linea.PrecioVenta = precio;
+    //             linea.PorcentajeImpuestoIgv = this.ImpuestoIgv.Valor;
+    //             linea.TotalNacional = totalNacional;
+    //             linea.TotalExtranjera = totalExtranjera;
+    //             linea.ImpuestoNacional = totalImpuestoNacional;
+    //             linea.ImpuestoExtranjera = totalImpuestoExtranjera;
+
+    //             //Calculo Totales Cabecera
+    //             sumTotalNacional = sumTotalNacional + totalNacional;
+    //             sumTotalExtranjera = sumTotalExtranjera + totalExtranjera;
+    //             sumSubTotalNacional += subTotalNacional;
+    //             sumSubTotalExtranjera += subTotalExtranjera;
+    //             sumTotalImpuestoNacional = sumTotalImpuestoNacional + totalImpuestoNacional;
+    //             sumTotalImpuestoExtranjera = sumTotalImpuestoExtranjera + totalImpuestoExtranjera;
+
+    //             //Num fila
+    //             //cantItem++;
+    //         }
+
+    //         //Asignacion valores Cabecera
+    //         //ventaDTO.TipoCambio = pTipodeDeCambio;
+    //         this.TotalNacional = sumTotalNacional;
+    //         this.TotalExtranjera = sumTotalExtranjera;
+    //         this.SubTotalNacional = sumSubTotalNacional;
+    //         this.SubTotalExtranjera = sumSubTotalExtranjera;
+    //         this.ImpuestoIgvNacional = sumTotalImpuestoNacional;
+    //         this.ImpuestoIgvExtranjera = sumTotalImpuestoExtranjera;
+
+    //         this.ValorVenta = this.SubTotalNacional; //Invenstigar la formula de obtencion valor de venta
+    //     }
+
+        //este metodo no va: No se utiliza
+        public void IdentificarTipoPagoVenta()
+        {
+            //Determinamos el Tipo de pago
+            //Verificar si es solo pago en efectivo en doble moneda
+            //y/o existe pago con tarjeta
+            //o Ambos
+
+            //Solo si es tipo de pago venta adelantado
+            if (this.TipoPago.CodigoTipoPago == EnumTipoPago.CodigoTipoPagoContadoAdelantado) { return; }  //antes: 14
+
+            if (TotalEfectivoNacional + TotalEfectivoExtranjera > 0)
+            {
+                this.TipoPago.CodigoTipoPago = EnumTipoPago.CodigoTipoPagoEfectivo;      //Efectivo; antes: 1
+            }
+
+            if (this.VentaConTarjetas != null)
+            {
+                if (this.VentaConTarjetas.Count > 0)
+                {
+                    if (this.TipoPago.CodigoTipoPago == EnumTipoPago.CodigoTipoPagoEfectivo) //antes: 1
+                    {
+                        this.TipoPago.CodigoTipoPago = EnumTipoPago.CodigoTipoPagoOtros;  //Otros; antes: 0
+                    }
+                    else
+                    {
+                        this.TipoPago.CodigoTipoPago = EnumTipoPago.CodigoTipoPagoTarjeta; //Tarjetas; antes 2
+                        
+                    }
+                }
+            }
+
+
+        }
+        
+        public void ValidarYActualizarPagoEnEfectivo(decimal pTotalVueltoNacional, decimal pTotalVueltoExtranjera,
+                                                string pCodigoMonedaVuelto, string pCodigoMonedaBase)
+        {
+            //Validaciones Previas ante de dar vuelto
+            if (pCodigoMonedaVuelto == pCodigoMonedaBase)
+            {
+                if (this.TotalNacional > this.TotalEfectivoNacional)
+                    throw new ArgumentException(Mensajes.excepcion_MontoNacionalPagadoInsuficiente);
+
+                this.TotalVueltoNacional = pTotalVueltoNacional;
+                this.TotalVueltoExtranjera = 0;
+            }
+            else
+            {
+                if (this.TotalExtranjera > this.TotalEfectivoExtranjera)
+                    throw new ArgumentException(Mensajes.excepcion_MontoExtranjeraPagadoInsuficiente);
+
+                this.TotalVueltoExtranjera = pTotalVueltoExtranjera;
+                this.TotalVueltoNacional = 0;
+            }
+        }
+
+        public void CalcularTotalPagoConTarjeta(decimal pTotalEfectivoPagoNacional,
+                                            decimal pTotalEfectivoPagoExtranjera, 
+                                            string pCodigoMonedaBase)
+        {
+            //Obtener totales desde tarjeta
+            if (this.TipoPago.CodigoTipoPago == EnumTipoPago.CodigoTipoPagoOtros || 
+                    this.TipoPago.CodigoTipoPago == EnumTipoPago.CodigoTipoPagoTarjeta) //antes: .. 0 || .. 2
+            {
+                foreach (var pagoTarjeta in this.VentaConTarjetas)
+                {
+                    if (pagoTarjeta.CodigoMoneda == pCodigoMonedaBase)
+                    {
+                        pTotalEfectivoPagoNacional = pTotalEfectivoPagoNacional + pagoTarjeta.TotalTarjetaNacional;
+                    }
+                    else
+                    {
+                        pTotalEfectivoPagoExtranjera = pTotalEfectivoPagoExtranjera + pagoTarjeta.TotalTarjetaExtranjera;
+                    }
+                }
+            }
         }
 
         //Moneda
@@ -564,7 +622,7 @@ namespace PtoVta.Dominio.Agregados.Ventas
         {
             if (!string.IsNullOrEmpty(pCodigoMoneda))
             {
-                this.CodigoMoneda = pCodigoMoneda;
+                this.CodigoMoneda = pCodigoMoneda.Trim();
                 this.Moneda = null;
             }
         }
@@ -584,7 +642,7 @@ namespace PtoVta.Dominio.Agregados.Ventas
         {
             if (!string.IsNullOrEmpty(pCodigoClaseTipoCambio))
             {
-                this.CodigoClaseTipoCambio = pCodigoClaseTipoCambio;
+                this.CodigoClaseTipoCambio = pCodigoClaseTipoCambio.Trim();
                 this.ClaseTipoCambio = null;
             }
         }
@@ -609,7 +667,7 @@ namespace PtoVta.Dominio.Agregados.Ventas
         {
             if (!string.IsNullOrEmpty(pCodigoCliente))
             {
-                this.CodigoCliente = pCodigoCliente;
+                this.CodigoCliente = pCodigoCliente.Trim();
                 this.Cliente = null;
             }
         }
@@ -634,7 +692,7 @@ namespace PtoVta.Dominio.Agregados.Ventas
         {
             if (!string.IsNullOrEmpty(pCodigoTipoDocumento))
             {
-                this.CodigoTipoDocumento = pCodigoTipoDocumento;
+                this.CodigoTipoDocumento = pCodigoTipoDocumento.Trim();
                 this.TipoDocumento = null;
             }
         }        
@@ -657,7 +715,7 @@ namespace PtoVta.Dominio.Agregados.Ventas
         {
             if (!string.IsNullOrEmpty(pCodigoImpuestoIgv))
             {
-                this.CodigoImpuestoIgv = pCodigoImpuestoIgv;
+                this.CodigoImpuestoIgv = pCodigoImpuestoIgv.Trim();
                 this.ImpuestoIgv = null;
             }
         }
@@ -680,7 +738,7 @@ namespace PtoVta.Dominio.Agregados.Ventas
             if (!string.IsNullOrEmpty(pCodigoImpuestoIsc))
             {
 
-                this.CodigoImpuestoIsc = pCodigoImpuestoIsc;
+                this.CodigoImpuestoIsc = pCodigoImpuestoIsc.Trim();
                 this.ImpuestoIsc = null;
             }
         }
@@ -706,7 +764,7 @@ namespace PtoVta.Dominio.Agregados.Ventas
         {
             if (!string.IsNullOrEmpty(pCodigoEstadoDocumento))
             {
-                this.CodigoEstadoDocumento = pCodigoEstadoDocumento;
+                this.CodigoEstadoDocumento = pCodigoEstadoDocumento.Trim();
                 this.EstadoDocumento = null;
             }
         }
@@ -729,7 +787,7 @@ namespace PtoVta.Dominio.Agregados.Ventas
         {
             if (!string.IsNullOrEmpty(pCodigoVendedor))
             {
-                this.CodigoVendedor = pCodigoVendedor;
+                this.CodigoVendedor = pCodigoVendedor.Trim();
                 this.Vendedor = null;
             }
         }
@@ -751,7 +809,7 @@ namespace PtoVta.Dominio.Agregados.Ventas
         {
             if (!string.IsNullOrEmpty(pCodigoCondicionPago))
             {
-                this.CodigoCondicionPago = pCodigoCondicionPago;
+                this.CodigoCondicionPago = pCodigoCondicionPago.Trim();
                 this.CondicionPago = null;
             }
         }
@@ -772,7 +830,7 @@ namespace PtoVta.Dominio.Agregados.Ventas
         {
             if (!string.IsNullOrEmpty(pCodigoTipoPago))
             {
-                this.CodigoTipoPago = pCodigoTipoPago;
+                this.CodigoTipoPago = pCodigoTipoPago.Trim();
                 this.TipoPago = null;
             }
         }
@@ -794,7 +852,7 @@ namespace PtoVta.Dominio.Agregados.Ventas
             if (!string.IsNullOrEmpty(pCodigoPuntoDeVenta))
             {
 
-                this.CodigoPuntoDeVenta = pCodigoPuntoDeVenta;
+                this.CodigoPuntoDeVenta = pCodigoPuntoDeVenta.Trim();
                 this.ConfiguracionPuntoVenta = null;
             }
         }
@@ -817,7 +875,7 @@ namespace PtoVta.Dominio.Agregados.Ventas
             if (!string.IsNullOrEmpty(pCodigoAlmacen))
             {
 
-                this.CodigoAlmacen = pCodigoAlmacen;
+                this.CodigoAlmacen = pCodigoAlmacen.Trim();
                 this.Almacen = null;
             }
         }
@@ -839,7 +897,7 @@ namespace PtoVta.Dominio.Agregados.Ventas
         {
             if (!string.IsNullOrEmpty(pCodigoTipoNegocio))
             {
-                this.CodigoTipoNegocio = pCodigoTipoNegocio;
+                this.CodigoTipoNegocio = pCodigoTipoNegocio.Trim();
                 this.TipoNegocio = null;
             }
         }
@@ -861,7 +919,7 @@ namespace PtoVta.Dominio.Agregados.Ventas
         {
             if (!string.IsNullOrEmpty(pCodigoUsuarioDeSistema))
             {
-                this.CodigoUsuarioDeSistema = pCodigoUsuarioDeSistema;
+                this.CodigoUsuarioDeSistema = pCodigoUsuarioDeSistema.Trim();
                 this.UsuarioSistema = null;
             }
         }        

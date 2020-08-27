@@ -39,7 +39,7 @@ namespace PtoVta.API.Controllers
                 if(estadoUsuarioVendorAgregado == null)
                 {
                     return BadRequest(
-                        new ResultadoServicio<VendedorDTO>(0,"Creacion de nuevo Vendedor fallo.", "", null, null)
+                        new ResultadoServicio<VendedorDTO>(6,"Creacion de nuevo Vendedor fallo.", "", null, null)
                     );
                 }
 
@@ -48,7 +48,7 @@ namespace PtoVta.API.Controllers
             catch (Exception ex)
             {
                 return BadRequest(
-                    new ResultadoServicio<VendedorDTO>(0,"Creacion de nuevo Vendedor fallo.", ex.Message, null, null)
+                    new ResultadoServicio<VendedorDTO>(6,"Creacion de nuevo Vendedor fallo.", ex.Message, null, null)
                 );    
             }
 

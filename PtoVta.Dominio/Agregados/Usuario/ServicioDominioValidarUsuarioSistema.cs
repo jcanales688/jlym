@@ -15,7 +15,7 @@ namespace PtoVta.Dominio.Agregados.Usuario
             bool esUsuarioSistemaValido = false;
 
             //Clave Invalida
-            if (String.IsNullOrEmpty(pClave))
+            if (String.IsNullOrEmpty(pClave.Trim()))
                 throw new InvalidOperationException(Mensajes.validacion_ClaveNulaOVacia);
 
             //Modulo sistema no existe

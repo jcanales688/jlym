@@ -4,9 +4,6 @@ namespace PtoVta.Aplicacion.DTO.Inventarios
 {
     public class ArticuloDetalleDTO
     {
-
-        public Guid Id { get; set; }
-
         public decimal StockMinimo { get; set; }
         public decimal StockMaximo { get; set; }
         public decimal StockInicial { get; set; }

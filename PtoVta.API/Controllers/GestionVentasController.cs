@@ -122,7 +122,7 @@ namespace PtoVta.API.Controllers
         {
             try
             {
-                var ventas = _IServicioAplicacionFacturacion.ObtenerVentas(pCodigoAlmacen, pFechaProcesoInicio, pFechaProcesoFin, 
+                var ventas = _IServicioAplicacionFacturacion.BuscarVentas(pCodigoAlmacen, pFechaProcesoInicio, pFechaProcesoFin, 
                                                                         pNumeroDocumento, pCodigoTipoNegocio);
                 if (ventas == null)
                 {

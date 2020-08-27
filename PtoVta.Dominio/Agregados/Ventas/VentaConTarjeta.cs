@@ -44,7 +44,7 @@ namespace PtoVta.Dominio.Agregados.Ventas
         {
             if (!string.IsNullOrEmpty(pCodigoMoneda))
             {
-                this.CodigoMoneda = pCodigoMoneda;
+                this.CodigoMoneda = pCodigoMoneda.Trim();
                 this.Moneda = null;
             }
         }
@@ -65,7 +65,7 @@ namespace PtoVta.Dominio.Agregados.Ventas
         {
             if (!string.IsNullOrEmpty(pCodigoTarjeta))
             {
-                this.CodigoTarjeta = pCodigoTarjeta;
+                this.CodigoTarjeta = pCodigoTarjeta.Trim();
                 this.Tarjeta = null;
             }
         }
@@ -86,7 +86,7 @@ namespace PtoVta.Dominio.Agregados.Ventas
         {
             if (!string.IsNullOrEmpty(pCodigoTipoDocumento))
             {
-                this.CodigoTipoDocumento = pCodigoTipoDocumento;
+                this.CodigoTipoDocumento = pCodigoTipoDocumento.Trim();
                 this.TipoDocumento = null;
             }
         }
@@ -107,7 +107,7 @@ namespace PtoVta.Dominio.Agregados.Ventas
         {
             if (!string.IsNullOrEmpty(pCodigoAlmacen))
             {
-                this.CodigoAlmacen = pCodigoAlmacen;
+                this.CodigoAlmacen = pCodigoAlmacen.Trim();
                 this.Almacen = null;
             }
         }

@@ -44,10 +44,37 @@ namespace PtoVta.API.Controllers
             catch (Exception ex)
             {
                 return NotFound(
-                    new ResultadoServicio<ArticuloDTO>(0,"Problemas al recuperar las Articulos.", ex.Message, null, null)
+                    new ResultadoServicio<ArticuloDTO>(6,"Problemas al recuperar las Articulos.", ex.Message, null, null)
                 );   
             }
-
         }
+
+
+
+        [Route("consultarPrecioVentaDeArticulo/{pCodigoCliente}/{pCodigoArticulo}/{pCodigoAlmacen}")]
+        [HttpGet]
+        [ProducesResponseType(typeof(decimal), (int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.NotFound)]
+        public  IActionResult ConsultarPrecioVentaDeArticulo(string pCodigoCliente, string pCodigoArticulo, string pCodigoAlmacen)
+        {
+            try
+            {
+                var precioVentaArticulo = _IServicioAplicacionArticulo.ObtenerPrecioVentaDeArticulo(pCodigoCliente, 
+                                                                                pCodigoArticulo, pCodigoAlmacen);
+
+                if (precioVentaArticulo == 0)
+                {
+                    return NotFound();
+                }
+
+                return Ok(precioVentaArticulo);             
+            }
+            catch (Exception ex)
+            {
+                return NotFound(
+                    new ResultadoServicio<ArticuloDTO>(6,"Problemas al recuperar el precio de venta del articulo.", ex.Message, null, null)
+                );   
+            }
+        }        
     }
 }

@@ -23,19 +23,35 @@ namespace PtoVta.Aplicacion.GestionClientes
 
         public ResultadoServicio<ResultadoClienteGrabadoDTO> AgregarNuevoCliente(ClienteDTO pClienteDTO)
         {
-            var nuevoCliente = CrearNuevoCliente(pClienteDTO);
+            var clienteExistente =_IRepositorioCliente.ObtenerPorCodigo(pClienteDTO.CodigoCliente);
+            if (clienteExistente != null)
+            {                
+                LogFactory.CrearLog().LogWarning(Mensajes.advertencia_RucYClienteYaRegistrado);
+                throw new ArgumentException(Mensajes.advertencia_RucYClienteYaRegistrado);
+            }  
+
+            ClienteDireccion direccionClientePrimero = new ClienteDireccion(pClienteDTO.DireccionPrimeroPais, 
+                                pClienteDTO.DireccionPrimeroDepartamento,pClienteDTO.DireccionPrimeroProvincia,
+                                pClienteDTO.DireccionPrimeroDistrito, pClienteDTO.DireccionPrimeroUbicacion);
+
+            ClienteDireccion direccionClienteSegundo = new ClienteDireccion(pClienteDTO.DireccionPrimeroPais, 
+                                pClienteDTO.DireccionPrimeroDepartamento,pClienteDTO.DireccionPrimeroProvincia,
+                                pClienteDTO.DireccionPrimeroDistrito, pClienteDTO.DireccionSegundoUbicacion);
+
+            var nuevoCliente = CrearNuevoCliente(pClienteDTO, direccionClientePrimero, direccionClienteSegundo);
 
             GrabarTransaccionNuevoCliente(nuevoCliente);
                                                         
             if (nuevoCliente != null)
             {
-                return new ResultadoServicio<ResultadoClienteGrabadoDTO>(7, Mensajes.advertencia_ExitosaCreacionNuevoPedidoEESS,
+                return new ResultadoServicio<ResultadoClienteGrabadoDTO>(7, Mensajes.advertencia_ExitosaCreacionNuevoCliente,
                         string.Empty, nuevoCliente.ProyectadoComo<ResultadoClienteGrabadoDTO>(), null);
             }
             else
             {
                 LogFactory.CrearLog().LogWarning(Mensajes.advertencia_FalloCreacionNuevaVentaEnVenta);
-                return null;
+                return new ResultadoServicio<ResultadoClienteGrabadoDTO>(6, Mensajes.advertencia_FalloCreacionNuevaVentaEnVenta,
+                        string.Empty, nuevoCliente.ProyectadoComo<ResultadoClienteGrabadoDTO>(), null);
             }
         }
 
@@ -44,7 +60,7 @@ namespace PtoVta.Aplicacion.GestionClientes
             var clientePorRUC = _IRepositorioCliente.ObtenerClientePorRUC(pClienteRUC, pCodigoAlmacen);
             if (clientePorRUC != null)
             {          
-                return new ResultadoServicio<ClienteDTO>(7, Mensajes.advertencia_ConsultaPedidoEESSPorNumeroPedidoExitosa,
+                return new ResultadoServicio<ClienteDTO>(7, Mensajes.advertencia_ConsultaClientePorRUCExitosa,
                                                                 string.Empty, clientePorRUC.ProyectadoComo<ClienteDTO>(), null);
             }
             else                
@@ -67,7 +83,8 @@ namespace PtoVta.Aplicacion.GestionClientes
         }
 
 
-        Cliente CrearNuevoCliente(ClienteDTO pClienteDTO)
+        Cliente CrearNuevoCliente(ClienteDTO pClienteDTO, ClienteDireccion pClienteDireccionPrimero, 
+                                                ClienteDireccion pClienteDireccionSegundo)
         {
             try
             {
@@ -80,7 +97,7 @@ namespace PtoVta.Aplicacion.GestionClientes
                                 pClienteDTO.CodigoVendedor, pClienteDTO.CodigoImpuestoIgv, pClienteDTO.CodigoImpuestoIsc,
                                 pClienteDTO.CodigoCondicionPagoDocumentoGenerado, pClienteDTO.CodigoCondicionPagoTicket, pClienteDTO.CodigoEstadoDeCliente,
                                 pClienteDTO.CodigoUsuarioDeSistema, pClienteDTO.CodigoPais, pClienteDTO.CodigoDepartamento,
-                                pClienteDTO.CodigoDistrito);
+                                pClienteDTO.CodigoDistrito, pClienteDireccionPrimero, pClienteDireccionSegundo);                                
 
                 //Placas
                 if (pClienteDTO.ClientePlacas != null && pClienteDTO.ClientePlacas.Any())
@@ -95,7 +112,16 @@ namespace PtoVta.Aplicacion.GestionClientes
             }
             catch (Exception ex)
             {
-                LogFactory.CrearLog().LogWarning(ex.Message);
+                string detallesAsicionales = string.Empty;                
+                string cadenaExcepcion = ex.Message;
+
+                if(ex.InnerException != null)
+                {
+                    detallesAsicionales = " .Detalles Interno: " + ex.InnerException != null && ex.InnerException.InnerException != null ?
+                                    ex.InnerException.InnerException.Message : "Ver Detalles.";                        
+                }
+
+                LogFactory.CrearLog().LogWarning(cadenaExcepcion + detallesAsicionales);                
                 throw;
             }
         } 
@@ -107,19 +133,31 @@ namespace PtoVta.Aplicacion.GestionClientes
                 if (pCliente == null)
                     throw new ArgumentException(Mensajes.advertencia_NoSePuedeGrabarClienteNulo);
 
-                using (TransactionScope ambito = new TransactionScope())
-                {
+                // using (TransactionScope ambito = new TransactionScope(TransactionScopeOption.Suppress,
+                //                                                         new TransactionOptions
+                //                                                         {
+                //                                                             IsolationLevel = IsolationLevel.ReadCommitted,
+                //                                                             Timeout = TransactionManager.MaximumTimeout,
+                //                                                         },
+                //                                                         TransactionScopeAsyncFlowOption.Enabled))
+                // {
                     GrabarCliente(pCliente);
 
-                    ambito.Complete();
-                }
+                //     ambito.Complete();
+                // }
             }
             catch (Exception ex)
             {
-                string cadenaExcepcion = ex.Message +
-                    ".Detalles Interno: " + ex.InnerException != null && ex.InnerException.InnerException != null ?
-                                    ex.InnerException.InnerException.Message : "Ver Detalles.";
-                LogFactory.CrearLog().LogWarning(cadenaExcepcion);                
+                string detallesAsicionales = string.Empty;                
+                string cadenaExcepcion = ex.Message;
+
+                if(ex.InnerException != null)
+                {
+                    detallesAsicionales = " .Detalles Interno: " + ex.InnerException != null && ex.InnerException.InnerException != null ?
+                                    ex.InnerException.InnerException.Message : "Ver Detalles.";                        
+                }
+
+                LogFactory.CrearLog().LogWarning(cadenaExcepcion + detallesAsicionales);                
                 throw;
             }
         }

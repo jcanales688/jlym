@@ -33,10 +33,10 @@ namespace PtoVta.Infraestructura.Tests
         public void Agregar_Test()
         {
             var vendedor = new Vendedor(){
-                CodigoVendedor = "10412889",
-                NombresVendedor = "ALVARO ILLESCAS",
-                DocumentoIdentidad = "10412889",
-                Telefono = "5203124",
+                CodigoVendedor = "10412893",
+                NombresVendedor = "FERNANDO ILLESCAS",
+                DocumentoIdentidad = "10412893",
+                Telefono = "5203125",
                 Sexo="M",
                 FechaInicio = DateTime.Now,
                 FechaNacimiento = DateTime.Now,

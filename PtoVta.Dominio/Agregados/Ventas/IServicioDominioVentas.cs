@@ -7,9 +7,8 @@ namespace PtoVta.Dominio.Agregados.Ventas
 {
     public interface IServicioDominioVentas
     {
-        void ObtenerModalidadPagoDeVenta(CondicionPago pCondicionPagoDeVenta, CondicionPago pCondicionPagoDefault, 
-                                        TipoPago pTipoPagoDeVenta, TipoPago pTipoPagoEfectivo, 
-                                        Cliente pCliente, TipoDocumento pTipoDocumento, 
+        void ObtenerCondicionYTipoPagoDeVenta(string pCodigoTipoDocumentoDeVenta, CondicionPago pCondicionPagoDeVenta, CondicionPago pCondicionPagoDefault, 
+                                        TipoPago pTipoPagoDeVenta, TipoPago pTipoPagoEfectivo, Cliente pCliente,
                                         ConfiguracionPuntoVenta pConfiguracionPuntoVenta, string pCodigoTipoDocumentoNotaCredito, 
                                         decimal pTotalNacional, bool pEsVentaACuentaPorCobrar, decimal pSaldoDisponibleAdelanto);
 
@@ -20,9 +19,9 @@ namespace PtoVta.Dominio.Agregados.Ventas
 
         bool ExisteComprobanteDePagoDeVenta(string pNuevoCorrelativoDocumento, string correlEncontrado);
 
-        void CalcularVueltoVentaSegunMoneda(Venta pVenta,bool pFlagCambioMonedaVuelto, int pCantidadDecimalPrecio,
-                                            decimal pEfectivoVueltoExtranjera, decimal pTotalVueltoSegunMoneda,decimal pTotalFaltanteExtranjera, 
-                                            decimal pTotalFaltanteNacional,string pCodigoMonedaVuelto, string pCodigoMonedaBase, 
-                                            string pCodigoMonedaExtranjera);
+        void CalcularVueltoVentaSegunMoneda(Venta pVenta, ClaseTipoCambio pClaseTipoCambio, bool pFlagCambioMonedaVuelto, 
+                                            int pCantidadDecimalPrecio, decimal pEfectivoVueltoExtranjera, decimal pTotalVueltoSegunMoneda,
+                                            decimal pTotalFaltanteExtranjera,  decimal pTotalFaltanteNacional,string pCodigoMonedaVuelto, 
+                                            string pCodigoMonedaBase, string pCodigoMonedaExtranjera);
     }
 }

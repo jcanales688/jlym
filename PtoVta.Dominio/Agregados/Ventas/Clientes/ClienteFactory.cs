@@ -14,23 +14,18 @@ namespace PtoVta.Dominio.Agregados.Ventas
                                 string pCodigoVendedor, string pCodigoImpuestoIgv, string pCodigoImpuestoIsc,
                                 string pCodigoCondicionPagoDocumentoGenerado, string pCodigoCondicionPagoTicket, string pCodigoEstadoDeCliente,
                                 string pCodigoUsuarioDeSistema, string pCodigoPais, string pCodigoDepartamento,
-                                string pCodigoDistrito)
+                                string pCodigoDistrito, ClienteDireccion pClienteDireccionPrimero,
+                                ClienteDireccion pClienteDireccionSegundo)
         {
-            var nuevoCliente = new Cliente();
+            var nuevoCliente = new Cliente(pCodigoCliente, pCodigoContable, pRuc,
+                                        pNombresORazonSocial, pTelefono, pFax,
+                                        pFechaNacimiento, pFechaInscripcion, pDiasDeGracia,
+                                        pMontoLimiteCredito, pDeuda, pEsAfecto,
+                                        pControlarSaldoDisponible);
 
-            nuevoCliente.CodigoCliente = pCodigoCliente;
-            nuevoCliente.CodigoContable = pCodigoContable;
-            nuevoCliente.Ruc = pRuc;
-            nuevoCliente.NombresORazonSocial = pNombresORazonSocial;
-            nuevoCliente.Telefono = pTelefono;
-            nuevoCliente.Fax = pFax;
-            nuevoCliente.FechaNacimiento = pFechaNacimiento;
-            nuevoCliente.FechaInscripcion = pFechaInscripcion;
-            nuevoCliente.DiasDeGracia = pDiasDeGracia;
-            nuevoCliente.MontoLimiteCredito = pMontoLimiteCredito;
-            nuevoCliente.Deuda = pDeuda;
-            nuevoCliente.EsAfecto = pEsAfecto;
-            nuevoCliente.ControlarSaldoDisponible = pControlarSaldoDisponible;
+
+            nuevoCliente.DireccionPrimero = pClienteDireccionPrimero;
+            nuevoCliente.DireccionSegundo = pClienteDireccionSegundo;
 
             nuevoCliente.EstablecerReferenciaMonedaDeCliente(pCodigoMoneda);
             nuevoCliente.EstablecerReferenciaClaseTipoCambioDeCliente(pCodigoClaseTipoCambio);

@@ -6,6 +6,7 @@ using System.Linq;
 using Dapper;
 using PtoVta.Dominio.Agregados.Modulo;
 using PtoVta.Infraestructura.BaseTrabajo;
+using static PtoVta.Infraestructura.BaseTrabajo.Globales.GlobalInfraestructura;
 
 namespace PtoVta.Infraestructura.Repositorios.Modulo
 {
@@ -25,15 +26,15 @@ namespace PtoVta.Infraestructura.Repositorios.Modulo
             {
                 string cadenaSQL = @"SELECT	M.MODULEID	AS CodigoModuloSistema
                                             ,M.MODULENAME	AS NombreModulo
-                                    FROM	SE_MODULE (NOLOCK)	M
+                                    FROM	" + BaseDatos.PrefijoTabla + @"SE_MODULE (NOLOCK)	M
                                     WHERE	MODULEID	= @MODULEID;
 
                                     SELECT	V.SCREENID		AS CodigoVentanaUsuario
                                             ,V.SCREENNAME	AS NombreVentana
                                             ,V.SCREENTYPE	AS TipoVentana
                                             ,V.MODULEID		AS CodigoModuloSistema
-                                    FROM	SE_SCREEN (NOLOCK)	V
-                                            INNER JOIN SE_ACCESSDETRIGHTS (NOLOCK) D	ON V.SCREENID = D.SCREENID
+                                    FROM	" + BaseDatos.PrefijoTabla + @"SE_SCREEN (NOLOCK)	V
+                                            INNER JOIN " + BaseDatos.PrefijoTabla + @"SE_ACCESSDETRIGHTS (NOLOCK) D	ON V.SCREENID = D.SCREENID
                                     WHERE	V.MODULEID		= @MODULEID
                                                 AND D.USERID	        = @USERID;
                                                                                         
@@ -46,10 +47,10 @@ namespace PtoVta.Infraestructura.Repositorios.Modulo
                                             ,D.CLOSERIGHTS		AS DerechoEmitir	
                                             ,D.SCREENID			AS CodigoVentanaUsuario
                                             ,D.USERID			AS CodigoUsuarioSistema
-                                    FROM	SE_ACCESSDETRIGHTS (NOLOCK) D
+                                    FROM	" + BaseDatos.PrefijoTabla + @"SE_ACCESSDETRIGHTS (NOLOCK) D
                                     WHERE	LTRIM(RTRIM(D.SCREENID)) + LTRIM(RTRIM(D.USERID)) IN(SELECT	LTRIM(RTRIM(V.SCREENID)) + LTRIM(RTRIM(D.USERID))
-                                                                                                FROM	SE_SCREEN (NOLOCK)	V
-                                                                                                        INNER JOIN SE_ACCESSDETRIGHTS (NOLOCK) D	ON V.SCREENID = D.SCREENID
+                                                                                                FROM	" + BaseDatos.PrefijoTabla + @"SE_SCREEN (NOLOCK)	V
+                                                                                                        INNER JOIN " + BaseDatos.PrefijoTabla + @"SE_ACCESSDETRIGHTS (NOLOCK) D	ON V.SCREENID = D.SCREENID
                                                                                                 WHERE	V.MODULEID		= @MODULEID
                                                                                                         AND D.USERID            = @USERID)";
 

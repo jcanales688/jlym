@@ -23,11 +23,13 @@ namespace PtoVta.Aplicacion.DTO.Ventas
         public decimal TotalDescuentoExtranjera { get; set; }
         public decimal Precio { get; set; }
         public decimal PrecioVenta { get; set; }
-        public string ArticuloDescripcionArticulo { get; set; }
+        public string DescripcionArticulo { get; set; }
         public decimal Cantidad { get; set; }
         public string UsuarioSistema { get; set; }
         public int EsFormula { get; set; }
-        public string ArticuloCodigoArticulo { get; set; }
+        public bool EsInventariable { get; set; }
+        public bool EnInventarioFisico { get; set; }        
+        // public string ArticuloCodigoArticulo { get; set; }
 
 
         public string CodigoArticulo { get; set; }

@@ -104,7 +104,7 @@ namespace PtoVta.Dominio.Agregados.Inventarios
             if (!string.IsNullOrEmpty(pCodigoAlmacen))
             {
 
-                this.CodigoAlmacen = pCodigoAlmacen;
+                this.CodigoAlmacen = pCodigoAlmacen.Trim();
                 this.Almacen = null;
             }
         }        

@@ -5,6 +5,7 @@ using PtoVta.Dominio.Agregados.Colaborador;
 using PtoVta.Dominio.Agregados.Parametros;
 using PtoVta.Dominio.Agregados.Usuario;
 using PtoVta.Infraestructura.Transversales.Log;
+using static PtoVta.Dominio.BaseTrabajo.Enumeradores.AmbienteVenta;
 using static PtoVta.Dominio.BaseTrabajo.Globales.GlobalDominio;
 
 namespace PtoVta.Aplicacion.GestionColaborador
@@ -22,7 +23,7 @@ namespace PtoVta.Aplicacion.GestionColaborador
                              IRepositorioVendedor pIRepositorioVendedor)
         {
             if (pIRepositorioAlmacen == null)
-                throw new ArgumentNullException("IRepositorioAlmacen Nulo En ServicioAplicacionInicioSession");            
+                throw new ArgumentNullException("IRepositorioAlmacen Nulo En ServicioAplicacionInicioSession");
 
             if (pIRepositorioEstadoVendedor == null)
                 throw new ArgumentNullException("IRepositorioEstadoVendedor Nulo En ServicioAplicacionInicioSession");
@@ -31,7 +32,7 @@ namespace PtoVta.Aplicacion.GestionColaborador
                 throw new ArgumentNullException("IRepositorioUsuarioSistema Nulo En ServicioAplicacionInicioSession");
 
             if (pIRepositorioVendedor == null)
-                throw new ArgumentNullException("pIRepositorioVendedor Nulo En ServicioAplicacionInicioSession");                
+                throw new ArgumentNullException("pIRepositorioVendedor Nulo En ServicioAplicacionInicioSession");
 
 
             _IRepositorioAlmacen = pIRepositorioAlmacen;
@@ -42,34 +43,41 @@ namespace PtoVta.Aplicacion.GestionColaborador
 
         public ResultadoServicio<VendedorDTO> AgregarNuevoUsuarioVendedor(VendedorDTO pVendedor)
         {
-            if (pVendedor == null || String.IsNullOrEmpty(pVendedor.CodigoVendedor))
+            if (pVendedor == null || String.IsNullOrEmpty(pVendedor.CodigoVendedor.Trim()))
             {
                 throw new ArgumentException(Mensajes.advertencia_DatosDeVendedorOCodigoDeVendedorInvalido);
             }
-                
+
+            var vendedor = _IRepositorioVendedor.ObtenerPorCodigo(pVendedor.CodigoVendedor);
+            if(vendedor != null)
+            {
+                LogFactory.CrearLog().LogWarning(Mensajes.advertencia_VendedorACrearYaExiste);
+                throw new ArgumentException(Mensajes.advertencia_VendedorACrearYaExiste);                
+            }
+
             //Validaciones
-            var almacen =_IRepositorioAlmacen.ObtenerPorCodigo(pVendedor.CodigoAlmacen);
+            var almacen = _IRepositorioAlmacen.ObtenerPorCodigo(pVendedor.CodigoAlmacen);
             if (almacen == null)
-            {                
+            {
                 LogFactory.CrearLog().LogWarning(Mensajes.advertencia_AlmacenAsociadoAlVendedorNoExiste);
                 throw new ArgumentException(Mensajes.advertencia_AlmacenAsociadoAlVendedorNoExiste);
-            }                
+            }
 
-            var estadoVendedor =_IRepositorioEstadoVendedor.ObtenerPorCodigo(pVendedor.CodigoEstadoVendedor);
+            var estadoVendedor = _IRepositorioEstadoVendedor.ObtenerPorCodigo(pVendedor.CodigoEstadoVendedor);
             if (estadoVendedor == null)
             {
                 LogFactory.CrearLog().LogWarning(Mensajes.advertencia_EstadoDeVendedorAsociadoAlVendedorNoExiste);
                 throw new ArgumentException(Mensajes.advertencia_EstadoDeVendedorAsociadoAlVendedorNoExiste);
-            }                
+            }
 
-            var usuarioSistemaRegistrador =_IIRepositorioUsuarioSistema.ObtenerUsuarioSistemaPorUsuario(pVendedor.CodigoUsuarioSistema);
+            var usuarioSistemaRegistrador = _IIRepositorioUsuarioSistema.ObtenerUsuarioSistemaPorUsuario(pVendedor.CodigoUsuarioSistema);
             if (usuarioSistemaRegistrador == null)
             {
                 LogFactory.CrearLog().LogWarning(Mensajes.advertencia_UsuarioSistemaCreadorNuevoVendedorNoExiste);
                 throw new ArgumentException(Mensajes.advertencia_UsuarioSistemaCreadorNuevoVendedorNoExiste);
-            }                
+            }
 
-            var usuarioSistemaDelAcceso =_IIRepositorioUsuarioSistema.ObtenerUsuarioSistemaPorUsuario("VENDPLAYA");
+            var usuarioSistemaDelAcceso = _IIRepositorioUsuarioSistema.ObtenerUsuarioSistemaPorUsuario(EnumUsuarioSistema.CodigoUsuarioDeSistemaVendedorPlaya);
             if (usuarioSistemaDelAcceso == null)
             {
                 LogFactory.CrearLog().LogWarning(Mensajes.advertencia_UsuarioSistemaAccesoNuevoVendedorNoExiste);
@@ -80,7 +88,7 @@ namespace PtoVta.Aplicacion.GestionColaborador
                                                                         pVendedor.DireccionPrimeroDepartamento,
                                                                         pVendedor.DireccionPrimeroProvincia,
                                                                         pVendedor.DireccionPrimeroDistrito,
-                                                                        pVendedor.DireccionPrimeroUbicacion);                                          
+                                                                        pVendedor.DireccionPrimeroUbicacion);
 
             var nuevoVendedor = CrearNuevoVendedor(pVendedor, almacen, estadoVendedor, usuarioSistemaRegistrador,
                                                     usuarioSistemaDelAcceso, direccionVendedor);
@@ -89,32 +97,49 @@ namespace PtoVta.Aplicacion.GestionColaborador
 
             if (nuevoVendedor != null)
             {
-                return new ResultadoServicio<VendedorDTO>(7,Mensajes.advertencia_VendedorCreadoSatisfactoriamente,
+                return new ResultadoServicio<VendedorDTO>(7, Mensajes.advertencia_VendedorCreadoSatisfactoriamente,
                         string.Empty, nuevoVendedor.ProyectadoComo<VendedorDTO>(), null);
             }
             else
             {
-                LogFactory.CrearLog().LogWarning(Mensajes.advertencia_CreacionNuevoVendedorFallo);                
-                return new ResultadoServicio<VendedorDTO>(7,Mensajes.advertencia_CreacionNuevoVendedorFallo,
+                LogFactory.CrearLog().LogWarning(Mensajes.advertencia_CreacionNuevoVendedorFallo);
+                return new ResultadoServicio<VendedorDTO>(6, Mensajes.advertencia_CreacionNuevoVendedorFallo,
                         string.Empty, nuevoVendedor.ProyectadoComo<VendedorDTO>(), null);
             }
         }
 
 
         Vendedor CrearNuevoVendedor(VendedorDTO pVendedorDTO, Almacen pAlmacen,
-                                    EstadoVendedor pEstadoVendedor,    
+                                    EstadoVendedor pEstadoVendedor,
                                     UsuarioSistema pUsuarioSistema,
                                     UsuarioSistema pUsuarioSistemaAcceso,
                                     VendedorDireccion pDireccionPrimero)
         {
-            Vendedor nuevoVendedor = VendedorFactory.CrearVendedor(pVendedorDTO.NombresVendedor, 
-                                    pVendedorDTO.DocumentoIdentidad, pVendedorDTO.Telefono, 
-                                    pVendedorDTO.Sexo, pVendedorDTO.FechaInicio,
-                                    pVendedorDTO.CodigoVendedor,  pVendedorDTO.Clave,
-                                    pVendedorDTO.FechaNacimiento, pAlmacen, pEstadoVendedor,
-                                    pUsuarioSistema, pUsuarioSistemaAcceso,  pDireccionPrimero);
-            return nuevoVendedor;
+            try
+            {
+                Vendedor nuevoVendedor = VendedorFactory.CrearVendedor(pVendedorDTO.NombresVendedor,
+                                        pVendedorDTO.DocumentoIdentidad, pVendedorDTO.Telefono,
+                                        pVendedorDTO.Sexo, pVendedorDTO.FechaInicio,
+                                        pVendedorDTO.CodigoVendedor, pVendedorDTO.Clave,
+                                        pVendedorDTO.FechaNacimiento, pAlmacen, pEstadoVendedor,
+                                        pUsuarioSistema, pUsuarioSistemaAcceso, pDireccionPrimero);
+                return nuevoVendedor; 
+                               
+            }
+            catch (Exception ex)
+            {
+                string detallesAsicionales = string.Empty;                
+                string cadenaExcepcion = ex.Message;
 
+                if(ex.InnerException != null)
+                {
+                    detallesAsicionales = " .Detalles Interno: " + ex.InnerException != null && ex.InnerException.InnerException != null ?
+                                    ex.InnerException.InnerException.Message : "Ver Detalles.";                        
+                }
+
+                LogFactory.CrearLog().LogWarning(cadenaExcepcion + detallesAsicionales);                
+                throw;                
+            }
         }
 
 
@@ -124,4 +149,3 @@ namespace PtoVta.Aplicacion.GestionColaborador
         }
     }
 }
-        

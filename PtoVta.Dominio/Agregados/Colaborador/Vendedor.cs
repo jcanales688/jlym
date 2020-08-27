@@ -52,6 +52,27 @@ namespace PtoVta.Dominio.Agregados.Colaborador
         public virtual VendedorDireccion Direccion { get; set; }
 
 
+        public Vendedor(){}
+        public Vendedor(string pNombresVendedor, string pDocumentoIdentidad, string pTelefono,
+                        string pSexo, DateTime pFechaInicio, string pCodigoVendedor,
+                        string pClave, DateTime pFechaNacimiento)
+        {
+            this.CodigoVendedor  = !string.IsNullOrEmpty(pCodigoVendedor)? pCodigoVendedor.Trim()
+                                        : throw new ArgumentException(Mensajes.advertencia_CodigoVendedorNoPuedeSerNuloOVacio);
+            this.NombresVendedor = !string.IsNullOrEmpty(pNombresVendedor) ? pNombresVendedor.Trim()
+                                        : throw new ArgumentException(Mensajes.advertencia_NombresVendedorNoPuedeSerNuloOVacio);
+            this.DocumentoIdentidad = !string.IsNullOrEmpty(pDocumentoIdentidad)? pDocumentoIdentidad.Trim()
+                                        : throw new ArgumentException(Mensajes.advertencia_DocumentoIdentidadNoPuedeSerNuloOVacio);            
+            this.Telefono = pTelefono; 
+            this.Sexo = !string.IsNullOrEmpty(pSexo) ? pSexo.Trim()
+                                        : throw new ArgumentException(Mensajes.advertencia_SexoNoPuedeSerNuloOVacio);                        
+            this.FechaInicio = pFechaInicio;
+            this.Clave = !string.IsNullOrEmpty(pClave) ? pClave.Trim()
+                                        : throw new ArgumentException(Mensajes.advertencia_ClaveNoPuedeSerNuloOVacio);                                    
+            this.FechaNacimiento = pFechaNacimiento;            
+        }
+
+
         public void Habilitar()
         {
             if (!EsHabilitado)
@@ -73,11 +94,9 @@ namespace PtoVta.Dominio.Agregados.Colaborador
         //Almacen
         public void EstablecerAlmacenDeVendedor(Almacen pAlmacen)
         {
-            if (pAlmacen == null)
-            {
+            if (pAlmacen == null)        
                 throw new ArgumentException(Mensajes.excepcion_AlmacenDeVendedorEnEstadoNuloOTransitorio);
-            }
-
+        
             //relacion
             this.CodigoAlmacen = pAlmacen.CodigoAlmacen;
             this.Almacen = pAlmacen;
@@ -85,23 +104,20 @@ namespace PtoVta.Dominio.Agregados.Colaborador
 
         public void EstablecerReferenciaAlmacenDeVendedor(string pCodigoAlmacenAlmacen)
         {
-            if (!string.IsNullOrEmpty(pCodigoAlmacenAlmacen))
-            {
-                //relacion
-                this.CodigoAlmacen = pCodigoAlmacenAlmacen;
-                this.Almacen = null;
-            }
+            if (string.IsNullOrEmpty(pCodigoAlmacenAlmacen.Trim()))
+                throw new ArgumentException(Mensajes.excepcion_AlmacenDeVendedorEnEstadoNuloOTransitorio);
+
+            //relacion
+            this.CodigoAlmacen = pCodigoAlmacenAlmacen.Trim();
+            this.Almacen = null;            
         }
 
 
         //UsuarioSistema el que registra el vendedor
         public void EstablecerUsuarioSistemaDeVendedor(UsuarioSistema pUsuarioSistema)
         {
-            if (pUsuarioSistema == null )
-            {
+            if (pUsuarioSistema == null )            
                 throw new ArgumentException(Mensajes.excepcion_UsuarioSistemaDeVendedorEnEstadoNuloOTransitorio);
-
-            }
 
             //relacion
             this.CodigoUsuarioSistema = pUsuarioSistema.CodigoUsuarioDeSistema;
@@ -110,23 +126,20 @@ namespace PtoVta.Dominio.Agregados.Colaborador
 
         public void EstablecerReferenciaUsuarioSistemaDeVendedor(string pCodigoUsuarioSistema)
         {
-            if (! string.IsNullOrEmpty(pCodigoUsuarioSistema))
-            {
-                //relacion
-                this.CodigoUsuarioSistema = pCodigoUsuarioSistema;
-                this.UsuarioSistema = null;
-            }
+            if (string.IsNullOrEmpty(pCodigoUsuarioSistema.Trim()))
+                throw new ArgumentException(Mensajes.excepcion_UsuarioSistemaDeVendedorEnEstadoNuloOTransitorio);
+
+            //relacion
+            this.CodigoUsuarioSistema = pCodigoUsuarioSistema.Trim();
+            this.UsuarioSistema = null;            
         }
 
         //EstadoVendedor
         public void EstablecerEstadoVendedorDeVendedor(EstadoVendedor pEstadoVendedor)
         {
-            if (pEstadoVendedor == null)
-            {
+            if (pEstadoVendedor == null)        
                 throw new ArgumentException(Mensajes.excepcion_EstadoVendedorDeVendedorEnEstadoNuloOTransitorio);
-
-            }
-
+    
             //relacion
             this.CodigoEstadoVendedor = pEstadoVendedor.CodigoEstadoVendedor;
             this.EstadoVendedor = pEstadoVendedor;
@@ -134,12 +147,12 @@ namespace PtoVta.Dominio.Agregados.Colaborador
 
         public void EstablecerReferenciaEstadoVendedorDeVendedor(string pCodigoEstadoVendedor)
         {
-            if (!string.IsNullOrEmpty(pCodigoEstadoVendedor))
-            {
-                //relacion
-                this.CodigoEstadoVendedor = pCodigoEstadoVendedor;
-                this.EstadoVendedor = null;
-            }
+            if (string.IsNullOrEmpty(pCodigoEstadoVendedor.Trim()))
+                throw new ArgumentException(Mensajes.excepcion_EstadoVendedorDeVendedorEnEstadoNuloOTransitorio);            
+
+            //relacion
+            this.CodigoEstadoVendedor = pCodigoEstadoVendedor.Trim();
+            this.EstadoVendedor = null;            
         }
 
 
@@ -149,11 +162,8 @@ namespace PtoVta.Dominio.Agregados.Colaborador
         public void EstablecerUsuarioSistemaAccesoDeVendedor(UsuarioSistema pUsuarioSistemaAcceso)
         {
             if (pUsuarioSistemaAcceso == null)
-            {
                 throw new ArgumentException(Mensajes.excepcion_UsuarioSistemaAccesoDeVendedorEnEstadoNuloOTransitorio);
-
-            }
-
+        
             //relacion
             this.CodigoUsuarioSistemaAcceso = pUsuarioSistemaAcceso.CodigoUsuarioDeSistema;
             this.UsuarioSistemaAcceso = pUsuarioSistemaAcceso;
@@ -161,12 +171,12 @@ namespace PtoVta.Dominio.Agregados.Colaborador
 
         public void EstablecerReferenciaUsuarioSistemaAccesoDeVendedor(string pCodigoUsuarioSistemaAcceso)
         {
-            if (!string.IsNullOrEmpty(pCodigoUsuarioSistemaAcceso))
-            {
-                //relacion
-                this.CodigoUsuarioSistemaAcceso = pCodigoUsuarioSistemaAcceso;
-                this.UsuarioSistemaAcceso = null;
-            }
+            if (string.IsNullOrEmpty(pCodigoUsuarioSistemaAcceso.Trim()))
+                throw new ArgumentException(Mensajes.excepcion_UsuarioSistemaAccesoDeVendedorEnEstadoNuloOTransitorio);
+
+            //relacion
+            this.CodigoUsuarioSistemaAcceso = pCodigoUsuarioSistemaAcceso.Trim();
+            this.UsuarioSistemaAcceso = null;            
         }        
     }
 }

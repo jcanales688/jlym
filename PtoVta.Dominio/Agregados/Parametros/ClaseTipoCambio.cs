@@ -63,9 +63,9 @@ namespace PtoVta.Dominio.Agregados.Parametros
                 string pCodigoMonedaDesde, string pCodigoMonedaHasta)
         {
 
-            if (string.IsNullOrEmpty(pCodigoMonedaDesde)
+            if (string.IsNullOrEmpty(pCodigoMonedaDesde.Trim())
                 ||
-                string.IsNullOrEmpty(pCodigoMonedaHasta)
+                string.IsNullOrEmpty(pCodigoMonedaHasta.Trim())
                 ||
                 pFechaTipoDeCambio == null
                 ||
@@ -75,7 +75,7 @@ namespace PtoVta.Dominio.Agregados.Parametros
 
 
             var nuevaLineaTipoDeCambio = new TipoDeCambio(pFechaTipoDeCambio, pMontoTipoDeCambio, pOperador, pUsuarioSistema, 
-                                                        this.CodigoClaseTipoCambio, pCodigoMonedaDesde, pCodigoMonedaHasta);
+                                                        this.CodigoClaseTipoCambio, pCodigoMonedaDesde.Trim(), pCodigoMonedaHasta.Trim());
 
             nuevaLineaTipoDeCambio.GenerarNuevaIdentidad();
 

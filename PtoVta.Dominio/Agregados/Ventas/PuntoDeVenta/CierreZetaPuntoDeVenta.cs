@@ -84,7 +84,7 @@ namespace PtoVta.Dominio.Agregados.Ventas
         {
             if (String.IsNullOrWhiteSpace(pCodigoArticulo)
                 ||
-                String.IsNullOrEmpty(pDescripcion)
+                String.IsNullOrEmpty(pDescripcion.Trim())
                 ||
                 pTotalNacional <= 0
                 )
@@ -98,7 +98,7 @@ namespace PtoVta.Dominio.Agregados.Ventas
                 CodigoCierreZetaPuntoDeVenta = this.CodigoCierreZetaPuntoDeVenta,
 
                 CodigoArticulo = pCodigoArticulo,
-                Descripcion = pDescripcion,
+                Descripcion = pDescripcion.Trim(),
                 TotalNacional = pTotalNacional
             };
 
@@ -116,11 +116,11 @@ namespace PtoVta.Dominio.Agregados.Ventas
         {
             if (String.IsNullOrWhiteSpace(pCodigoCara)
                 ||
-                String.IsNullOrEmpty(pDescripcionCara)
+                String.IsNullOrEmpty(pDescripcionCara.Trim())
                 ||
-                String.IsNullOrEmpty(pCodigoArticulo)
+                String.IsNullOrEmpty(pCodigoArticulo.Trim())
                 ||
-                String.IsNullOrEmpty(pDescripcionArticulo)
+                String.IsNullOrEmpty(pDescripcionArticulo.Trim())
                 ||
                 pTotalNacional <= 0
                 )
@@ -134,9 +134,9 @@ namespace PtoVta.Dominio.Agregados.Ventas
                 CodigoCierreZetaPuntoDeVenta = this.CodigoCierreZetaPuntoDeVenta,
 
                 CodigoCara = pCodigoCara,
-                DescripcionCara = pDescripcionCara,
-                CodigoArticulo = pCodigoArticulo,
-                DescripcionArticulo = pDescripcionArticulo,
+                DescripcionCara = pDescripcionCara.Trim(),
+                CodigoArticulo = pCodigoArticulo.Trim(),
+                DescripcionArticulo = pDescripcionArticulo.Trim(),
                 TotalNacional = pTotalNacional
             };
 
@@ -154,7 +154,7 @@ namespace PtoVta.Dominio.Agregados.Ventas
         {
             if (String.IsNullOrWhiteSpace(pCodigoCategoria)
                 ||
-                String.IsNullOrEmpty(pDescripcion)
+                String.IsNullOrEmpty(pDescripcion.Trim())
                 ||
                 pTotalNacional < 0
                 )
@@ -167,7 +167,7 @@ namespace PtoVta.Dominio.Agregados.Ventas
                 CodigoCierreZetaPuntoDeVenta = this.CodigoCierreZetaPuntoDeVenta,
 
                 CodigoCategoria = pCodigoCategoria,
-                Descripcion = pDescripcion,
+                Descripcion = pDescripcion.Trim(),
                 TotalNacional = pTotalNacional
             };
 
@@ -185,7 +185,7 @@ namespace PtoVta.Dominio.Agregados.Ventas
         {
             if (String.IsNullOrWhiteSpace(pCodigoVendedor)
                 ||
-                String.IsNullOrEmpty(pNombres)
+                String.IsNullOrEmpty(pNombres.Trim())
                 ||
                 pTotalNacional < 0
                 )
@@ -198,7 +198,7 @@ namespace PtoVta.Dominio.Agregados.Ventas
                 CodigoCierreZetaPuntoDeVenta = this.CodigoCierreZetaPuntoDeVenta,
 
                 CodigoVendedor = pCodigoVendedor,
-                Nombres = pNombres,
+                Nombres = pNombres.Trim(),
                 TotalNacional = pTotalNacional
             };
 

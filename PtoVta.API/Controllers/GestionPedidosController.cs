@@ -38,7 +38,7 @@ namespace PtoVta.API.Controllers
                 if(estadoPedidoEESSAgregado == null)
                 {
                     return BadRequest(
-                        new ResultadoServicio<ResultadoPedidoEESSGrabadoDTO>(0,"Creacion de nuevo Pedido EESS fallo.", "", null, null)
+                        new ResultadoServicio<ResultadoPedidoEESSGrabadoDTO>(6,"Creacion de nuevo Pedido EESS fallo.", "", null, null)
                     );
                 }
 
@@ -47,7 +47,7 @@ namespace PtoVta.API.Controllers
             catch (Exception ex)
             {
                 return BadRequest(
-                    new ResultadoServicio<ResultadoPedidoEESSGrabadoDTO>(0,"Creacion de nuevo Pedido EESS fallo.", ex.Message, null, null)
+                    new ResultadoServicio<ResultadoPedidoEESSGrabadoDTO>(6,"Creacion de nuevo Pedido EESS fallo.", ex.Message, null, null)
                 );    
             }
         }
@@ -67,7 +67,7 @@ namespace PtoVta.API.Controllers
                 if(estadoPedidoRetailAgregado == null)
                 {
                     return BadRequest(
-                        new ResultadoServicio<ResultadoPedidoRetailGrabadoDTO>(0,"Creacion de nuevo Pedido Retail fallo.", "", null, null)
+                        new ResultadoServicio<ResultadoPedidoRetailGrabadoDTO>(6,"Creacion de nuevo Pedido Retail fallo.", "", null, null)
                     );
                 }
 
@@ -76,7 +76,7 @@ namespace PtoVta.API.Controllers
             catch (Exception ex)
             {
                 return BadRequest(
-                    new ResultadoServicio<ResultadoPedidoRetailGrabadoDTO>(0,"Creacion de nuevo Pedido Retail fallo.", ex.Message, null, null)
+                    new ResultadoServicio<ResultadoPedidoRetailGrabadoDTO>(6,"Creacion de nuevo Pedido Retail fallo.", ex.Message, null, null)
                 );    
             }
         }
@@ -100,7 +100,7 @@ namespace PtoVta.API.Controllers
             catch (Exception ex)
             {
                 return NotFound(
-                    new ResultadoServicio<PedidoEESSDTO>(0,"Pedido EESS consultado no existe.", ex.Message, null, null)
+                    new ResultadoServicio<PedidoEESSDTO>(6,"Pedido EESS consultado no existe.", ex.Message, null, null)
                 );                
             }
         }
@@ -123,7 +123,7 @@ namespace PtoVta.API.Controllers
             catch (Exception ex)
             {
                 return NotFound(
-                    new ResultadoServicio<PedidoRetailDTO>(0,"Pedido Retail consultado no existe.", ex.Message, null, null)
+                    new ResultadoServicio<PedidoRetailDTO>(6,"Pedido Retail consultado no existe.", ex.Message, null, null)
                 );                
             }
         }
@@ -147,7 +147,7 @@ namespace PtoVta.API.Controllers
             catch (Exception ex)
             {
                 return NotFound(
-                    new ResultadoServicio<PedidoEESSListadoDTO>(0,"Consulta de pedidos EESS no obtuvo resultados.", ex.Message, null, null)
+                    new ResultadoServicio<PedidoEESSListadoDTO>(6,"Consulta de pedidos EESS no obtuvo resultados.", ex.Message, null, null)
                 );   
             }
         }
@@ -172,7 +172,7 @@ namespace PtoVta.API.Controllers
             catch (Exception ex)
             {
                 return NotFound(
-                    new ResultadoServicio<PedidoRetailListadoDTO>(0,"Consulta de pedidos retail no obtuvo resultados.", ex.Message, null, null)
+                    new ResultadoServicio<PedidoRetailListadoDTO>(6,"Consulta de pedidos retail no obtuvo resultados.", ex.Message, null, null)
                 );   
             }
         }                

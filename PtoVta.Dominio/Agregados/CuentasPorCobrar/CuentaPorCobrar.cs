@@ -100,7 +100,7 @@ namespace PtoVta.Dominio.Agregados.CuentasPorCobrar
         {
             if (!string.IsNullOrEmpty(pCodigoMoneda))
             {     
-                this.CodigoMoneda = pCodigoMoneda;
+                this.CodigoMoneda = pCodigoMoneda.Trim();
                 this.Moneda = null;
             }
         }
@@ -122,7 +122,7 @@ namespace PtoVta.Dominio.Agregados.CuentasPorCobrar
         {
             if (!string.IsNullOrEmpty(pCodigoClaseTipoCambio))
             {
-                this.CodigoClaseTipoCambio = pCodigoClaseTipoCambio;
+                this.CodigoClaseTipoCambio = pCodigoClaseTipoCambio.Trim();
                 this.ClaseTipoCambio = null;
             }
         }
@@ -143,7 +143,7 @@ namespace PtoVta.Dominio.Agregados.CuentasPorCobrar
         {
             if (!string.IsNullOrEmpty(pCodigoEstadoDocumento))
             {
-                this.CodigoEstadoDocumento = pCodigoEstadoDocumento;
+                this.CodigoEstadoDocumento = pCodigoEstadoDocumento.Trim();
                 this.EstadoDocumento = null;
             }
         }
@@ -165,7 +165,7 @@ namespace PtoVta.Dominio.Agregados.CuentasPorCobrar
         {
             if (!string.IsNullOrEmpty(pCodigoDiaDePago))
             {
-                this.CodigoDiaDePago = pCodigoDiaDePago;
+                this.CodigoDiaDePago = pCodigoDiaDePago.Trim();
                 this.DiaDePago = null;
             }
         }
@@ -187,7 +187,7 @@ namespace PtoVta.Dominio.Agregados.CuentasPorCobrar
         {
             if (!string.IsNullOrEmpty(pCodigoAlmacen))
             {
-                this.CodigoAlmacen = pCodigoAlmacen;
+                this.CodigoAlmacen = pCodigoAlmacen.Trim();
                 this.Almacen = null;
             }
         }
@@ -208,7 +208,7 @@ namespace PtoVta.Dominio.Agregados.CuentasPorCobrar
         {
             if (!string.IsNullOrEmpty(pCodigoUsuarioDeSistema))
             {
-                this.CodigoUsuarioDeSistema = pCodigoUsuarioDeSistema;
+                this.CodigoUsuarioDeSistema = pCodigoUsuarioDeSistema.Trim();
                 this.UsuarioSistema = null;
             }
         }
@@ -230,7 +230,7 @@ namespace PtoVta.Dominio.Agregados.CuentasPorCobrar
             if (!string.IsNullOrEmpty(pCodigoTipoDocumento))
             {
 
-                this.CodigoTipoDocumento = pCodigoTipoDocumento;
+                this.CodigoTipoDocumento = pCodigoTipoDocumento.Trim();
                 this.TipoDocumento = null;
             }
         }

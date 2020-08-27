@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using PtoVta.Dominio.BaseTrabajo;
+using static PtoVta.Dominio.BaseTrabajo.Globales.GlobalDominio;
 
 namespace PtoVta.Dominio.Agregados.Ventas
 {
@@ -215,26 +216,102 @@ namespace PtoVta.Dominio.Agregados.Ventas
             }
         }
 
+        public PedidoRetail(){}
 
-        public PedidoRetailDetalle AgregarNuevoPedidoRetailDetalle(
-                    string pNumeroDocumento, short pSecuencia, DateTime pFechaDocumento,
-                    DateTime pFechaProceso, string pPeriodo, int pNumeroTurno,
-                    decimal pPorcentajeImpuestoIgv, decimal pPorcentajeImpuestoIsc, decimal pTotalNacional,
-                    decimal pTotalExtranjera, decimal pImpuestoNacional, decimal pImpuestoExtranjera,
-                    bool pEsInventariable, bool pEnInventarioFisico, decimal pPrecio,
-                    decimal pPrecioVenta, decimal pCostoEstandarNacional, decimal pCostoEstandarExtranjera,
-                    string pCodigoArticuloAlterno, string pDescripcionArticulo, decimal pCantidad,
-                    int  pEsFormula, string pNumeroPeaje, string pCodigoArticulo,
-                    string pCodigoUnidadDeMedida)
+
+        public PedidoRetail(int pCorrelativo, string pNumeroDocumento, bool pAfectaInventario,    
+            DateTime pFechaDocumento, DateTime pFechaProceso, string pPeriodo,
+            decimal pTotalNacional, decimal pTotalExtranjera, decimal pSubTotalNacional,
+            decimal pSubTotalExtranjera, decimal pImpuestoIgvNacional, decimal pImpuestoIgvExtranjera,
+            decimal pImpuestoIscNacional, decimal pImpuestoIscExtranjera, decimal pTotalNoAfectoNacional,
+            decimal pTotalNoAfectoExtranjera, decimal pPorcentajeDescuentoPrimero, decimal pPorcentajeDescuentoSegundo,
+            decimal pTotalDescuentoNacional, decimal pTotalDescuentoExtranjera, decimal pTotalVueltoNacional,
+            decimal pTotalVueltoExtranjera, decimal pTotalEfectivoNacional, decimal pTotalEfectivoExtranjera,
+            string pRucCliente, string pNombreCompletoCliente, string pDireccionCliente,
+            string pPlaca, decimal pNumeroVale, decimal pTipoCambio,
+            int pNumeroPuntos, int pKilometraje, bool pTransaccionPendiente,
+            string  pTipoVenta, bool pTransaccionProcesada, bool pAplicaDescuentoCupon,
+            string pCentroDeCosto)
         {
+            this.Correlativo = pCorrelativo;
+            this.NumeroDocumento = pNumeroDocumento;
+            this.AfectaInventario = pAfectaInventario;    
+            this.FechaDocumento = pFechaDocumento;
+            this.FechaProceso = pFechaProceso;
+            this.Periodo =  !string.IsNullOrEmpty(pPeriodo) ? pPeriodo.Trim()
+                                        : throw new ArgumentException(Mensajes.advertencia_DebeAsignarseUnPeriodoALaTransaccion); 
+            this.TotalNacional = pTotalNacional > 0? pTotalNacional
+                                        : throw new ArgumentException(Mensajes.advertencia_TotalTransaccionInvalida); 
+            this.TotalExtranjera = pTotalExtranjera;
+            this.SubTotalNacional = pSubTotalNacional > 0 ? pSubTotalNacional
+                                        : throw new ArgumentException(Mensajes.advertencia_SubTotalTransaccionInvalida); 
+            this.SubTotalExtranjera = pSubTotalExtranjera;
+            this.ImpuestoIgvNacional = pImpuestoIgvNacional > 0 ? pImpuestoIgvNacional
+                                        : throw new ArgumentException(Mensajes.advertencia_ImpuestoTransaccionInvalida);             
+            this.ImpuestoIgvExtranjera = pImpuestoIgvExtranjera;
+            this.ImpuestoIscNacional = pImpuestoIscNacional;
+            this.ImpuestoIscExtranjera = pImpuestoIscExtranjera;
+            this.TotalNoAfectoNacional = pTotalNoAfectoNacional;
+            this.TotalNoAfectoExtranjera = pTotalNoAfectoExtranjera;
+            this.PorcentajeDescuentoPrimero = pPorcentajeDescuentoPrimero;
+            this.PorcentajeDescuentoSegundo = pPorcentajeDescuentoSegundo;
+            this.TotalDescuentoNacional = pTotalDescuentoNacional;
+            this.TotalDescuentoExtranjera = pTotalDescuentoExtranjera;
+            this.TotalVueltoNacional = pTotalVueltoNacional;
+            this.TotalVueltoExtranjera = pTotalVueltoExtranjera;
+            this.TotalEfectivoNacional = pTotalEfectivoNacional;
+            this.TotalEfectivoExtranjera = pTotalEfectivoExtranjera;
+            this.RucCliente = pRucCliente;
+            this.NombreCompletoCliente = pNombreCompletoCliente;
+            this.DireccionCliente = pDireccionCliente;
+            this.Placa = pPlaca;
+            this.NumeroVale = pNumeroVale;
+            this.TipoCambio = pTipoCambio;
+            this.NumeroPuntos = pNumeroPuntos;
+            this.Kilometraje = pKilometraje;
+            this.TransaccionPendiente = pTransaccionPendiente;
+            this.TipoVenta = pTipoVenta;
+            this.TransaccionProcesada = pTransaccionProcesada;
+            this.AplicaDescuentoCupon = pAplicaDescuentoCupon;
+            this.CentroDeCosto = pCentroDeCosto;             
+        }
+
+
+        public PedidoRetailDetalle AgregarNuevoPedidoRetailDetalle(short pSecuencia, int pNumeroTurno,decimal pPorcentajeImpuestoIgv, 
+                   decimal pPorcentajeImpuestoIsc, decimal pTotalNacional,decimal pTotalExtranjera, 
+                   decimal pImpuestoNacional, decimal pImpuestoExtranjera,bool pEsInventariable, 
+                   bool pEnInventarioFisico, decimal pPrecio,decimal pPrecioVenta, 
+                   decimal pCostoEstandarNacional, decimal pCostoEstandarExtranjera,string pCodigoArticuloAlterno, 
+                   string pDescripcionArticulo, decimal pCantidad,int  pEsFormula, 
+                   string pNumeroPeaje, string pCodigoArticulo, string pCodigoUnidadDeMedida)
+        {
+            if(pSecuencia <= 0)
+                throw new ArgumentException(Mensajes.advertencia_SecuenciaDeLineaPedidoRetailDetalleInvalido);
+
+            if(pNumeroTurno <= 0)             
+                throw new ArgumentException(Mensajes.advertencia_NumeroTurnoDeLineaPedidoRetailDetallenvalido);   
+
+            if(pTotalNacional <= 0)
+                throw new ArgumentException(Mensajes.advertencia_TotalNacionalDeLineaPedidoRetailDetalleInvalido);   
+
+            if(pPrecioVenta <= 0)
+                throw new ArgumentException(Mensajes.advertencia_PrecioVentaDeLineaPedidoRetailDetalleInvalido);   
+
+            if(pCantidad <= 0)
+                throw new ArgumentException(Mensajes.advertencia_CantidadDeLineaPedidoRetailDetalleInvalido);   
+
+            if(string.IsNullOrEmpty(pCodigoUnidadDeMedida.Trim()))
+                throw new ArgumentException(Mensajes.advertencia_CodigoUnidadDeMedidaDeLineaPedidoRetailDetalleInvalido);   
+
+
             var nuevoPedidoRetailDetalle = new PedidoRetailDetalle
             {
                 Correlativo = this.Correlativo,
-                NumeroDocumento = pNumeroDocumento,
+                NumeroDocumento = this.NumeroDocumento,
                 Secuencia = pSecuencia,
-                FechaDocumento = pFechaDocumento,
-                FechaProceso = pFechaProceso,
-                Periodo = pPeriodo,
+                FechaDocumento = this.FechaDocumento,
+                FechaProceso = this.FechaProceso,
+                Periodo = this.Periodo,
                 NumeroTurno = pNumeroTurno,
                 PorcentajeImpuestoIgv = pPorcentajeImpuestoIgv,
                 PorcentajeImpuestoIsc = pPorcentajeImpuestoIsc,
@@ -258,7 +335,7 @@ namespace PtoVta.Dominio.Agregados.Ventas
                 CodigoAlmacen = this.CodigoAlmacen,
                 CodigoMoneda = this.CodigoMoneda,
                 CodigoArticulo = pCodigoArticulo,
-                CodigoUnidadDeMedida = pCodigoUnidadDeMedida
+                CodigoUnidadDeMedida = pCodigoUnidadDeMedida.Trim()
             };
 
             this.PedidoRetailDetalles.Add(nuevoPedidoRetailDetalle);
@@ -269,12 +346,18 @@ namespace PtoVta.Dominio.Agregados.Ventas
 
         public PedidoRetailConVale AgregarNuevoPedidoRetailConVale(decimal pNumeroVale )
         {
+            if(string.IsNullOrEmpty(this.CodigoCliente.Trim()))
+                throw new ArgumentException(Mensajes.advertencia_CodigoClienteDeLineaPedidoRetailConValeInvalido);
+
+            if(pNumeroVale <= 0)
+                throw new ArgumentException(Mensajes.advertencia_NumeroValeDeLineaPedidoRetailConValeInvalido);
+
             var nuevoPedidoRetailConVale = new PedidoRetailConVale
             {
                 Correlativo = this.Correlativo,
                 NumeroVale = pNumeroVale,
 
-                CodigoCliente = this.CodigoCliente,
+                CodigoCliente = this.CodigoCliente.Trim(),
                 CodigoAlmacen = this.CodigoAlmacen                    
             };
 
@@ -288,11 +371,24 @@ namespace PtoVta.Dominio.Agregados.Ventas
                     decimal pTotalTarjetaExtranjera, int pEsTransaccionPinPad, string pTipoTarjeta,
                     string pDNIAsociadoATarjeta, string pDescripcionTarjeta,  string  pCodigoTarjeta)
         {
+            if(pSecuencia <= 0)
+                throw new ArgumentException(Mensajes.advertencia_SecuenciaDeLineaPedidoRetailConTarjetaInvalido);
+
+            if(string.IsNullOrEmpty(pNumeroTarjeta.Trim()))
+                throw new ArgumentException(Mensajes.advertencia_NumeroTarjetaDeLineaPedidoRetailConTarjetaInvalido);   
+
+            if(pTotalTarjetaNacional <= 0)
+                throw new ArgumentException(Mensajes.advertencia_TotalTarjetaNacionalDeLineaPedidoRetailConTarjetaInvalido);                               
+
+            if(string.IsNullOrEmpty(pCodigoTarjeta.Trim()))
+                throw new ArgumentException(Mensajes.advertencia_CodigoTarjetaDeLineaPedidoRetailConTarjetaInvalido);   
+
+
             var nuevoPedidoRetailConTarjeta = new PedidoRetailConTarjeta
             {
                 Correlativo = this.Correlativo,
                 Secuencia = pSecuencia,
-                NumeroTarjeta = pNumeroTarjeta,
+                NumeroTarjeta = pNumeroTarjeta.Trim(),
                 TotalTarjetaNacional = pTotalTarjetaNacional,
                 TotalTarjetaExtranjera = pTotalTarjetaExtranjera,
                 EsTransaccionPinPad = pEsTransaccionPinPad,
@@ -302,7 +398,7 @@ namespace PtoVta.Dominio.Agregados.Ventas
 
                 CodigoAlmacen = this.CodigoAlmacen,
                 CodigoMoneda = this.CodigoMoneda,
-                CodigoTarjeta = pCodigoTarjeta
+                CodigoTarjeta = pCodigoTarjeta.Trim()
             };
 
             this.PedidoRetailConTarjetas.Add(nuevoPedidoRetailConTarjeta);
@@ -314,82 +410,81 @@ namespace PtoVta.Dominio.Agregados.Ventas
         //TipoDocumento
        public void EstablecerReferenciaTipoDocumentoDeVenta(string pCodigoTipoDocumento)
         {
-            if (!string.IsNullOrEmpty(pCodigoTipoDocumento))
-            {
-                this.CodigoTipoDocumento = pCodigoTipoDocumento;
-                // this.TipoDocumento = null;
-            }
+            if (string.IsNullOrEmpty(pCodigoTipoDocumento.Trim()))
+                throw new ArgumentException(Mensajes.advertencia_CodigoTipoDocumentoDePedidoRetailInvalido);
+
+            this.CodigoTipoDocumento = pCodigoTipoDocumento.Trim();
+            // this.TipoDocumento = null;
         }
 
         //TipoPago
         public void EstablecerReferenciaTipoPagoDeVenta(string pCodigoTipoPago)
         {
-            if (!string.IsNullOrEmpty(pCodigoTipoPago))
-            {
-                this.CodigoTipoPago = pCodigoTipoPago;
-                // this.TipoPago = null;
-            }
+            if (string.IsNullOrEmpty(pCodigoTipoPago.Trim()))
+                throw new ArgumentException(Mensajes.advertencia_CodigoTipoPagoDePedidoRetailInvalido);
+
+            this.CodigoTipoPago = pCodigoTipoPago.Trim();
+            // this.TipoPago = null;            
         } 
 
         //Almacen
         public void EstablecerReferenciaAlmacenDeVenta(string pCodigoAlmacen)
         {
-            if (!string.IsNullOrEmpty(pCodigoAlmacen))
-            {
+            if (string.IsNullOrEmpty(pCodigoAlmacen.Trim()))
+                throw new ArgumentException(Mensajes.advertencia_CodigoAlmacenDePedidoRetailInvalido);            
 
-                this.CodigoAlmacen = pCodigoAlmacen;
-                // this.Almacen = null;
-            }
+            this.CodigoAlmacen = pCodigoAlmacen.Trim();
+            // this.Almacen = null;            
         }   
 
         //Moneda
         public void EstablecerReferenciaMonedaDeVenta(string pCodigoMoneda)
         {
-            if (!string.IsNullOrEmpty(pCodigoMoneda))
-            {
-                this.CodigoMoneda = pCodigoMoneda;
-                // this.Moneda = null;
-            }
+            if (string.IsNullOrEmpty(pCodigoMoneda.Trim()))
+                throw new ArgumentException(Mensajes.advertencia_CodigoMonedaDePedidoRetailInvalido);
+
+            this.CodigoMoneda = pCodigoMoneda.Trim();
+            // this.Moneda = null;            
         } 
 
        //CondicionPago
         public void EstablecerReferenciaCondicionPagoDeVenta(string pCodigoCondicionPago)
         {
-            if (!string.IsNullOrEmpty(pCodigoCondicionPago))
-            {
-                this.CodigoCondicionPago = pCodigoCondicionPago;
-                // this.CondicionPago = null;
-            }
+            if (string.IsNullOrEmpty(pCodigoCondicionPago.Trim()))
+                throw new ArgumentException(Mensajes.advertencia_CodigoCondicionPagoDePedidoRetailInvalido);
+
+            this.CodigoCondicionPago = pCodigoCondicionPago.Trim();
+            // this.CondicionPago = null;            
         }
 
        //Vendedor
         public void EstablecerReferenciaVendedorDeVenta(string pCodigoVendedor)
         {
-            if (!string.IsNullOrEmpty(pCodigoVendedor))
-            {
-                this.CodigoVendedor = pCodigoVendedor;
-                // this.Vendedor = null;
-            }
+            if (string.IsNullOrEmpty(pCodigoVendedor.Trim()))
+                throw new ArgumentException(Mensajes.advertencia_CodigoVendedorDePedidoRetailInvalido);
+
+            this.CodigoVendedor = pCodigoVendedor.Trim();
+            // this.Vendedor = null;            
         }
 
        //UsuarioSistema
         public void EstablecerReferenciaUsuarioSistemaDeVenta(string pCodigoUsuarioDeSistema)
         {
-            if (!string.IsNullOrEmpty(pCodigoUsuarioDeSistema))
-            {
-                this.CodigoUsuarioDeSistema = pCodigoUsuarioDeSistema;
-                // this.UsuarioSistema = null;
-            }
+            if (string.IsNullOrEmpty(pCodigoUsuarioDeSistema.Trim()))
+                throw new ArgumentException(Mensajes.advertencia_CodigoUsuarioDeSistemaDePedidoRetailInvalido);            
+
+            this.CodigoUsuarioDeSistema = pCodigoUsuarioDeSistema.Trim();
+            // this.UsuarioSistema = null;            
         }  
 
       //ImpuestoIgv
         public void EstablecerReferenciaImpuestoIgvDeCliente(string pCodigoImpuestoIgv)
         {
-            if (!string.IsNullOrEmpty(pCodigoImpuestoIgv))
-            {
-                this.CodigoImpuestoIgv = pCodigoImpuestoIgv;
-                // this.ImpuestoIgv = null;
-            }
+            if (string.IsNullOrEmpty(pCodigoImpuestoIgv))
+                throw new ArgumentException(Mensajes.advertencia_CodigoImpuestoIgvDePedidoRetailInvalido);
+
+            this.CodigoImpuestoIgv = pCodigoImpuestoIgv.Trim();
+            // this.ImpuestoIgv = null;            
         }
 
       //ImpuestoIsc
@@ -397,9 +492,8 @@ namespace PtoVta.Dominio.Agregados.Ventas
         {
             if (!string.IsNullOrEmpty(pCodigoImpuestoIsc))
             {
-
-                this.CodigoImpuestoIsc = pCodigoImpuestoIsc;
-                // this.ImpuestoIsc = null;
+                this.CodigoImpuestoIsc = pCodigoImpuestoIsc.Trim();
+                // this.ImpuestoIsc = null;            
             }
         }
 
@@ -408,19 +502,19 @@ namespace PtoVta.Dominio.Agregados.Ventas
         {
             if (!string.IsNullOrEmpty(pCodigoCliente))
             {
-                this.CodigoCliente = pCodigoCliente;
-                // this.Cliente = null;
-            }
+                this.CodigoCliente = pCodigoCliente.Trim();
+                // this.Cliente = null;     
+            }       
         }
 
         //ClaseTipoCambio
         public void EstablecerReferenciaClaseTipoCambioDeVenta(string pCodigoClaseTipoCambio)
         {
-            if (!string.IsNullOrEmpty(pCodigoClaseTipoCambio))
-            {
-                this.CodigoClaseTipoCambio = pCodigoClaseTipoCambio;
-                // this.ClaseTipoCambio = null;
-            }
+            if (string.IsNullOrEmpty(pCodigoClaseTipoCambio))
+                throw new ArgumentException(Mensajes.advertencia_CodigoClaseTipoCambioDePedidoRetailInvalido);
+
+            this.CodigoClaseTipoCambio = pCodigoClaseTipoCambio.Trim();
+            // this.ClaseTipoCambio = null;            
         }
 
         //Tarjeta Promocion
@@ -428,32 +522,31 @@ namespace PtoVta.Dominio.Agregados.Ventas
         {
             if (!string.IsNullOrEmpty(pCodigoTarjetaPromocion))
             {
-                this.CodigoTarjetaPromocion = pCodigoTarjetaPromocion;
+                this.CodigoTarjetaPromocion = pCodigoTarjetaPromocion.Trim();
                 // this.TipoNegocio = null;
-            }
+            }            
         }  
 
 
         //Configuracion PuntoVenta
         public void EstablecerReferenciaConfiguracionPuntoVentaDeVenta(string pCodigoPuntoDeVenta)
         {
-            if (!string.IsNullOrEmpty(pCodigoPuntoDeVenta))
-            {
+            if (string.IsNullOrEmpty(pCodigoPuntoDeVenta))
+                throw new ArgumentException(Mensajes.advertencia_CodigoPuntoDeVentaDePedidoRetailInvalido);            
 
-                this.CodigoPuntoDeVenta = pCodigoPuntoDeVenta;
-                // this.ConfiguracionPuntoVenta = null;
-            }
+            this.CodigoPuntoDeVenta = pCodigoPuntoDeVenta.Trim();
+            // this.ConfiguracionPuntoVenta = null;
+            
         }
 
         //Tipo Negocio
         public void EstablecerReferenciaTipoNegocioDeVenta(string pCodigoTipoNegocio)
         {
-            if (!string.IsNullOrEmpty(pCodigoTipoNegocio))
-            {
+            if (string.IsNullOrEmpty(pCodigoTipoNegocio.Trim()))
+                throw new ArgumentException(Mensajes.advertencia_CodigoTipoNegocioDePedidoRetailInvalido);                        
 
-                this.CodigoTipoNegocio = pCodigoTipoNegocio;
-                // this.ConfiguracionPuntoVenta = null;
-            }
+            this.CodigoTipoNegocio = pCodigoTipoNegocio.Trim();
+            // this.ConfiguracionPuntoVenta = null;            
         }                   
     }
 }

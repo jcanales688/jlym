@@ -4,6 +4,7 @@ using System.Data.SqlClient;
 using Dapper;
 using PtoVta.Dominio.Agregados.Parametros;
 using PtoVta.Infraestructura.BaseTrabajo;
+using static PtoVta.Infraestructura.BaseTrabajo.Globales.GlobalInfraestructura;
 
 namespace PtoVta.Infraestructura.Repositorios.Parametros
 {
@@ -21,7 +22,7 @@ namespace PtoVta.Infraestructura.Repositorios.Parametros
                 string cadenaSQL = @"SELECT	TYPEPAYMENTID	AS CodigoTipoPago
                                             ,DESCR			AS DescripcionTipoPago
                                             ,SHOW			AS Mostrar
-                                    FROM	PC_TYPEPAYMENT (NOLOCK)
+                                    FROM	" + BaseDatos.PrefijoTabla + @"TYPEPAYMENT (NOLOCK)
                                     WHERE	TYPEPAYMENTID	= @TYPEPAYMENTID";
 
                 var tipoDePago = cn.QueryFirstOrDefault<TipoPago>(cadenaSQL,

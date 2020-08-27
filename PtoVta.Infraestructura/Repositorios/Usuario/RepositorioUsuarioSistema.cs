@@ -4,6 +4,7 @@ using System.Data.SqlClient;
 using Dapper;
 using PtoVta.Dominio.Agregados.Usuario;
 using PtoVta.Infraestructura.BaseTrabajo;
+using static PtoVta.Infraestructura.BaseTrabajo.Globales.GlobalInfraestructura;
 
 namespace PtoVta.Infraestructura.Repositorios.Usuario
 {
@@ -23,7 +24,7 @@ namespace PtoVta.Infraestructura.Repositorios.Usuario
                                             ,USERNAME	AS DescripcionUsuario
                                             ,PASSWORD	AS Contraseña
                                             ,STATUS AS EsHabilitado
-                                    FROM    SE_USERREC (NOLOCK)
+                                    FROM    " + BaseDatos.PrefijoTabla + @"SE_USERREC (NOLOCK)
                                     WHERE	USERID			= @USERID
                                             AND	PASSWORD	= @PASSWORD";
 
@@ -50,7 +51,7 @@ namespace PtoVta.Infraestructura.Repositorios.Usuario
                                             ,USERNAME	AS DescripcionUsuario
                                             ,PASSWORD	AS Contraseña
                                             ,STATUS AS EsHabilitado
-                                    FROM    SE_USERREC (NOLOCK)
+                                    FROM    " + BaseDatos.PrefijoTabla + @"SE_USERREC (NOLOCK)
                                     WHERE	USERID			= @USERID";
 
                 var usuarioSistema = cn.QueryFirstOrDefault<UsuarioSistema>(cadenaSQL,

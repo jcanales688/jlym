@@ -43,9 +43,8 @@ namespace PtoVta.API.Controllers
             catch (Exception ex)
             {
                 return NotFound(
-                    new ResultadoServicio<ModuloSistemaDTO>(0,"Usuario no existe. Usuario o Clave invalidos", ex.Message, null, null)
+                    new ResultadoServicio<ModuloSistemaDTO>(6, "Usuario no existe. Usuario o Clave invalidos", ex.Message, null, null)
                 );                
-                // return NotFound();
             }
         }
     }

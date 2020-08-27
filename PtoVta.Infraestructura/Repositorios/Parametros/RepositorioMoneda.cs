@@ -4,6 +4,7 @@ using System.Data.SqlClient;
 using Dapper;
 using PtoVta.Dominio.Agregados.Parametros;
 using PtoVta.Infraestructura.BaseTrabajo;
+using static PtoVta.Infraestructura.BaseTrabajo.Globales.GlobalInfraestructura;
 
 namespace PtoVta.Infraestructura.Repositorios.Parametros
 {
@@ -21,7 +22,7 @@ namespace PtoVta.Infraestructura.Repositorios.Parametros
                 string cadenaSQL = @"SELECT	CURYID		AS CodigoMoneda
                                             ,DESCR		AS DescripcionMoneda
                                             ,DESCRMONEY AS SimboloMoneda
-                                    FROM	PC_CURRENCY (NOLOCK)
+                                    FROM	" + BaseDatos.PrefijoTabla + @"CURRENCY (NOLOCK)
                                     WHERE	CURYID		= @CURYID";
 
                 var moneda = cn.QueryFirstOrDefault<Moneda>(cadenaSQL,

@@ -6,6 +6,7 @@ using System.Linq;
 using Dapper;
 using PtoVta.Dominio.Agregados.Parametros;
 using PtoVta.Infraestructura.BaseTrabajo;
+using static PtoVta.Infraestructura.BaseTrabajo.Globales.GlobalInfraestructura;
 
 namespace PtoVta.Infraestructura.Repositorios.Parametros
 {
@@ -23,7 +24,7 @@ namespace PtoVta.Infraestructura.Repositorios.Parametros
 
             using (IDbConnection cn = new SqlConnection(this.CadenaConexion))
             {
-                string sqlActualizaCorrelativoTipoDocumento = @"UPDATE	PC_OP_DOCSERIES
+                string sqlActualizaCorrelativoTipoDocumento = @"UPDATE	" + BaseDatos.PrefijoTabla + @"OP_DOCSERIES
                                                                 SET		NBRDOC			= @NBRDOC
                                                                 WHERE	DOCTYPEID		= @DOCTYPEID 
                                                                         AND SITEID		= @SITEID
@@ -47,7 +48,7 @@ namespace PtoVta.Infraestructura.Repositorios.Parametros
                 string cadenaSQL = @"SELECT	DOCTYPEID	AS CodigoTipoDocumento
                                             ,DESCR		AS DescripcionTipoDocumento
                                             ,MINDES		AS Abreviatura
-                                    FROM	PC_DOCTYPE (NOLOCK)
+                                    FROM	" + BaseDatos.PrefijoTabla + @"DOCTYPE (NOLOCK)
                                     WHERE	DOCTYPEID	= @DOCTYPEID;
 
                                     SELECT	NBRSERIES	AS Serie
@@ -57,7 +58,7 @@ namespace PtoVta.Infraestructura.Repositorios.Parametros
                                             ,DOCTYPEID	AS CodigoTipoDocumento
                                             ,SITEID		AS CodigoAlmacen
                                             ,''			AS CodigoPuntoDeVenta
-                                    FROM	PC_OP_DOCSERIES (NOLOCK)
+                                    FROM	" + BaseDatos.PrefijoTabla + @"OP_DOCSERIES (NOLOCK)
                                     WHERE	DOCTYPEID	= @DOCTYPEID
                                             AND SITEID	= @SITEID
                                             AND ISNULL(USER1, '') = @USER1
@@ -107,7 +108,7 @@ namespace PtoVta.Infraestructura.Repositorios.Parametros
                 string cadenaSQL = @"SELECT	DOCTYPEID	AS CodigoTipoDocumento
                                             ,DESCR		AS DescripcionTipoDocumento
                                             ,MINDES		AS Abreviatura
-                                    FROM	PC_DOCTYPE (NOLOCK)
+                                    FROM	" + BaseDatos.PrefijoTabla + @"DOCTYPE (NOLOCK)
                                     WHERE	DOCTYPEID	= @DOCTYPEID";
 
                 var tipoDocumento = cn.QueryFirstOrDefault<TipoDocumento>(cadenaSQL,

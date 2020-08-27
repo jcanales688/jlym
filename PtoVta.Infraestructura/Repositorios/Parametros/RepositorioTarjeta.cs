@@ -4,6 +4,7 @@ using System.Data.SqlClient;
 using Dapper;
 using PtoVta.Dominio.Agregados.Parametros;
 using PtoVta.Infraestructura.BaseTrabajo;
+using static PtoVta.Infraestructura.BaseTrabajo.Globales.GlobalInfraestructura;
 
 namespace PtoVta.Infraestructura.Repositorios.Parametros
 {
@@ -23,7 +24,7 @@ namespace PtoVta.Infraestructura.Repositorios.Parametros
                                             ,DESCR			AS DescripcionTarjeta
                                             ,NUMBERORDER	AS NumeroOrden
                                             ,CARDADJUST		AS AjusteTarjeta
-                                    FROM	PC_OP_CARD (NOLOCK)
+                                    FROM	" + BaseDatos.PrefijoTabla + @"OP_CARD (NOLOCK)
                                     WHERE	CARDID			= @CARDID";
 
                 var tarjeta = cn.QueryFirstOrDefault<Tarjeta>(cadenaSQL,

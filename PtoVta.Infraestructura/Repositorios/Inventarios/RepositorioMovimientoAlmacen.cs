@@ -5,6 +5,7 @@ using System.Data.SqlClient;
 using Dapper;
 using PtoVta.Dominio.Agregados.Inventarios;
 using PtoVta.Infraestructura.BaseTrabajo;
+using static PtoVta.Infraestructura.BaseTrabajo.Globales.GlobalInfraestructura;
 
 namespace PtoVta.Infraestructura.Repositorios.Inventarios
 {
@@ -19,7 +20,7 @@ namespace PtoVta.Infraestructura.Repositorios.Inventarios
         {
             using (IDbConnection cn = new SqlConnection(this.CadenaConexion))
             {
-                string sqlAgregaMovimientoAlmacen = @"INSERT INTO PC_INTRAMOV
+                string sqlAgregaMovimientoAlmacen = @"INSERT INTO " + BaseDatos.PrefijoTabla + @"INTRAMOV
                                                             (BATNBR
                                                             ,INTRDATE
                                                             ,INTRDATEPROCE
@@ -76,7 +77,7 @@ namespace PtoVta.Infraestructura.Repositorios.Inventarios
                     ,SITEID = pMovimientoAlmacen.CodigoAlmacen
                     ,INVTIDSKU = pMovimientoAlmacen.CodigoArticulo
                     ,TYPEDOCID = pMovimientoAlmacen.CodigoTipoMovimientoAlmacen
-                    ,DOCTYPEID = pMovimientoAlmacen.CodigoTipoDocumento
+                    ,DOCTYPEID = pMovimientoAlmacen.CodigoTipoDocumentoReferencia
                 });
             }
         }

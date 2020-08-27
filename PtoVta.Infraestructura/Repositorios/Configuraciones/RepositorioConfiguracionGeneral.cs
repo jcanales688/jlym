@@ -6,7 +6,8 @@ using Dapper;
 using PtoVta.Dominio.Agregados.Configuraciones;
 using PtoVta.Dominio.Agregados.Parametros;
 using PtoVta.Infraestructura.BaseTrabajo;
-using static PtoVta.Dominio.BaseTrabajo.Globales.GlobalDominio;
+using static PtoVta.Dominio.BaseTrabajo.Enumeradores.AmbienteVenta;
+using static PtoVta.Infraestructura.BaseTrabajo.Globales.GlobalInfraestructura;
 
 namespace PtoVta.Infraestructura.Repositorios.Configuraciones
 {
@@ -26,11 +27,11 @@ namespace PtoVta.Infraestructura.Repositorios.Configuraciones
                                             ,QTYSIDE			AS CantidadCaras
                                             ,''					AS SimboloMonedaBase
                                             ,''					AS SimboloMonedaExtranjera
-                                            ,FLOATPRICE			AS CantDecimalPrecio
-                                            ,FLOATCOST			AS CantDecimalCosto
-                                            ,FLOATQTY			AS CantDecimalStock
-                                            ,FLOATOUTPUT		AS CantDecimalResultado
-                                            ,FLOATDESC			AS CantDecimalDescuento
+                                            ,FLOATPRICE			AS CantidadDecimalPrecio
+                                            ,FLOATCOST			AS CantidadDecimalCosto
+                                            ,FLOATQTY			AS CantidadDecimalStock
+                                            ,FLOATOUTPUT		AS CantidadDecimalResultado
+                                            ,FLOATDESC			AS CantidadDecimalDescuento
                                             ,TAXVALUEIGV		AS PorcentajeImpuesto
                                             ,DATEPROCE			AS FechaProceso
                                             ,TYPECONTROLLERFUEL	AS TipoControlCombustible
@@ -44,24 +45,24 @@ namespace PtoVta.Infraestructura.Repositorios.Configuraciones
                                             ,TAXID				AS CodigoImpuesto
                                             ,CUSTID				AS CodigoClienteInterno
                                             ,TYPEPRICEUPDATE	AS CodigoTipoPrecioInventarioActualizable
-                                    FROM	PC_SETUP (NOLOCK);
+                                    FROM	" + BaseDatos.PrefijoTabla + @"SETUP (NOLOCK);
                                     
                                     SELECT  CURYID		AS CodigoMoneda
                                             ,DESCR		AS DescripcionMoneda
                                             ,DESCRMONEY AS SimboloMoneda
-                                    FROM	PC_CURRENCY (NOLOCK)
+                                    FROM	" + BaseDatos.PrefijoTabla + @"CURRENCY (NOLOCK)
                                     WHERE	CURYID		= @CURYIDPEN;
 
                                     SELECT  CURYID		AS CodigoMoneda
                                             ,DESCR		AS DescripcionMoneda
                                             ,DESCRMONEY AS SimboloMoneda
-                                    FROM	PC_CURRENCY (NOLOCK)
+                                    FROM	" + BaseDatos.PrefijoTabla + @"CURRENCY (NOLOCK)
                                     WHERE	CURYID		= @CURYIDUSD";
 
                 var resultado = cn.QueryMultiple(cadenaSQL,
                                                 new { 
-                                                        CURYIDPEN = Dominio.BaseTrabajo.Globales.GlobalDominio.EnumMoneda.CodigoMonedaBase, 
-                                                        CURYIDUSD = Dominio.BaseTrabajo.Globales.GlobalDominio.EnumMoneda.CodigoMonedaExtranjera,
+                                                        CURYIDPEN = EnumMoneda.CodigoMonedaBase, 
+                                                        CURYIDUSD = EnumMoneda.CodigoMonedaExtranjera,
                                                     });
 
                 var configuracionGeneral = resultado.Read<ConfiguracionGeneral>().FirstOrDefault();

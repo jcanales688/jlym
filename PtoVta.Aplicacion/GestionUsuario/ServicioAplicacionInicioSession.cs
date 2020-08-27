@@ -11,7 +11,7 @@ using static PtoVta.Dominio.BaseTrabajo.Globales.GlobalDominio;
 
 namespace PtoVta.Aplicacion.GestionUsuario
 {
-    public class ServicioAplicacionInicioSession:IServicioAplicacionInicioSession
+    public class ServicioAplicacionInicioSession : IServicioAplicacionInicioSession
     {
         private IRepositorioModuloSistema _IRepositorioModuloSistema;
         private IRepositorioUsuarioSistema _IRepositorioUsuarioSistema;      
@@ -70,7 +70,7 @@ namespace PtoVta.Aplicacion.GestionUsuario
             bool esUsuarioDelVendedorValido = false;
             string mensajeValidacion = string.Empty;
 
-            if (string.IsNullOrEmpty(pUsuario) || string.IsNullOrEmpty(pClave))
+            if (string.IsNullOrEmpty(pUsuario.Trim()) || string.IsNullOrEmpty(pClave.Trim()))
                 throw new ArgumentException(Mensajes.advertencia_UsuarioOClaveNula);
 
             //Validamos Usuario Vendedor 
@@ -139,7 +139,7 @@ namespace PtoVta.Aplicacion.GestionUsuario
                 mensajeValidacion = Mensajes.advertencia_UsuarioSistemaInvalidoYSinDerechos;
                 LogFactory.CrearLog().LogError(mensajeValidacion);
 
-                return new ResultadoServicio<ModuloSistemaDTO>(0,mensajeValidacion,
+                return new ResultadoServicio<ModuloSistemaDTO>(6,mensajeValidacion,
                                                                     string.Empty, null, null);
             }
         }

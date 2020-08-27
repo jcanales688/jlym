@@ -6,7 +6,8 @@ using Dapper;
 using PtoVta.Dominio.Agregados.Configuraciones;
 using PtoVta.Dominio.Agregados.Parametros;
 using PtoVta.Infraestructura.BaseTrabajo;
-using static PtoVta.Dominio.BaseTrabajo.Globales.GlobalDominio;
+using static PtoVta.Dominio.BaseTrabajo.Enumeradores.AmbienteVenta;
+using static PtoVta.Infraestructura.BaseTrabajo.Globales.GlobalInfraestructura;
 
 namespace PtoVta.Infraestructura.Repositorios.Configuraciones
 {
@@ -16,6 +17,26 @@ namespace PtoVta.Infraestructura.Repositorios.Configuraciones
         {
             this.CadenaConexion = pCadenaConexion;
         }
+
+        public void ActualizarCorrelativos(ConfiguracionPuntoVenta pConfiguracionPuntoVenta)
+        {
+            using (IDbConnection cn = new SqlConnection(this.CadenaConexion))
+            {
+                string sqlActualizaCorrelativos = @"UPDATE	" + BaseDatos.PrefijoTabla + @"OP_SALESPOINTSETTING
+                                                    SET		NBRTICKFAC		= @NBRTICKFAC
+                                                            ,NBRTICKBOL		= @NBRTICKBOL
+                                                            ,BATNBRSALES	= @BATNBRSALES
+                                                    WHERE	SALESPOINT		= @SALESPOINT";
+
+                var filasAfectadas = cn.Execute(sqlActualizaCorrelativos, new
+                {
+                    NBRTICKFAC = pConfiguracionPuntoVenta.SerieCorrelativoTickFactura,
+                    NBRTICKBOL = pConfiguracionPuntoVenta.SerieCorrelativoTickBoleta,
+                    BATNBRSALES = pConfiguracionPuntoVenta.CorrelativoMovimientoAlmacenPorVenta,    
+                    SALESPOINT = pConfiguracionPuntoVenta.CodigoPuntoDeVenta
+                });
+            }
+        }        
 
         public ConfiguracionPuntoVenta ObtenerPorTerminalYPuntoVenta(string pNombreTerminal, string pCodigoPuntoDeVenta)
         {
@@ -47,26 +68,26 @@ namespace PtoVta.Infraestructura.Repositorios.Configuraciones
                                             ,''					AS CodigoEstadoDocumentoDefault
                                             ,''					AS CodigoTipoPagoDefault
                                             ,''					AS CodigoEstadoDocumentoAnulado
-                                    FROM	PC_OP_SALESPOINTSETTING 
+                                    FROM	" + BaseDatos.PrefijoTabla + @"OP_SALESPOINTSETTING 
                                     WHERE	SALESPOINT			= @SALESPOINT
                                             AND TERMINALNAME	= @TERMINALNAME;
                                             
                                     SELECT	DOCSTATUSID		AS CodigoEstadoDocumento
                                             ,DESCR			AS DescripcionEstadoDocumento
                                             ,DOCSTATUSID	AS AbreviaturaEstadoDocumento
-                                    FROM	PC_IN_DOCSTATUS (NOLOCK)
+                                    FROM	" + BaseDatos.PrefijoTabla + @"IN_DOCSTATUS (NOLOCK)
                                     WHERE	DOCSTATUSID			= @DOCSTATUSIDDEFAULT;
                                     
                                     SELECT  TYPEPAYMENTID	AS CodigoTipoPago
                                             ,DESCR			AS DescripcionTipoPago
                                             ,SHOW			AS Mostrar
-                                    FROM	PC_TYPEPAYMENT (NOLOCK)
+                                    FROM	" + BaseDatos.PrefijoTabla + @"TYPEPAYMENT (NOLOCK)
                                     WHERE	TYPEPAYMENTID		= @TYPEPAYMENTIDDEFAULT;
                                     
                                     SELECT	DOCSTATUSID		AS CodigoEstadoDocumento
                                             ,DESCR			AS DescripcionEstadoDocumento
                                             ,DOCSTATUSID	AS AbreviaturaEstadoDocumento
-                                    FROM	PC_IN_DOCSTATUS (NOLOCK)
+                                    FROM	" + BaseDatos.PrefijoTabla + @"IN_DOCSTATUS (NOLOCK)
                                     WHERE	DOCSTATUSID			= @DOCSTATUSIDANULACION";
 
                 var resultado = cn.QueryMultiple(cadenaSQL,
@@ -74,7 +95,7 @@ namespace PtoVta.Infraestructura.Repositorios.Configuraciones
                                                     SALESPOINT = pCodigoPuntoDeVenta, 
                                                     TERMINALNAME = pNombreTerminal, 
                                                     DOCSTATUSIDDEFAULT = EnumEstadoDocumento.CodigoEstadoDocumentoPorDefecto,
-                                                    TYPEPAYMENTIDDEFAULT = EnumTipoPago.TipoPagoPorDefecto,
+                                                    TYPEPAYMENTIDDEFAULT = EnumTipoPago.CodigoTipoPagoPorDefecto,
                                                     DOCSTATUSIDANULACION = EnumEstadoDocumento.CodigoEstadoDocumentoAnulado
                                                 });
 
@@ -115,7 +136,7 @@ namespace PtoVta.Infraestructura.Repositorios.Configuraciones
                                             ,DISPTICKBOL		AS DispositivoTicketBoleta
                                             ,TYPEDISPTICKBOL	AS TipoDispositivoSalidaTicketBoleta 
                                             ,NBRTICKFAC			AS SerieCorrelativoTickFactura
-                                            ,NBRTICKBOL			AS SerieCorrelativoTickBoleta
+                                            ,NBRTICKBOL			AS SerieCorrelativoTickBoleta   
                                             ,STKZETAOK			AS RealizoCierreZeta
                                             ,STKTURNOK			AS RealizoCierreTurno
                                             ,STKJUMPAUTOMAT		AS PermiteSaltoAutomatico
@@ -129,7 +150,7 @@ namespace PtoVta.Infraestructura.Repositorios.Configuraciones
                                             ,''					AS CodigoEstadoDocumentoDefault
                                             ,''					AS CodigoTipoPagoDefault
                                             ,''					AS CodigoEstadoDocumentoAnulado
-                                    FROM	PC_OP_SALESPOINTSETTING 
+                                    FROM	" + BaseDatos.PrefijoTabla + @"OP_SALESPOINTSETTING 
                                     WHERE	SALESPOINT			= @SALESPOINT";
 
                 var configuracionPuntoDeVenta = cn.QueryFirstOrDefault<ConfiguracionPuntoVenta>(cadenaSQL,

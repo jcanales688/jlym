@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using PtoVta.Aplicacion.BaseTrabajo;
 using PtoVta.Aplicacion.DTO.Colaborador;
 using PtoVta.Aplicacion.DTO.Modulo;
@@ -31,7 +32,7 @@ namespace PtoVta.Aplicacion.Tests
 
         public ServicioAplicacionParametrosTest()
         {
-            _IRepositorioCategoriaArticulo = new RepositorioCategoriaArticulo(ConfiguracionGlobal.CadenaConexionBd);
+            _IRepositorioCategoriaArticulo = new RepositorioCategoriaArticulo(Infraestructura.ConfiguracionGlobal.CadenaConexionBd);
 
             _IServicioAplicacionParametros = new ServicioAplicacionParametros(_IRepositorioCategoriaArticulo);
 
@@ -45,12 +46,11 @@ namespace PtoVta.Aplicacion.Tests
 
         [Fact]
         public void ObtenerCategorias_Test() 
-        {
-    
+        {    
             ResultadoServicio<CategoriaArticuloDTO> categorias = _IServicioAplicacionParametros
                             .ObtenerCategorias("1");
 
-            Assert.False(categorias == null);
+            Assert.True(categorias.Datos.Any() == true);
         }        
     }
 }

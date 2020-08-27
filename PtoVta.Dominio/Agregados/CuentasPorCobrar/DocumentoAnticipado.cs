@@ -36,7 +36,7 @@ namespace PtoVta.Dominio.Agregados.CuentasPorCobrar
         {
             if (!string.IsNullOrEmpty(pCodigoTipoDocumento))
             {
-                this.CodigoTipoDocumento = pCodigoTipoDocumento;
+                this.CodigoTipoDocumento = pCodigoTipoDocumento.Trim();
                 this.TipoDocumento = null;
             }
         }
@@ -58,7 +58,7 @@ namespace PtoVta.Dominio.Agregados.CuentasPorCobrar
         {
             if (!string.IsNullOrEmpty(pCodigoAlmacen))
             {
-                this.CodigoAlmacen = pCodigoAlmacen;
+                this.CodigoAlmacen = pCodigoAlmacen.Trim();
                 this.Almacen = null;
             }
         }        

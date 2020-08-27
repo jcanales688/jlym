@@ -7,5 +7,6 @@ namespace PtoVta.Aplicacion.GestionInventarios
     public interface IServicioAplicacionArticulo
     {
         ResultadoServicio<ArticuloDTO> ObtenerPorCategoriaYSubcategoria(string pCodigoCategoria, string pCodigoSubCategoria, string pCodigoAlmacen);        
+        decimal ObtenerPrecioVentaDeArticulo(string pCodigoCliente, string pCodigoArticulo, string pCodigoAlmacen);
     }    
 }

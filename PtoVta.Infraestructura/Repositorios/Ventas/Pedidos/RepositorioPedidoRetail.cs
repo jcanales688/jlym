@@ -6,7 +6,8 @@ using System.Linq;
 using Dapper;
 using PtoVta.Dominio.Agregados.Ventas;
 using PtoVta.Infraestructura.BaseTrabajo;
-using static PtoVta.Dominio.BaseTrabajo.Globales.GlobalDominio;
+using static PtoVta.Dominio.BaseTrabajo.Enumeradores.AmbienteVenta;
+using static PtoVta.Infraestructura.BaseTrabajo.Globales.GlobalInfraestructura;
 
 namespace PtoVta.Infraestructura.Repositorios.Ventas
 {
@@ -25,7 +26,7 @@ namespace PtoVta.Infraestructura.Repositorios.Ventas
                 using (var transaccion = cn.BeginTransaction())
                 {
                     //Cabecera Venta
-                    string sqlAgregaPedido = @"INSERT INTO PC_TMP_OP_SALESCSTORE
+                    string sqlAgregaPedido = @"INSERT INTO " + BaseDatos.PrefijoTabla + @"TMP_OP_SALESCSTORE
                                                             (CORRNBR	
                                                             ,NBRDOCUMENT
                                                             ,STKINVENTORY	
@@ -189,7 +190,7 @@ namespace PtoVta.Infraestructura.Repositorios.Ventas
                     {
                         foreach (var detallePedido in pPedidoRetail.PedidoRetailDetalles)
                         {
-                            string sqlAgregaDetallePedido = @"INSERT INTO PC_TMP_OP_SALESDETCSTORE
+                            string sqlAgregaDetallePedido = @"INSERT INTO " + BaseDatos.PrefijoTabla + @"TMP_OP_SALESDETCSTORE
                                                                         (CORRNBR
                                                                         ,NBRDOCUMENT
                                                                         ,SEQUENCE	
@@ -289,7 +290,7 @@ namespace PtoVta.Infraestructura.Repositorios.Ventas
                     {
                         foreach (var pedidoConTarjeta in pPedidoRetail.PedidoRetailConTarjetas)
                         {
-                            string sqlAgregaPedidoConTarjeta = @"INSERT INTO PC_TMP_OP_SALESCARD
+                            string sqlAgregaPedidoConTarjeta = @"INSERT INTO " + BaseDatos.PrefijoTabla + @"TMP_OP_SALESCARD
                                                                                 (CORRNBR
                                                                                 ,SEQUENCE
                                                                                 ,NBRCARD
@@ -338,12 +339,12 @@ namespace PtoVta.Infraestructura.Repositorios.Ventas
                     {
                         foreach (var pedidoConVale in pPedidoRetail.PedidoRetailConVales)
                         {
-                            string sqlAgregaPedidoConVale = @"INSERT INTO PC_TMP_OP_BONUS
+                            string sqlAgregaPedidoConVale = @"INSERT INTO " + BaseDatos.PrefijoTabla + @"TMP_OP_BONUS
                                                                         (CORRNBR	
                                                                         ,NBRBONUS
                                                                         ,CUSTIDSS
                                                                         ,SITEID)
-                                                                VALUE	(@CORRNBR	
+                                                                VALUES	(@CORRNBR	
                                                                         ,@NBRBONUS
                                                                         ,@CUSTIDSS
                                                                         ,@SITEID)";
@@ -418,7 +419,7 @@ namespace PtoVta.Infraestructura.Repositorios.Ventas
                                             PROMOTIONCARDID AS CodigoTarjetaPromocion,
                                             SALESPOINT AS CodigoPuntoDeVenta,
                                             BUSINESSTYPE AS CodigoTipoNegocio
-                                    FROM	PC_TMP_OP_SALESCSTORE (NOLOCK)
+                                    FROM	" + BaseDatos.PrefijoTabla + @"TMP_OP_SALESCSTORE (NOLOCK)
                                     WHERE	CORRNBR	= @CORRNBR;
 
                                     SELECT	CORRNBR  AS Correlativo,
@@ -450,9 +451,9 @@ namespace PtoVta.Infraestructura.Repositorios.Ventas
                                             CURYID  AS CodigoMoneda,
                                             INVTIDSKU  AS CodigoArticulo,
                                             STKUNITID  AS CodigoUnidadDeMedida
-                                    FROM	PC_TMP_OP_SALESDETCSTORE (NOLOCK)
+                                    FROM	" + BaseDatos.PrefijoTabla + @"TMP_OP_SALESDETCSTORE (NOLOCK)
                                     WHERE	CORRNBR	IN (SELECT	CORRNBR
-                                                        FROM	PC_TMP_OP_SALESCSTORE (NOLOCK)
+                                                        FROM	" + BaseDatos.PrefijoTabla + @"TMP_OP_SALESCSTORE (NOLOCK)
                                                         WHERE	CORRNBR	= @CORRNBR);
 
                                     SELECT	CORRNBR  AS Correlativo,
@@ -467,18 +468,18 @@ namespace PtoVta.Infraestructura.Repositorios.Ventas
                                             SITEID  AS CodigoAlmacen,
                                             CARDID  AS CodigoTarjeta,
                                             curyid  AS CodigoMoneda	
-                                    FROM	PC_TMP_OP_SALESCARD (NOLOCK)
+                                    FROM	" + BaseDatos.PrefijoTabla + @"TMP_OP_SALESCARD (NOLOCK)
                                     WHERE	CORRNBR	IN (SELECT	CORRNBR
-                                                        FROM	PC_TMP_OP_SALESCSTORE (NOLOCK)
+                                                        FROM	" + BaseDatos.PrefijoTabla + @"TMP_OP_SALESCSTORE (NOLOCK)
                                                         WHERE	CORRNBR	= @CORRNBR);
 
                                     SELECT	CORRNBR  AS Correlativo,
                                             NBRBONUS  AS NumeroVale,
                                             custidss  AS CodigoCliente,
                                             SITEID  AS CodigoAlmacen
-                                    FROM	PC_TMP_OP_BONUS (NOLOCK)
+                                    FROM	" + BaseDatos.PrefijoTabla + @"TMP_OP_BONUS (NOLOCK)
                                     WHERE	CORRNBR	IN (SELECT	CORRNBR
-                                                        FROM	PC_TMP_OP_SALESCSTORE (NOLOCK)
+                                                        FROM	" + BaseDatos.PrefijoTabla + @"TMP_OP_SALESCSTORE (NOLOCK)
                                                         WHERE	CORRNBR	= @CORRNBR)";
 
                 var resultado = cn.QueryMultiple(cadenaSQL,
@@ -553,10 +554,10 @@ namespace PtoVta.Infraestructura.Repositorios.Ventas
                                             PROMOTIONCARDID AS CodigoTarjetaPromocion,
                                             SALESPOINT AS CodigoPuntoDeVenta,
                                             BUSINESSTYPE AS CodigoTipoNegocio
-                                    FROM	PC_TMP_OP_SALESCSTORE (NOLOCK)
+                                    FROM	" + BaseDatos.PrefijoTabla + @"TMP_OP_SALESCSTORE (NOLOCK)
                                     WHERE	SALESPOINT	    = @SALESPOINT
                                             AND SALESTYPE   = @SALESTYPE                                     
-                                            STKSAVE         = 1 
+                                            AND STKSAVE     = 1 
                                             AND PROCESSED   = 0 
                                             AND TOTALPEN    > 0
                                     ORDER BY 1";
@@ -565,7 +566,7 @@ namespace PtoVta.Infraestructura.Repositorios.Ventas
                                     new
                                     {
                                         SALESPOINT = pCodigoPuntoDeVenta,
-                                        SALESTYPE  = EnumModoTipoVenta.ModoTipoVentaAutomatico                                        
+                                        SALESTYPE  = EnumTipoVenta.ModoTipoVentaAutomatico                                        
                                     });
 
                 var pedidos = resultado.AsList();
@@ -589,15 +590,13 @@ namespace PtoVta.Infraestructura.Repositorios.Ventas
             {
                 foreach (var pedidoDetalles in pPedidoRetailDetalles)
                 {
-                    nuevoPedidoRetail.AgregarNuevoPedidoRetailDetalle(pedidoDetalles.NumeroDocumento, pedidoDetalles.Secuencia, pedidoDetalles.FechaDocumento,
-                                        pedidoDetalles.FechaProceso, pedidoDetalles.Periodo, pedidoDetalles.NumeroTurno,
-                                        pedidoDetalles.PorcentajeImpuestoIgv, pedidoDetalles.PorcentajeImpuestoIsc, pedidoDetalles.TotalNacional,
-                                        pedidoDetalles.TotalExtranjera, pedidoDetalles.ImpuestoNacional, pedidoDetalles.ImpuestoExtranjera,
-                                        pedidoDetalles.EsInventariable, pedidoDetalles.EnInventarioFisico, pedidoDetalles.Precio,
-                                        pedidoDetalles.PrecioVenta, pedidoDetalles.CostoEstandarNacional, pedidoDetalles.CostoEstandarExtranjera,
-                                        pedidoDetalles.CodigoArticuloAlterno, pedidoDetalles.DescripcionArticulo, pedidoDetalles.Cantidad,
-                                        pedidoDetalles.EsFormula, pedidoDetalles.NumeroPeaje, pedidoDetalles.CodigoArticulo,
-                                        pedidoDetalles.CodigoUnidadDeMedida);
+                    nuevoPedidoRetail.AgregarNuevoPedidoRetailDetalle(pedidoDetalles.Secuencia, pedidoDetalles.NumeroTurno,pedidoDetalles.PorcentajeImpuestoIgv, 
+                                pedidoDetalles.PorcentajeImpuestoIsc, pedidoDetalles.TotalNacional,pedidoDetalles.TotalExtranjera, 
+                                pedidoDetalles.ImpuestoNacional, pedidoDetalles.ImpuestoExtranjera,pedidoDetalles.EsInventariable, 
+                                pedidoDetalles.EnInventarioFisico, pedidoDetalles.Precio,pedidoDetalles.PrecioVenta, 
+                                pedidoDetalles.CostoEstandarNacional, pedidoDetalles.CostoEstandarExtranjera,pedidoDetalles.CodigoArticuloAlterno, 
+                                pedidoDetalles.DescripcionArticulo, pedidoDetalles.Cantidad,pedidoDetalles.EsFormula, 
+                                pedidoDetalles.NumeroPeaje, pedidoDetalles.CodigoArticulo, pedidoDetalles.CodigoUnidadDeMedida);
                 }
             }
 
@@ -619,7 +618,7 @@ namespace PtoVta.Infraestructura.Repositorios.Ventas
                 }                    
             }
 
-            return new PedidoRetail();                
+            return nuevoPedidoRetail;                
         }        
     }
 }

@@ -27,12 +27,9 @@ namespace PtoVta.Infraestructura.Tests
         public void Agregar_Test()
         {
             var codigoMoneda = "PEN";
-            var codigoEstadoDocumento = "OK";
             var codigoTarjeta = "01";
-            var codigoTipoDocumento = "12";
-            var codigoAlmacen = "24";
             var codigoCliente = "20167930868";
-            var numeroDocumentoNuevo = "B04300212010";
+            var numeroDocumentoNuevo = "B04300212012";
 
             var ventaNueva = new Venta()
             {
@@ -61,8 +58,8 @@ namespace PtoVta.Infraestructura.Tests
                 TotalEfectivoNacional = 0,
                 TotalEfectivoExtranjera = 0,
                 RucCliente = codigoCliente,
-                NombreCompletoCliente = "PTS S.A - VENTA DE PRUEBA",
-                Placa = "SQL-2019",
+                NombreCompletoCliente = "PTS S.A - VENTA DE PRUEBA 2",
+                Placa = "SQL-2020",
                 NumeroVale = 7777,
                 TipoCambio = 3.56M,
                 ProcesadoCierreZ = false,
@@ -147,6 +144,16 @@ namespace PtoVta.Infraestructura.Tests
 
             Assert.False(consumosVentasAdelantada == null);
         }
+
+        [Fact]
+        public void ObtenerTodos_Test()
+        {
+            var ventas = _IRepositorioVenta.ObtenerTodos("24", "20191001", "20191031",
+                                                        "F04800000166", "3");
+
+            Assert.False(ventas == null);
+        }
+
     }
 
 }

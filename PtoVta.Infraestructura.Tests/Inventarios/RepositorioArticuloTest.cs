@@ -21,7 +21,7 @@ namespace PtoVta.Infraestructura.Tests
         {        
             var articulo = new Articulo();
             articulo.CodigoArticulo = "20101";
-            articulo.AgregarArticuloDetalle(0,0,0,8888, DateTime.Now, DateTime.Now,0,0,0,0,0,0,0,0,
+            articulo.AgregarArticuloDetalle(0,0,0,777888, DateTime.Now, DateTime.Now,0,0,0,0,0,0,0,0,
                         string.Empty,string.Empty,string.Empty, string.Empty,"24");
 
             _IRepositorioArticuloTest.Modificar(articulo);

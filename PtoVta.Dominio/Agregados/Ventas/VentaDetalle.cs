@@ -46,6 +46,20 @@ namespace PtoVta.Dominio.Agregados.Ventas
         public EstadoDocumento EstadoDocumento { get; private set; }
 
 
+        public void CalcularTotales(decimal pTipoDeCambio, decimal pImpuestoIgvValor)
+        {
+            this.PorcentajeImpuestoIgv = pImpuestoIgvValor;
+
+            this.TotalNacional = Math.Round(this.PrecioVenta * this.Cantidad, 4);
+            this.TotalExtranjera = Math.Round(this.TotalNacional / pTipoDeCambio, 4);
+
+            var montoBaseNacional = this.TotalNacional / (1 + (this.PorcentajeImpuestoIgv / 100));
+            var montoBaseExtranjera = montoBaseNacional / pTipoDeCambio;
+
+            this.ImpuestoNacional = Math.Round(this.TotalNacional - montoBaseNacional, 4);
+            this.ImpuestoExtranjera = Math.Round(this.TotalExtranjera - montoBaseExtranjera, 4);
+        }
+
         //Articulo
         public void EstablecerArticuloDeVentaDetalle(Articulo pArticulo)
         {
@@ -63,7 +77,7 @@ namespace PtoVta.Dominio.Agregados.Ventas
             if (!string.IsNullOrEmpty(pCodigoArticulo))
             {
 
-                this.CodigoArticulo = pCodigoArticulo;
+                this.CodigoArticulo = pCodigoArticulo.Trim();
                 this.Articulo = null;
             }
         }
@@ -87,7 +101,7 @@ namespace PtoVta.Dominio.Agregados.Ventas
             if (!string.IsNullOrEmpty(pCodigoMoneda))
             {
 
-                this.CodigoMoneda = pCodigoMoneda;
+                this.CodigoMoneda = pCodigoMoneda.Trim();
                 this.Moneda = null;
             }
         }
@@ -109,7 +123,7 @@ namespace PtoVta.Dominio.Agregados.Ventas
             if (!string.IsNullOrEmpty(pCodigoEstadoDocumento))
             {
 
-                this.CodigoEstadoDocumento = pCodigoEstadoDocumento;
+                this.CodigoEstadoDocumento = pCodigoEstadoDocumento.Trim();
                 this.EstadoDocumento = null;
             }
         }        

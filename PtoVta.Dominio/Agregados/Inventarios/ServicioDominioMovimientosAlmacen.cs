@@ -3,15 +3,17 @@ using System;
 using System.Collections.Generic;
 using PtoVta.Dominio.Agregados.Inventarios;
 using PtoVta.Dominio.Agregados.Parametros;
+using static PtoVta.Dominio.BaseTrabajo.Enumeradores.AmbienteVenta;
 
-namespace PtoVta.Infraestructura.Repositorios.Inventarios
+namespace PtoVta.Dominio.Agregados.Inventarios
 {
     public class ServicioDominioMovimientosAlmacen : IServicioDominioMovimientosAlmacen
     {
-        public int MovimientoAlmacenIngresoOSalida(string pCodigoTipoDocumentoNotaCredito, TipoDocumento tipoDocumento, 
+        public int MovimientoAlmacenIngresoOSalida(string pCodigoTipoDocumentoDeVenta, string pCodigoTipoDocumentoNotaCredito, 
                                                     TipoMovimientoAlmacen tipoMovAlmacenVentas)
         {
-            var movAlmacenIngresoOSalida = tipoDocumento.CodigoTipoDocumento == pCodigoTipoDocumentoNotaCredito ? 1 : tipoMovAlmacenVentas.IngresoOSalida;
+            var movAlmacenIngresoOSalida = pCodigoTipoDocumentoDeVenta == pCodigoTipoDocumentoNotaCredito ? 1 : tipoMovAlmacenVentas.IngresoOSalida;
+            
             return movAlmacenIngresoOSalida;
         }
 

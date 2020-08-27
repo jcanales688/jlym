@@ -25,8 +25,6 @@ C:\PtoVtaMovil\jlym\PtoVta.API\bin\Debug\netcoreapp3.1\System.Data.SqlClient.dll
 C:\PtoVtaMovil\jlym\PtoVta.API\bin\Debug\netcoreapp3.1\runtimes\win-arm64\native\sni.dll
 C:\PtoVtaMovil\jlym\PtoVta.API\bin\Debug\netcoreapp3.1\runtimes\win-x64\native\sni.dll
 C:\PtoVtaMovil\jlym\PtoVta.API\bin\Debug\netcoreapp3.1\runtimes\win-x86\native\sni.dll
-C:\PtoVtaMovil\jlym\PtoVta.API\bin\Debug\netcoreapp3.1\runtimes\unix\lib\netstandard2.0\System.Data.SqlClient.dll
-C:\PtoVtaMovil\jlym\PtoVta.API\bin\Debug\netcoreapp3.1\runtimes\win\lib\netstandard2.0\System.Data.SqlClient.dll
 C:\PtoVtaMovil\jlym\PtoVta.API\bin\Debug\netcoreapp3.1\PtoVta.Aplicacion.dll
 C:\PtoVtaMovil\jlym\PtoVta.API\bin\Debug\netcoreapp3.1\PtoVta.Dominio.dll
 C:\PtoVtaMovil\jlym\PtoVta.API\bin\Debug\netcoreapp3.1\PtoVta.Infraestructura.dll
@@ -41,3 +39,5 @@ C:\PtoVtaMovil\jlym\PtoVta.API\bin\Debug\netcoreapp3.1\publicado\appsettings.Dev
 C:\PtoVtaMovil\jlym\PtoVta.API\bin\Debug\netcoreapp3.1\publicado\appsettings.json
 C:\PtoVtaMovil\jlym\PtoVta.API\bin\Debug\netcoreapp3.1\publicado\PtoVta.API.deps.json
 C:\PtoVtaMovil\jlym\PtoVta.API\bin\Debug\netcoreapp3.1\publicado\PtoVta.API.runtimeconfig.json
+C:\PtoVtaMovil\jlym\PtoVta.API\bin\Debug\netcoreapp3.1\runtimes\unix\lib\netcoreapp2.1\System.Data.SqlClient.dll
+C:\PtoVtaMovil\jlym\PtoVta.API\bin\Debug\netcoreapp3.1\runtimes\win\lib\netcoreapp2.1\System.Data.SqlClient.dll
